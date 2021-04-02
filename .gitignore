@@ -2,6 +2,7 @@ tiny.pdf
 .gitignore
 texput.log
 tiny.lof
+tiny.aux
 tiny.log
 tiny.lot
 tiny.out
