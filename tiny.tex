@@ -71,37 +71,34 @@
 %%% Titulos
 %%%
 
-\author{Julio César Álvarez Iglesias}
-\authorR{Álvarez Iglesias, Julio César}
+\author{Vinicius da Silva Costa Almada}
+\authorR{Almada, Vinicius da Silva Costa}
 
-\advisor{Sidnei Paciornik}{Prof.}
-\advisorR{Paciornik, Sidnei}
+\advisor{Luiz Fernando Martha}{Prof. Dr.}
+\advisorR{Martha, Luiz Fernando}
 % If the advisor's department is different from author's department, uncomment the next line and type the correct name and acronym of advisor's institution.
 %\advisorInst{institution name}{acronym}
 
-\coadvisor{Otávio da Fonseca Martins Gomes}{Dr.}
-\coadvisorR{da Fonseca Martins Gomes, Otávio}
-\coadvisorInst{Centro de Tecnologia Mineral}{CETEM/MCTI}
+\coadvisor{André Luís Müller}{Dr.}
+\coadvisorR{Müller, André Luís}
+\coadvisorInst{Instituto Tecgraf/PUC-Rio}{Tecgraf/PUC-Rio}
 
 %% \title{Desenvolvimento de um sistema de microscopia digital para
 %%  classificação automática de tipos de hematita em minério de ferro}
 
-\title{Desenvolvimento de um sistema de microscopia digital para
-  classificação automática de tipos de hematita em minério de ferro}
+\title{Modelagem Topológica e Geométrica de Processos aplicados a multi-seções Geológicas}
 
-\titleuk{Development of a digital microscopy system for automatic
-  classification of hematite types in iron ore}
+\titleuk{Topological and Geometric Modeling of Processes applied to Geological multi-sections}
 
 %% \subtitulo{Aqui vai o subtitulo caso precise}
 
-\day{9}
-\month{August}
-\year{2012}
+\day{31}
+\month{Julho}
+\year{2021}
 
 \city{Rio de Janeiro}
-\CDD{620.11}
-\department{Engenharia Química e de Materiais}
-\program{Engenharia de Materiais e de Processos Químicos e Metalúrgicos}
+\CDD{XYZ.AB}
+\program{Engenharia Civil}
 \school{Centro Técnico Científico}
 \university{Pontifícia Universidade Católica do Rio de Janeiro}
 \uni{PUC-Rio}
@@ -111,13 +108,13 @@
 %%%
 
 \jury{%
-  \jurymember{Paulo Roberto Gomes Brandão}{Prof.}
+  \jurymember{Banca Um}{Prof.}
     {Universidade Federal de Minas Gerais}{UFMG}
-  \jurymember{Leonardo Evangelista Lagoeiro}{Prof.}
+  \jurymember{Banca Dois}{Prof.}
     {Universidade Federal de Ouro Preto}{UFOP}
-  \jurymember{Reiner Neumann}{Dr.}
+  \jurymember{Banca Três}{Dr.}
     {Centro de Tecnologia Mineral}{CETEM/MCTI}
-  \jurymember{Marcos Henrique de Pinho Maurício}{Dr.}
+  \jurymember{Banca Quatro}{Dr.}
     {Departamento de Engenharia Química e de Materiais}{PUC-Rio}
 }
 
@@ -126,18 +123,17 @@
 %%%
 
 \resume{%
-  Majored in physics by the University of Havana (Havana,
-  Cuba)...}
+  Bacharel em Engenharia Civil pelo Instituto Federal de Educação, Ciência e Tecnologia do Maranhão (IFMA), formou-se em 2018. Foi bolsista de programas de Iniciação Científica PIBITI – IFMA, com projeto de desenvolvimento de software para Mecânica dos Solos e um segundo na área de Dinâmica das Estruturas. Este último foi base para seu Trabalho de Conclusão de Curso, cujo objetivo foi desenvolver um software para análise dinâmica de estruturas sujeitas à carregamento sísmico. Desde o fim de 2019 atua no Instituto Tecgraf como bolsista no Grupo de Modelagem Geológica de Sistemas Petrolíferos}
 
 %%%
 %%% Acknowledgment (REMINDER TO SCHOLARSHIP STUDENTS. Do not forget to thank the agencies that supported your work.)
 %%%
 
 \acknowledgment{%
-  \noindent I would like to first thank my advisor ...
+  \noindent Primeiro parágrafo de agradecimento ...
   \bigskip
 
-  \noindent Then I wish to thank ...
+  \noindent Segundo parágrafo de agradecimento ...
 }
 
 %%%
@@ -145,8 +141,8 @@
 %%%
 
 \catalogprekeywords{%
-  \catalogprekey{Engenharia Química}%
-  \catalogprekey{Engenharia de Materiais}%
+  \catalogprekey{Engenharia Civil e Ambiental}%
+  \catalogprekey{Engenharia}%
 }
 
 %%%
@@ -154,21 +150,17 @@
 %%%
 
 \keywords{%
-  \key{Minério de Ferro}
-  \key{Cristais de Hematita}
-  \key{Microscopia Digital}
-  \key{Análise de Imagens}
-  \key{Classificação}
-  \key{Microscopia de Luz Polarizada}
+  \key{Geologia Estrutural}
+  \key{Restauração de Seções Geológicas}
+  \key{Restauração de Superfícies Geológicas}
+  \key{Estrutura de Dados}
 }
 
 \keywordsuk{%
-  \key{Iron Ore}%
-  \key{Hematite Crystals}%
-  \key{Digital Microscopy}%
-  \key{Image Analysis}%
-  \key{Classification}%
-  \key{Polarized Light Microscopy}%
+  \key{Structural Geology}%
+  \key{Restoration of Geological Sections}%
+  \key{Restoration of Geological Surfaces}%
+  \key{Data Structures}%
 }
 
 %%%
@@ -176,21 +168,18 @@
 %%%
 
 \abstract{%
-  O minério de ferro é um material policristalino oriundo de processos
-  naturais complexos durante tempos geológicos, que dão origem ...
+  Esse projeto visa desenvolver, dentro do Sistema Recon MS, um fluxo de trabalho que envolve as áreas de geologia estrutural, estratigrafia e geologia de reservatórios. Esse fluxo inicia com a restauração de modelos geológicos (seções e superfícies). Dentro do Sistema Recon busca-se aprimorar as ferramentas em seu ambiente de visualização 3D, denominado multi-seções, ou MS. Através de duas formas diferentes serão desenvolvidas ferramentas que irão prover as geometrias para o ambiente de simulação estratigráfica (para cada tempo geológico): 1) mapeamento de litologias e outras propriedades durante a restauração de seções, que por sua vez gerarão os paleo-relevos; 2) restauração de superfícies em si, que elimina a necessidade do mapeamento do item 1. A importância de ambas as estratégias consiste no fato de que nem sempre é possível obter bons resultados com restauração de superfícies, já que os mecanismos de restauração de seções desenvolvidos são muito mais geológicos. Para o mapeamento é necessária a criação de uma estrutura de dados que represente a malha de superfícies com possibilidade de armazenar informações, como propriedades e ligações entre as entidades das superfícies com as seções. Atualmente o Sistema Recon trabalha de forma totalmente desacoplado entre a estruturas de dados que representa as seções geológicas e a estrutura que representa as superfícies geológicas (horizontes, falhas e tipo do sal). Já para a segunda abordagem, ou seja, a restauração de superfícies, prevê-se o desenvolvimento de um módulo computacional de otimização dedicada a eliminar os buracos das superfícies que estão sendo restauradas incluindo restrições de deslocamento, sobre as falhas geológicas, das sub-superfícies abaixo da superfície restaurada.
 }
 
 \abstractuk{%
-  Iron ore is a polycrystalline material created by complex natural
-  processes during geological periods, which give rise to ...}
+  This project aims to develop, within the Recon MS System, a workflow that involves the areas of structural geology, stratigraphy and reservoir geology. This flow begins with the restoration of geological models (sections and surfaces). The Recon System seeks to improve the tools in its 3D visualization environment, called multi-sections, or MS. Through two different forms, tools will be developed that will provide the geometries for the stratigraphic simulation environment (for each geological time): 1) mapping of lithologies and other properties during the restoration of sections, which in turn will generate paleo-reliefs; 2) surface restoration itself, which eliminates the need for mapping item 1. The importance of both strategies is the fact that it is not always possible to obtain good results with surface restoration, since the section restoration mechanisms developed are much more geological. For mapping, it is necessary to create a data structure that represents the surface mesh with the possibility of storing information, such as properties and links between the entities of the surfaces and the sections. Currently the Recon System works in a totally decoupled way between the data structures that represent the geological sections and the structure that represents the geological surfaces (horizons, faults and salt type). For the second approach, that is, the restoration of surfaces, it is foreseen the development of a computational optimization module dedicated to eliminate the holes of the surfaces that are being restored including displacement restrictions, on the geological faults, of the sub-surfaces below the restored surface.}
 
 %%%
 %%% Dedication
 %%%
 
 \dedication{%
-  To my parents, for their support\\
-and encouragement.
+  Dedicado lorem ipsum
 }
 
 %%%
