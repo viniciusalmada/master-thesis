@@ -36,7 +36,7 @@ jobs:
           echo test, and deploy your project.
       
       - name: Install tex live
-        run: sudo apt install texlive-base texlive texlive-latex-extra texlive-latex-recommended -y
+        run: sudo apt install texlive-base texlive texlive-latex-extra texlive-latex-recommended  texlive-lang-portuguese -y
         
       - name: Run build script
         run: ./build.sh
