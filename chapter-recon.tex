@@ -12,9 +12,35 @@ Neste capítulo são apresentadas as principais características do Sistema Reco
 
 \section{Subdivisão Planar} % Falar do HED e da TopS
 
-Uma seção geológica pode ser vista como um conjunto de polígonos onde cada um representa uma porção limitada com suas próprias características. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geométricas às quais a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em uma representação digital da seção geológica.
+Uma seção geológica pode ter sua representação digital como uma subdivisão planar uma vez que ela pode ser vista como um conjunto de polígonos que dividem o domínio da seção. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geométricas às quais a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em um contexto computacional da seção geológica.
 
+Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as camadas A, B e C possuem 3 blocos separados por falhas. Cada bloco é uma região fechada delimitada por um conjunto de segmentos. Deve-se observar ainda que essas regiões possuem atributos geológicos como idade, litologia, porosidade, etc.
 
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=400pt]{images/fig-subdivisao-planar}
+    \caption{Seção geológica como uma subdivisão planar.}\label{fig-subdivisao-planar}
+  \end{center}
+\end{figure}
+
+Uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
+
+A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. 
+
+No entanto, há ainda um último componente topológico: o \textit{loop} ou \textit{laço} que é, de forma sucinta, um suconjunto conexo e ordenado de arestas. Com essa definição, a \textit{face} pode ser interpretada como uma união de laços, um deles sendo externo (delimitando a fronteira externa da face) e zero ou mais internos.
+
+Em suma, a subdivisão planar tem os seguintes elementos topológicos:
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item \textbf{Vértice}: representa um ponto único dentro do plano.
+  \item \textbf{Aresta}: segmento de curva com vértices como limites.
+  \item \textbf{Laço} (loop): suconjunto conexo e ordenado de arestas.
+  \item \textbf{Face}: região delimitada por um ou mais laços.
+\end{itemize}
+
+\subsection{Modelagem da Subdivisão Planar}
+
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio. O HED é uma estrutura de dados topológicos 
 
 \section{Atributos Geológicos}
 
