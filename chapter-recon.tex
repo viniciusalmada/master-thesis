@@ -40,9 +40,21 @@ Em suma, a subdivisão planar tem os seguintes elementos topológicos:
 
 \subsection{Modelagem da Subdivisão Planar}
 
-Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio. O HED é uma estrutura de dados topológicos 
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio. O HED é uma estrutura de dados topológica baseado em arestas, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
+
+O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas, cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
+
+A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de elementos topológicos. No nível mais alto está a subdivisão planar, denominada como \textit{HedSolid}, então vêm \textit{HedFace}, \textit{HedLoop}, \textit{HedHalfEdge} e \textit{HedVtx} no nível mais baixo. A representação da aresta, \textit{HedEdge} encontra-se no mesmo nível da HedHalfEdge.
+
+Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todos as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
+
+É importante salientar que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos.
 
 \section{Atributos Geológicos}
+
+A manipulação de uma seção geológica 
+
+Cada entidade do HED possui um es
 
 \section{Seções Geológicas} % Falar da árvore de cenários
 
@@ -71,7 +83,7 @@ Cada face de uma seção tem como atributo uma malha triangulada, e as linhas de
 
 \begin{figure} [h]
   \begin{center}
-    \includegraphics[width=350pt]{images/fig-linhas-de-mapeamento-malhas}
+    \includegraphics[width=250pt]{images/fig-linhas-de-mapeamento-malhas}
     \caption{Linhas de mapeamento cortando múltiplas faces.}\label{fig-linemap-malhas}
   \end{center}
 \end{figure}
@@ -82,7 +94,7 @@ Por exemplo, na Figura~\ref{fig-linemap-parts} estão evidenciadas as partes que
 
 \begin{figure} [h]
   \begin{center}
-    \includegraphics[width=350pt]{images/fig-lm-parts}
+    \includegraphics[width=250pt]{images/fig-lm-parts}
     \caption{Partes de uma linha de mapeamento}\label{fig-linemap-parts}
   \end{center}
 \end{figure}
