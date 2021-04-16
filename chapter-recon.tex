@@ -46,15 +46,28 @@ O HED introduz uma nova entidade que explora bem essa característica denominada
 
 A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de elementos topológicos. No nível mais alto está a subdivisão planar, denominada como \textit{HedSolid}, então vêm \textit{HedFace}, \textit{HedLoop}, \textit{HedHalfEdge} e \textit{HedVtx} no nível mais baixo. A representação da aresta, \textit{HedEdge} encontra-se no mesmo nível da HedHalfEdge.
 
+[ incluir uma tabela com as structs do HED ]
+
 Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todos as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
 
-É importante salientar que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos.
+Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Uma camada geológica é representada por uma face; as linhas de horizonte, falha ou sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido\footnote{Os sólidos representam uma subdivisão planar e em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada parte é um sólido.}.
+
+Destaca-se que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED, visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos.
 
 \section{Atributos Geológicos}
 
-A manipulação de uma seção geológica 
+Como já dito, os blocos que formam a seção geológica possuem propriedades próprias e precisam também estarem salvas na estrutura de dados topológica.
 
-Cada entidade do HED possui um es
+Cada entidade do HED possui um campo reservado para um tipo genérico de informações e é neste espaço que são organizados os atributos geológicos da seção. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item \textbf{GeoSolid}: O sólido por ser a estrutura mais alto nível, é quem vai guardar também informações mais globais da seção, como:
+  \item \textbf{GeoFace}: 
+  \item \textbf{GeoEdge}: 
+  \item \textbf{GeoVtx}: 
+\end{itemize}
+
 
 \section{Seções Geológicas} % Falar da árvore de cenários
 
