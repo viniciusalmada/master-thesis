@@ -100,7 +100,13 @@ M-Depois de chegar na solução é obtido os pesos para determinar a nova posiç
 M-Precisa das restrições (constraints)
 M-Sistema quadrático simétrico
 
-Volume-56mino
+Volume-58min
+
+M-Se é uma surf, a solução anterior funciona
+M-Tem-se uma nuvem de pontos
+M-MPM generalizado
+M-É montado uma grade, com pontos
+M-Faz uma interpolação generalizada 
 
 Descrever o quê?-1h02min
 L-O contexto é de mapeamento de superfície geológica dentro de um processo de restauração, em que se parte de seção para superfície e volume.
