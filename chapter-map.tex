@@ -2,11 +2,35 @@
 
 \chapter{Mapeamento}
 
+O mapeamento descrito neste trabalho é baseado exclusivamente na restauração de seções geológicas. Para tanto, há necessidade de uma camada de informações proveniente das seções que contenha os dados a serem usados no mapeamento tridimensional. Essas informações podem ser extraídas com um tipo de mapeamento 2D presente nas seções, com o uso de \textit{linhas de mapeamento}.
+
+Neste capítulo serão apresentados o conceito de linha de mapeamento presente no Sistema Recon, suas características, alguns casos de uso e também as derivações.
+
+Após isso, haverá uma abordagem acerca dos procedimentos matemáticos e algoritmos computacionais presentes no mapeamento de superfícies e do volume, com inclusão de exemplos e discussão a respeito dos resultados obtidos em cada um.
+
 \section{Linhas de Mapeamento}
 
-Um dos recursos presentes no Sistema Recon é a \textbf{linha de mapeamento}, cujo objetivo é auxiliar na interpretação dos resultados gerados na restauração do modelo. Essa linha armazena referências a pontos da malha da seção. Com isso, é possível ter uma linha que acompanha a movimentação da malha de um cenário a outro.
+Linhas de mapeamento são linhas formadas por \textit{pontos de mapeamento}. Estes pontos são objetos mapeados nas malhas da seção e guardam uma informação referente à sua localização dentro desta malha.
 
-As linhas de mapeamento (Figura~\ref{fig-linemap}) permitem realizar um mapeamento geométrico ao longo de uma restauração tomando como base uma linha-guia poligonal definida pelo usuário. Essa linha pode ser criada em qualquer cenário, mesmo em seções já restauradas.
+Um ponto de mapeamento, em razão dos tipos de entidades topológicas presentes na malha, pode ser do tipo nó, aresta ou elemento:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item Nó: o ponto está sobre um nó da malha. É guardado o identificador desse nó.
+  \item Aresta: caso onde o ponto localiza-se sobre uma aresta de elemento. Além do identificador da aresta, é armazenado a coordenada paramétrica do ponto.
+  \item Elemento: o ponto encontra-se no interior de um elemento. Guarda-se o identificador do elemento e as coordenadas baricêntricas do ponto.
+\end{itemize}
+
+A criação dessas linhas se dá pela definição de uma linha-guia que pode cruzar diferentes regiões da seção. Para cada região interceptada, é criada uma parte de linha de mapeamento, essa parte armazena o identificador da malha da região. A interseção dos pontos da linha-guia com a malha produz os pontos de mapeamento.
+
+A linha de mapeamento pode ser criada em qualquer cenário durante a restauração da seção e sua geometria pode ser calculada com base na malha em função dos pontos de mapeamento que a formam. Após a criação, uma versão da linha de mapeamento é gerada para cada cenário anterior e subsequente ao que foi usado na definição da linha-guia, é assim que 
+ocorre o mapeamento dessa linha ao longo das etapas de restauração da seção.
+
+O requisito para que seja calculada a geometria da linha em diferentes cenários é que a malha mantenha a mesma topologia, no entanto, mesmo em casos de edição, é possível realizar uma interpolação dos atributos presentes na malha para sua nova versão, incluem-se nisso as partes de linha de mapeamento que irão também receber uma nova versão equivalente dada a alteração na topologia da malha.
+
+Dentro do Sistema Recon, a linha de mapeamento é um recurso importante na interpretação dos resultados gerados na restauração do modelo. Com ela é possível ter uma linha que acompanha a movimentação da malha de um cenário a outro.
+
+As linhas de mapeamento (Figura~\ref{fig-linemap}) permitem realizar um mapeamento geométrico ao longo de uma restauração tomando como base uma linha-guia poligonal definida pelo usuário.
 
 \begin{figure} [h]
   \begin{center}
@@ -25,7 +49,7 @@ A Figura~\ref{fig-linemap-history} apresenta o resultado após uma transformaç�
 \end{figure}
 
 
-Cada face de uma seção tem como atributo uma malha triangulada, e as linhas de mapeamento são definidas no sistema de coordenadas local da malha de cada uma das faces. Além disso, é possível que uma linha de mapeamento cruze diversas regiões da seção, por isso, a linha de mapeamento é definida como um conjunto de \quotes{partes de linha de mapeamento} ou \textit{LineMapPart}, sendo cada parte pertencente a um trecho contínuo em uma mesma face. O processo de criação deste mapeamento da linha é feito para cada parte individualmente, de forma que ao visualizar as partes tem-se a linha de mapeamento completa. Na Figura~\ref{fig-linemap-malhas} é possível ver uma linha de mapeamento cortando algumas regiões diferentes.
+O processo de criação deste mapeamento da linha é feito para cada parte individualmente, de forma que ao visualizar as partes tem-se a linha de mapeamento completa. Na Figura~\ref{fig-linemap-malhas} é possível ver uma linha de mapeamento cortando algumas regiões diferentes.
 
 \begin{figure} [h]
   \begin{center}
@@ -34,9 +58,7 @@ Cada face de uma seção tem como atributo uma malha triangulada, e as linhas de
   \end{center}
 \end{figure}
 
-O primeiro passo na criação do mapeamento é a determinação da linha-guia pelo usuário, a partir disso é feita a separação nas partes a serem processadas de acordo com o número de faces interceptadas. É realizado um levantamento com informações topológicas da interseção da parte com a malha da face. Essa ação consiste em fazer uma relação entre um ponto da parte da linha-guia e um ponto em uma entidade topológica da região, seja ela um nó, aresta de elemento ou elemento triangular.
-
-Na Figura~\ref{fig-linemap-parts} estão evidenciadas as partes que formam a linha de mapeamento. Cada uma dessas partes é representada pela entidade chamada \textit{LineMapPart}, termo apresentado anteriormente.
+Na Figura~\ref{fig-linemap-parts} estão evidenciadas as partes que formam a linha de mapeamento. Como já dito, cada parte está associada à malha de um região diferente.
 
 \begin{figure} [h]
   \begin{center}
@@ -45,16 +67,7 @@ Na Figura~\ref{fig-linemap-parts} estão evidenciadas as partes que formam a lin
   \end{center}
 \end{figure}
 
-A malha de uma face, por sua vez, possui três entidades básicas, o ponto da linha pode ser mapeado para um nó topológico, para um ponto interno de uma aresta (lado de triângulo) da malha ou ponto interior a um elemento (triângulo da malha). Em cada um desses casos, a informação topológica relacionada é guardada, segundo a enumeração a seguir:
-
-\renewcommand{\labelitemi}{•}
-\begin{itemize}
-  \item Nó: guarda o identificador do nó
-  \item Aresta: guarda o identificador da aresta e a coordenada paramétrica do ponto de cruzamento.
-  \item Elemento: guarda o identificador do elemento e as coordenadas baricêntricas do ponto no interior do elemento.
-\end{itemize}
-
-A Figura~\ref{fig-lm-topo} mostra a identificação dos pontos em uma \textit{LineMapPart} e a Tabela~\ref{tab-lm-topo} exibe quais informações topológicas são salvas de cada ponto.
+A Figura~\ref{fig-lm-topo} mostra a identificação dos pontos em uma parte de linha de mapeamento e a Tabela~\ref{tab-lm-topo} exibe quais informações topológicas são salvas de cada ponto.
 
 \begin{figure} [hbt!]
   \begin{center}
@@ -65,27 +78,30 @@ A Figura~\ref{fig-lm-topo} mostra a identificação dos pontos em uma \textit{Li
 
 \input{tables/table-lm-topo}
 
-Após esse processo de mapeamento topológico da linha propriamente dita, é possível calcular a geometria da linha em diferentes cenários que usam a mesma malha (já que a topologia é mantida), bastando apenas verificar se a malha se manteve, isto é, não foi refeita, apagada ou editada.
-
-Em casos de edição, todos os atributos associados à malha são interpolados para a nova versão da malha, incluem-se nisso as partes de linha de mapeamento que recebem uma nova versão se a malha original teve sua topologia alterada.
-
-A vantagem deste tipo de mapeamento é ser baseado em malha, já que em todas as transformações geológicas que ocorrem no processo de restauração só malhas das faces são deformadas.
-
 \section{Derivações das Linhas de Mapeamento}
 
-As linhas de mapeamento têm também casos de usos mais especializados, como na criação e representação de poços. Poços são criados semelhantemente às linhas de mapeamento ou por importação de modelos com poços em 3D. Possuem característica de serem linhas mais verticalizadas e possuem uma finalidade mais limitada. Nos casos de poços 3D, a linha correspondente ao poço é apenas uma projeção do objeto tridimensional no plano da seção.
+As linhas de mapeamento têm também casos de usos mais especializados dentro do Sistema Recon, como na criação e representação de poços. Poços são criados semelhantemente às linhas ou por importação de modelos com poços em 3D. Possuem característica de serem linhas quase verticalizadas e possuem uma finalidade mais limitada. Nos casos de poços 3D, a linha correspondente ao poço é apenas uma projeção do objeto tridimensional no plano da seção.
 
 Há o uso nas chamadas linhas de interseção (\textit{CrossLine}) que servem para identificar e mapear as linhas de cruzamento entre seções no espaço tridimensional do multi-seções, com isso é possível ter uma noção do que ocorre com seções transversais mesmo estando no domínio bidimensional da restauração.
 
-Por fim, as linhas de mapeamento são a base para a \textit{linhas de mapeamento do modelo} ou \textit{LMModel}, cujo objetivo é servir como um mapeamento das linhas de entidades geológicas (horizonte, falha e topo de sal) ao longo da restauração do modelo. Dessa forma, é possível ter um acompanhamento das entidades geológicas na seção, baseado no contorno da malha das faces, além de poder verificar como se deu a movimentação de cada ponto de horizonte, falha ou topo de sal ao longo da restauração, por exemplo.
+Por último, foi criada a \textit{linha de mapeamento do modelo} ou \textit{LMModel}, cujo objetivo é servir como um mapeamento das linhas que representam os elementos geológicas ao longo da restauração do modelo. Assim, dá para se ter um acompanhamento do que ocorre com as entidades geológicas na seção, além de poder verificar como se deu a movimentação de cada ponto de horizonte, falha ou topo de sal ao longo da restauração.
 
-Pelo objetivo proposto, as \textit{LMModels} são linhas de mapeamento que tomam a geometria das entidades geológicas como entrada, então não há necessidade de criar uma linha-guia como é feita na linha de mapeamento original, a própria linha de horizonte ou falha é usada como linha-guia.
+As \textit{LMModels} são linhas de mapeamento baseadas no pontos do contorno da malha das regiões, ou seja, as partes que a formam possuem apenas pontos de mapeamento do tipo nó.
 
-Além disso, há o armazenamento de atributos importantes para a manipulação das LMModels, como idade dos horizontes, identificador da falha e até sobre a qual pedaço de superfície aquela parte de linha está associada.
+Pelo objetivo proposto, as \textit{LMModels} são linhas de mapeamento que tomam a geometria das entidades geológicas como entrada, então não há necessidade de criar uma linha-guia como é feita na linha de mapeamento original, a própria linha de horizonte, falha, ou topo de sal é usada como linha-guia.
 
-Todas essas informações  geológicas atreladas ao mapeamento topológico das LMModels, quando em conjunto com as diversas seções geológicas de um modelo multi-seções, são o que fazem dela o principal dado para a realização de um mapeamento de informações a nível 3D, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
+Conforme o elemento geológico base, há um tipo de \textit{LMModel} e informações adicionais armazenadas:
 
-A maneira de trabalhar com LMModels é com a organização dela em estruturas de dados que formam subconjuntos divididos por etapa de resturação e idade (caso de linhas de horizonte). Com isso é obtido o conjunto de informações que representam a restauração das seções de uma forma mais simples e fácil de se trabalhar a nível tridimensional.
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item Horizonte: é guardado a informação de idade deste horizonte.
+  \item Falha: o identificador da falha é o dado armazenado.
+  \item Topo de sal: apenas uma referência direta à linha original.
+\end{itemize}
+
+Todas essas informações  geológicas atreladas ao mapeamento topológico das \textit{LMModels}, quando em conjunto com as diversas seções geológicas de um modelo multi-seções, são o que fazem dela o principal dado para a realização de um mapeamento de informações a nível 3D, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
+
+A maneira de trabalhar com \textit{LMModels} é com a organização dela em estruturas de dados que formam subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte). Com isso é obtido o conjunto de informações que representam a restauração das seções de uma forma mais simples e fácil de se trabalhar a nível tridimensional.
 
 \section{Mapeamento de superfícies}
 
