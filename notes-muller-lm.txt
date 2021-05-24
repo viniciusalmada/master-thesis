@@ -1,0 +1,34 @@
+Escrever um introdução nos capítulos a fim de explicar do que vai ser falado.
+Usar frases curtas
+
+Descrever o que é uma linha de mapeamento primeiro.
+Listar os atributos
+Como se criam as partes que formam a linha de mapeamento.
+O que ela é?
+
+Uma linha de mapeamento é uma linha formada por pontos de mapeamento.
+Possui os atributos etc...
+Descrição mais curta.
+
+Descrever o ponto de mapeamento.
+
+Já descreveu tudo até aqui sobre linha de mapeamento.
+
+----
+
+Como é formada uma linha de mapeamento (conjunto de partes)
+
+----
+
+Assim fica mais claro:
+Linha de mapeamento é isso.
+Como é criado
+Exemplos de uso, criação e de como é composta.
+
+Algo mais compartimentada
+
+coordenada
+
+começar seção com 'por fim'
+
+por exemplo
