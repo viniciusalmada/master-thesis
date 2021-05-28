@@ -1,0 +1,14 @@
+Usar o paper a partir da página 3 até o fim do capítulo
+Solução do problema matemático, incluindo outras soluções
+Placas finas pode falar da referencia do DSI.
+
+Introdução do assunto:
+Mapeamento 2d e agora falar do mapeamento de superfície
+Descrever o problema, dado uma superfície qualquer para onde ela vai tendo pontos de controle.
+
+Daí escreve sobre o que há no paper
+
+Adicionar o exemplo
+
+Apresentou o problema, a solução, o problema sintético
+Agora como aplicar isso tudo dentro do Recon
