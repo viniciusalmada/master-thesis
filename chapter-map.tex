@@ -109,7 +109,7 @@ A maneira de trabalhar com \textit{LMModels} é com a organização delas em est
 
 \subsection{Metodologia}
 
-Na seção anterior foi apresentado um tipo de mapeamento bidimensional que é usado dentro da restauração de seções do Sistema Recon. Aqui será mostrado o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante das restauração das seções geológicas.
+Na seção anterior foi apresentado um tipo de mapeamento bidimensional que é usado dentro da restauração de seções do Sistema Recon. Aqui será mostrado o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante da restauração das seções geológicas.
 
 A deformação de uma superfície pode ser modelada como um problema variacional em termos de energia através de funções Lagrangeanas que por sua vez podem ser descritas pelo operador de Laplace com diferentes ordens. A energia de superfície de membrana é uma PDE de segunda ordem, descrita pelo operador de Laplace $\Delta{q}$ e minimiza a área da superfície. A energia de placas-finas que minimiza a curvatura da superfície é descrita pela PDE de quarta ordem $\Delta^2{q}$. Já para minimização da variação da curvatura de superfícies pode ser usada uma PDE de sexta ordem, ou tri-harmônica, $\Delta^3{q}$, sua aproximação discreta é dita superfície de mínima variação.\cite{Muller, Botsch}
 
@@ -168,17 +168,30 @@ A fim de demonstrar as diferenças para diferentes tipos de energias para a fun�
 \begin{figure} [h]
   \begin{center}
     \includegraphics[width=200pt]{images/fig-eg-surf-deformer-1}
-    \caption{Configuração inicial da superfície a ser deformada.}\label{fig-eg-surf-deformer-1}
+    \caption{Configuração inicial da superfície a ser deformada.\cite{Muller}}\label{fig-eg-surf-deformer-1}
   \end{center}
 \end{figure}
 
+
+\begin{figure} [h!]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-eg-surf-deformer-2}
+    \caption{Configuração deformada da superfície segundo as Lagrangeanas de 2ª ordem (a,d), 4ª ordem (b,e) e 6ª ordem (c, f). As figuras (a, b e c) representam os resultados na direção $z$, escala em metros.\cite{Muller}}\label{fig-eg-surf-deformer-2}
+  \end{center}
+\end{figure}
+
+A Figura~\ref{fig-eg-surf-deformer-2} deixa clara as diferenças na deformação da superfície conforme a energia minimizada. De modo específico para a deformação de superfícies geológicas onde há um viés físico atrelado, a solução que minimiza a energia de mínima variação e que, portanto, resulta na mínima variação da curvatura é a que melhor se adequa ao comportamento previsto para este tipo de simulação.
+
+O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de deslocamentos em $z$ sobre o segmento $\overline{AB}$ da Figura~\ref{fig-eg-surf-deformer-1} para cada um dos tipos de deformação obtida. Repare o quão pouco de movimentação ocorreu para aquela com função tri-harmônica em relação às demais funções.
 
 \begin{figure} [h]
   \begin{center}
-    \includegraphics[width=350pt]{images/fig-eg-surf-deformer-2}
-    \caption{Configuração deformada da superfície segundo as Lagrangeanas de 2ª ordem (a,d), 4ª ordem (b,e) e 6ª ordem (c, f).}\label{fig-eg-surf-deformer-2}
+    \includegraphics[width=250pt]{images/fig-eg-surf-deformer-3}
+    \caption{Coordenada $z$ sobre o segmento $\overline{AB}$.\cite{Muller}}\label{fig-eg-surf-deformer-3}
   \end{center}
 \end{figure}
+
+
 
 \subsection{Preparação dos dados}
 
