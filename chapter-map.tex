@@ -33,7 +33,7 @@ Dentro do Sistema Recon, a linha de mapeamento é um recurso importante na inter
 As linhas de mapeamento (Figura~\ref{fig-linemap}) permitem realizar um mapeamento geométrico ao longo de uma restauração tomando como base uma linha-guia poligonal definida pelo usuário.
 
 \begin{figure} [h]
-  /\begin{center}
+  \begin{center}
     \includegraphics[width=400pt]{images/fig-linhas-de-mapeamento-ed}
     \caption{Linhas de mapeamento em uma seção.}\label{fig-linemap}
   \end{center}
@@ -107,15 +107,78 @@ A maneira de trabalhar com \textit{LMModels} é com a organização delas em est
 
 \section{Mapeamento de superfícies}
 
-Na seção anterior foi apresentado um tipo de mapeamento bidimensional que é usado dentro da restauração de seções do Sistema Recon. Aqui será mostrado o mapeamento de superfícies baseado na restauração das seções que, neste trabalho, pode ser definido como o uso de informações das seções como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante das seções geológicas.
-
-Essa deformação da superfície pode ser modelada como um problema variacional em termos de energia através de funções Lagrangeanas. A energia de superfície de membrana é uma PDE de segunda ordem, descrita pelo operador de Laplace $\Delta{q}$ e minimiza a área da superfície. A energia de placas-finas que minimiza a curvatura da superfície é descrita pela PDE de quarta ordem $\Delta^2{q}$. Já para minimização da variação da curvatura de superfícies pode ser usada uma PDE de sexta ordem, ou tri-harmônica, $\Delta^3{q}$, sua aproximação discreta é dita superfície de mínima variação.\cite{Muller, Botsch}
-
-
-
-
-
 \subsection{Metodologia}
+
+Na seção anterior foi apresentado um tipo de mapeamento bidimensional que é usado dentro da restauração de seções do Sistema Recon. Aqui será mostrado o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante das restauração das seções geológicas.
+
+A deformação de uma superfície pode ser modelada como um problema variacional em termos de energia através de funções Lagrangeanas que por sua vez podem ser descritas pelo operador de Laplace com diferentes ordens. A energia de superfície de membrana é uma PDE de segunda ordem, descrita pelo operador de Laplace $\Delta{q}$ e minimiza a área da superfície. A energia de placas-finas que minimiza a curvatura da superfície é descrita pela PDE de quarta ordem $\Delta^2{q}$. Já para minimização da variação da curvatura de superfícies pode ser usada uma PDE de sexta ordem, ou tri-harmônica, $\Delta^3{q}$, sua aproximação discreta é dita superfície de mínima variação.\cite{Muller, Botsch}
+
+Essa deformação pode ocorrer com base em duas premissas: que sejam conhecidas a posição inicial dos pontos da superfície e a posição deformada de pontos de controle (que também pertencem à superfície). A partir da informação desses pontos de controle busca-se encontrar a posição deformada de todos os pontos da superfície. A solução desse problema começa na obtenção de uma solução estacionária que minimize uma energia.\cite{Muller}
+
+Dois tipo de métodos podem ser usados para, dada uma superfície $\mathcal{S}$ num espaço $R^3$ com contorno $\Omega$ descrita num espaço cartesiano $x$ com pontos iniciais conhecidos e pontos de controle cujas deformações são conhecidas, calcular a deformação de $\mathcal{S}$. Os métodos baseados em superfície que dependem de uma boa qualidade da representação discreta da superfície e os baseados em deformação espacial que, como diz o nome, não dependem da representação da superfície.\cite{Botsch} Dentre este últimos, cita-se: 
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item o método Lattice Based Freeform Deformation que usa funções de forma B-spline e um tensor descrito pelos pontos de controle, sua formulação resulta em um sistema retangular de equações lineares solucionável por meio de inversas generalizadas ou mínimos quadrados;
+  \item o método Cage Based Freeform Deformation que pode ser considerado uma generalização do método anterior e utiliza uma gaiola de malha grossa que engloba a superfície a ser deformada e uma interpolação linear entre os pontos da gaiola e os pontos de controle que por sua vez compõem novas funções de interpolação;
+  \item o método com Radial Basis Functions (RBF), conhecido por interpolar muito bem dados de nuvens de pontos e será visto em mais detalhes a seguir.
+\end{itemize}
+
+Considere $m$ conhecidos pontos de controle $\boldsymbol{s}=\{s_1, s_2, \ldots, s_m\}$ e outros $n$ pontos com posição final desconhecidas $\boldsymbol{v}=\{v_1, v_2, \ldots, v_n\}$ de uma superfície $\mathcal{S}$, sendo conhecida a posição deformada dos $m$ pontos $\boldsymbol{s'}=\{s'_1, s'_2, \ldots, s'_m\}$ em $\mathcal{S}'$, precisamos definir uma função $\boldsymbol{d}\to R^3$ que interpole exatamente os $m$ pontos $\boldsymbol{d}(s_i)=(s'_i-s_i)$ e que interpole, garantindo a solução estacionária da função Lagrangeana, os $n$ pontos desconhecidos.
+
+Uma RBF é representada pela combinação linear de kernels radialmente simétricos $\varphi_j(\boldsymbol{x})=\lVert\boldsymbol{x}_j-\boldsymbol{x}\rVert$ localizados nos centros $\boldsymbol{x}_j\subset R^3$ ponderados por funções peso $\boldsymbol{w}_j\subset R^3$ somada a um polinômio de baixo grau (cuja base é $\pi(\boldsymbol{x})=\{x,y,z,1\}$ e ponderado por $\boldsymbol{\lambda}_k\subset R^3$) para garantir precisão polinomial:
+
+\begin{align}
+  &\boldsymbol{d}(x)=\sum_{j=1}^m \boldsymbol{w}_j\varphi_j(\boldsymbol{x})+\sum_{k=1}^4 \boldsymbol{\lambda}_k\pi_k(\boldsymbol{x})\label{eq-surf-rbf}
+\end{align}
+
+De volta ao início do problema, o interesse é solucionar a PDE tri-harmônica $\Delta^3\boldsymbol{d}(x)=0$, para isso é preciso escolher uma função kernel que seja solução fundamental dessa equação. Foi mostrado por Botsch\cite{Botsch} que $\varphi(r)=r^3$ é uma solução fundamental que leva para uma superfície de variação mínima. Para solução baseada em superfície, essa minimização deve ser obtida de forma explícita. Os coeficientes $\boldsymbol{w}_j$ e $\boldsymbol{\lambda}_k$ são obtidos com a solução de um sistema linear (Eq.~\ref{eq-ls-surf-deformer}) de equações $(m+4)\times(m+4)$ desde que se satisfaça a interpolação dos $m$ pontos de controle com as restrições impostas nas posições $x_j=s_j$.\cite{Muller}
+
+\begin{align}
+  \begin{bmatrix}
+    \varphi_1(s_1) & \cdots & \varphi_m(s_1) & \pi_1(s_1) & \cdots & \pi_4(s_1)\\ 
+    \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+    \varphi_1(s_m) & \cdots & \varphi_m(s_m) & \pi_1(s_m) & \cdots & \pi_4(s_m)\\ 
+    \pi_1(s_1) & \cdots & \pi_1(s_m) & 0 & \cdots & 0\\
+    \vdots & \ddots & \vdots & \vdots & \ddots & \vdots\\
+    \pi_4(s_1) & \cdots & \pi_4(s_m) & 0 & \cdots & 0
+  \end{bmatrix}
+  \begin{Bmatrix}
+    w_1^T\\
+    \vdots\\
+    w_m^T\\
+    \lambda_1^T\\
+    \vdots\\
+    \lambda_4^T
+  \end{Bmatrix}=
+  \begin{Bmatrix}
+    (s'_1-s_1)^T\\
+    \vdots\\
+    (s'_m-s_m)^T\\
+    0\\
+    \vdots\\
+    0
+  \end{Bmatrix}\label{eq-ls-surf-deformer}
+\end{align}
+
+Depois de resolver o sistema de equações e conseguir os coeficientes de ponderação, os $n$ pontos desconhecidos podem ser obtidos com $v'_i=v_i+\boldsymbol{d}(v_i)$.
+
+A fim de demonstrar as diferenças para diferentes tipos de energias para a função Lagrangeana na deformação de uma superfície, é apresentado o exemplo a seguir, Figura~\ref{fig-eg-surf-deformer-1}. Uma superfície quadrada e plana de comprimento $L=20m$,com seu contorno deformado da seguinte forma: topo e base segundo uma função senoidal $z_{y(0,L)}=\frac{L}{2}\sin(\frac{\pi x}{L})$ e laterais fixas. Os resultados obtidos levaram em consideração as Lagrangeanas de segunda ordem $\Delta\boldsymbol{d}=0$, quarta ordem $\Delta^2\boldsymbol{d}=0$ e sexta ordem $\Delta^3\boldsymbol{d}=0$.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=200pt]{images/fig-eg-surf-deformer-1}
+    \caption{Configuração inicial da superfície a ser deformada.}\label{fig-eg-surf-deformer-1}
+  \end{center}
+\end{figure}
+
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-eg-surf-deformer-2}
+    \caption{Configuração deformada da superfície segundo as Lagrangeanas de 2ª ordem (a,d), 4ª ordem (b,e) e 6ª ordem (c, f).}\label{fig-eg-surf-deformer-2}
+  \end{center}
+\end{figure}
 
 \subsection{Preparação dos dados}
 
