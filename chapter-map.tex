@@ -82,7 +82,7 @@ A Figura~\ref{fig-lm-topo} mostra a identificação dos pontos em uma parte de l
 
 As linhas de mapeamento têm também casos de usos mais especializados dentro do Sistema Recon, como na criação e representação de poços. Poços são criados semelhantemente às linhas ou por importação de modelos com poços em 3D. Possuem característica de serem linhas quase verticalizadas e possuem uma finalidade mais limitada. Nos casos de poços 3D, a linha correspondente ao poço é apenas uma projeção do objeto tridimensional no plano da seção.
 
-Há o uso nas chamadas linhas de interseção (\textit{CrossLine}) que servem para identificar e mapear as linhas de cruzamento entre seções no espaço tridimensional do multi-seções, com isso é possível ter uma noção do que ocorre com seções transversais mesmo estando no domínio bidimensional da restauração.
+Há o uso nas chamadas linhas de interseção (\textit{CrossLine}) que servem para identificar e mapear as linhas de cruzamento entre seções no espaço tridimensional do multisseções, com isso é possível ter uma noção do que ocorre com seções transversais mesmo estando no domínio bidimensional da restauração.
 
 Por último, foi criada a \textit{linha de mapeamento do modelo} ou \textit{LMModel}, cujo objetivo é servir como um mapeamento das linhas que representam os elementos geológicas ao longo da restauração do modelo. Assim, é possível ter um acompanhamento do que ocorre com as entidades geológicas na seção, além de poder verificar como se deu a movimentação de cada ponto de horizonte, falha ou topo de sal ao longo da restauração.
 
@@ -99,11 +99,34 @@ Conforme o elemento geológico base, há um tipo de \textit{LMModel} e informaç
   \item Topo de sal: apenas uma referência direta à linha original.
 \end{itemize}
 
-Todas essas informações  geológicas atreladas ao mapeamento topológico das \textit{LMModels}, quando em conjunto com as diversas seções geológicas de um modelo multi-seções, são o que fazem dela o principal dado para a realização de um mapeamento de informações de evolução do modelo tridimensional ao longo do tempo, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
+Todas essas informações  geológicas atreladas ao mapeamento topológico das \textit{LMModels}, quando em conjunto com as diversas seções geológicas de um modelo multisseções, são o que fazem dela o principal dado para a realização de um mapeamento de informações de evolução do modelo tridimensional ao longo do tempo, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
 
-A maneira de trabalhar com \textit{LMModels} é com a organização delas em estruturas de dados que formam subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte). Com isso é obtido o conjunto de informações que representam a restauração das seções no Sistema Recon.
+A maneira de trabalhar com \textit{LMModels} é com a organização delas em estruturas de dados que formam subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte), o que será visto adiante. Com isso é obtido o conjunto de informações que representam a restauração das seções no Sistema Recon.
 
-% Incluir exemplo de uma seção sem e com lmmodels
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-lmmodel-example}
+    \caption{\textit{LMModels} em uma seção geológica no Sistema Recon}\label{fig-lmmodel-example}
+  \end{center}
+\end{figure}
+
+A Figura~\ref{fig-lmmodel-example} mostra \textit{LMModels} de dois horizontes diferentes. A representação delas dentro do Sistema Recon é feita com uma linha de maior espessura que as linhas de horizonte, no entanto, os pontos são os mesmos do contorno da malha. Perceba na Figura~\ref{fig-lmmodel-mesh-diff} a diferença entre a linha de horizonte e a \textit{LMModel}, evidenciando o contorno da malha entre as duas regiões.
+
+\begin{figure} [h!]
+  \begin{center}
+    \includegraphics[width=275pt]{images/fig-lmmodel-mesh-diff}
+    \caption{Diferença entre \textit{LMModel} e a linha de horizonte e uma seção geológica no Sistema Recon}\label{fig-lmmodel-mesh-diff}
+  \end{center}
+\end{figure}
+
+A próxima ilustração na Figura~\ref{fig-lmmodel-ms} apresenta as \textit{LMModels} de dois horizontes em um modelo multisseções. É esse conjunto de informações no ambiente tridimensional que será usado como parâmetro para o mapeamento de superfícies no Sistema Recon.
+
+\begin{figure} [h!]
+  \begin{center}
+    \includegraphics[width=300pt]{images/fig-lmmodel-ms}
+    \caption{\textit{LMModels} no ambiente multisseções do Sistema Recon}\label{fig-lmmodel-ms}
+  \end{center}
+\end{figure}
 
 \section{Mapeamento de superfícies}
 
@@ -173,7 +196,7 @@ A fim de demonstrar as diferenças para diferentes tipos de energias para a fun�
 \end{figure}
 
 
-\begin{figure} [h!]
+\begin{figure} [h]
   \begin{center}
     \includegraphics[width=\textwidth]{images/fig-eg-surf-deformer-2}
     \caption{Configuração deformada da superfície segundo as Lagrangeanas de 2ª ordem (a,d), 4ª ordem (b,e) e 6ª ordem (c, f). As figuras (a, b e c) representam os resultados na direção $z$, escala em metros.\cite{Muller}}\label{fig-eg-surf-deformer-2}
@@ -184,7 +207,7 @@ A Figura~\ref{fig-eg-surf-deformer-2} deixa clara as diferenças na deformação
 
 O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de deslocamentos em $z$ sobre o segmento $\overline{AB}$ da Figura~\ref{fig-eg-surf-deformer-1} para cada um dos tipos de deformação obtida. Repare o quão pouco de movimentação ocorreu para aquela com função tri-harmônica em relação às demais.
 
-\begin{figure} [h!]
+\begin{figure} [h]
   \begin{center}
     \includegraphics[width=250pt]{images/fig-eg-surf-deformer-3}
     \caption{Coordenada $z$ sobre o segmento $\overline{AB}$.\cite{Muller}}\label{fig-eg-surf-deformer-3}
