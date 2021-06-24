@@ -188,7 +188,7 @@ Depois de resolver o sistema de equações e conseguir os coeficientes de ponder
 
 A fim de demonstrar as diferenças para diferentes tipos de energias para a função Lagrangeana na deformação de uma superfície, é apresentado o exemplo a seguir, Figura~\ref{fig-eg-surf-deformer-1}. Uma superfície quadrada e plana de comprimento $L=20m$,com seu contorno deformado da seguinte forma: topo e base segundo uma função senoidal $z_{y(0,L)}=\frac{L}{2}\sin(\frac{\pi x}{L})$ e laterais fixas. Os resultados obtidos levaram em consideração as Lagrangeanas de segunda ordem $\Delta\boldsymbol{d}=0$, quarta ordem $\Delta^2\boldsymbol{d}=0$ e sexta ordem $\Delta^3\boldsymbol{d}=0$.
 
-\begin{figure} [h]
+\begin{figure} [H]
   \begin{center}
     \includegraphics[width=200pt]{images/fig-eg-surf-deformer-1}
     \caption{Configuração inicial da superfície a ser deformada.\cite{Muller}}\label{fig-eg-surf-deformer-1}
@@ -196,7 +196,7 @@ A fim de demonstrar as diferenças para diferentes tipos de energias para a fun�
 \end{figure}
 
 
-\begin{figure} [h]
+\begin{figure} [H]
   \begin{center}
     \includegraphics[width=\textwidth]{images/fig-eg-surf-deformer-2}
     \caption{Configuração deformada da superfície segundo as Lagrangeanas de 2ª ordem (a,d), 4ª ordem (b,e) e 6ª ordem (c, f). As figuras (a, b e c) representam os resultados na direção $z$, escala em metros.\cite{Muller}}\label{fig-eg-surf-deformer-2}
@@ -205,9 +205,9 @@ A fim de demonstrar as diferenças para diferentes tipos de energias para a fun�
 
 A Figura~\ref{fig-eg-surf-deformer-2} deixa clara as diferenças na deformação da superfície conforme a energia minimizada. De modo específico para a deformação de superfícies geológicas onde há um viés físico atrelado, a solução que minimiza a energia de mínima variação e que, portanto, resulta na mínima variação da curvatura é a que melhor se adequa ao comportamento previsto para este tipo de simulação.
 
-O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de deslocamentos em $z$ sobre o segmento $\overline{AB}$ da Figura~\ref{fig-eg-surf-deformer-1} para cada um dos tipos de deformação obtida. Repare o quão pouco de movimentação ocorreu para aquela com função tri-harmônica em relação às demais.
+O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de deslocamentos em $z$ sobre o segmento $\overline{AB}$ da Figura~\ref{fig-eg-surf-deformer-1} para cada um dos tipos de deformação obtida.
 
-\begin{figure} [h]
+\begin{figure} [H]
   \begin{center}
     \includegraphics[width=250pt]{images/fig-eg-surf-deformer-3}
     \caption{Coordenada $z$ sobre o segmento $\overline{AB}$.\cite{Muller}}\label{fig-eg-surf-deformer-3}
@@ -221,9 +221,35 @@ O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de de
 % Modelo precisa estar dividido em etapas
 % As superfícies precisam estar com as lmmodels na malha
  
-A metodologia mostrada anteriormente é capaz de realizar a deformação de superfície mediante conhecimento da posição inicial da mesma e também de informação de movimentação de pontos de controle, pontos estes que devem fazer parte do domínio da superfície. Desse modo, no contexto de restauração de seções no Sistema Recon, o mapeamento de superfície é obtido com a deformação desta superfície de acordo com parâmetros provenientes das seções, em outras palavras, o mapeamento de superfície usa dados das seções como pontos de controle para se conseguir um comportamento equivalente no ambiente tridimensional.
+A metodologia mostrada anteriormente é capaz de realizar a deformação de superfície mediante conhecimento da posição inicial da mesma e também de informação de movimentação de pontos de controle, pontos estes que devem fazer parte do domínio da superfície. Desse modo, no contexto de restauração de seções no Sistema Recon, o mapeamento de superfície é obtido com a deformação desta superfície de acordo com parâmetros provenientes das seções, em outras palavras, o mapeamento de superfície usa dados das seções como pontos de controle para se conseguir um comportamento equivalente no ambiente tridimensional. Essa é forma sucinta de dizer a maneira como o o mapeamento de superfície é feito. Nesta subseção serão apresentadas as etapas que permitem o uso do deformador de superfícies com o intuito de se obter o mapeamento de superfícies.
 
-C
+\subsubsection{\textit{LMModels}}
+
+Como já visto, as \textit{LMModels} são linhas de mapeamento da seção baseadas em entidades geológicas. Estas linhas acompanham a movimentação tectônica na seção durante a restauração. Para esta etapa do trabalho, considerar-se-á apenas as \textit{LMModels} de horizonte, ou seja, aquelas que tem como origem uma linha de horizonte, como as mostradas na Figura~\ref{fig-lmm-horizons}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-lmmodel-example}
+    \caption{\textit{LMModels} de horizonte no Sistema Recon}\label{fig-lmm-horizons}
+  \end{center}
+\end{figure}
+
+A movimentação tectônica da seção pode ser mensurada como uma diferença entre uma e outra etapa de restauração, mais especificamente, a distância entre os pontos de \textit{LMModels} correspondentes entre a etapa atual e a próxima.
+
+A \textit{LMModel} em si não possui pontos geométricos, ela armazena apenas os índices dos nós do contorno da malha na extensão correspondente a uma linha de horizonte (Figura~\ref{fig-lmm-mesh-boundary}), dessa forma, entre um cenário e outro da mesma seção, pode ocorrer uma edição na malha que pode alterar os nós do contorno e assim alterando o conjunto de índices que formam a \textit{LMModel}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-lmm-mesh-boundary}
+    \caption{Índices de nós que compõem uma parte de \textit{LMModels}}\label{fig-lmm-mesh-boundary}
+  \end{center}
+\end{figure}
+
+Para que se faça uma relação direta de deslocamento entre pontos de uma \textit{LMModel} em um e outro cenário é necessário que se faça uma interpolação entre as malhas envolvidas. Esta ação serve para assegurar que se tenha um mesmo número de pontos formando a \textit{LMModel} correspondente ao longo da restauração de uma seção.
+
+Convencionou-se
+
+
 
 
 
