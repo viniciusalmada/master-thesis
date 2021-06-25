@@ -225,6 +225,8 @@ A metodologia mostrada anteriormente é capaz de realizar a deformação de supe
 
 \subsubsection{\textit{LMModels}}
 
+O objetivo aqui é mostrar como obter informação de deslocamento dos horizontes entre etapas de restauração de uma seção a partir de \textit{LMModels}. Esse deslocamento é o dado principal vindo das seções para o mapeamento de superfície, o deslocamento de pontos de horizonte; horizontes estes que coincidem com a superfície tridimensional, uma vez que as seções geológicas são cortes transversais planos de um conjunto de superfícies tridimensionais.
+
 Como já visto, as \textit{LMModels} são linhas de mapeamento da seção baseadas em entidades geológicas. Estas linhas acompanham a movimentação tectônica na seção durante a restauração. Para esta etapa do trabalho, considerar-se-á apenas as \textit{LMModels} de horizonte, ou seja, aquelas que tem como origem uma linha de horizonte, como as mostradas na Figura~\ref{fig-lmm-horizons}.
 
 \begin{figure} [H]
@@ -240,17 +242,51 @@ A \textit{LMModel} em si não possui pontos geométricos, ela armazena apenas os
 
 \begin{figure} [H]
   \begin{center}
-    \includegraphics[width=350pt]{images/fig-lmm-mesh-boundary}
-    \caption{Índices de nós que compõem uma parte de \textit{LMModels}}\label{fig-lmm-mesh-boundary}
+    \includegraphics[width=310pt]{images/fig-lmm-mesh-boundary}
+    \caption{Índices de nós que compõem uma parte de \textit{LMModels}.}\label{fig-lmm-mesh-boundary}
   \end{center}
 \end{figure}
 
 Para que se faça uma relação direta de deslocamento entre pontos de uma \textit{LMModel} em um e outro cenário é necessário que se faça uma interpolação entre as malhas envolvidas. Esta ação serve para assegurar que se tenha um mesmo número de pontos formando a \textit{LMModel} correspondente ao longo da restauração de uma seção.
 
-Convencionou-se
+Para exemplificar melhor este problema, considere a seção geológica da Figura~\ref{fig-lmm-interp1} (a) que destaca os pontos que formam a \textit{LMModel} do horizonte A (do topo). Considera-se que na etapa seguinte (cenário 2), houve uma transformação e uma edição na malha, com isso a \textit{LMModel} correspondente teve diminuição no número de pontos, como mostra a Figura~\ref{fig-lmm-interp1} (b).
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=300pt]{images/fig-lmm-interp1}
+    \caption{\textit{LMModel} no cenário origem e cenário 2 com diferente número de pontos.}\label{fig-lmm-interp1}
+  \end{center}
+\end{figure}
+
+Para que seja feito o cálculo de deslocamento entre as \textit{LMModels} destes cenários é necessário uma interpolação entre as malhas, como já dito. Essa interpolação vai dizer quais os pontos da \textit{LMModel} do cenário origem correspondem no cenário 2 e assim ter dados para encontrar informações de deslocamento de uma etapa a outra.
+
+Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} tomará como base para interpolação aquela criada no cenário origem, já que é um cenário mais restrito para edições após o início da restauração, além de um outro motivo que será apresentado adiante. Um esquema mais explicativo é visto na Figura~\ref{fig-lmm-interp2}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-lmm-interp2}
+    \caption{Esquema de como obter número igual de pontos de \textit{LMModels} em diferentes cenários}\label{fig-lmm-interp2}
+  \end{center}
+\end{figure}
+
+Ao se repetir esta ação para todas as seções que compõem o modelo, é possível criar uma estrutura de dados multidimensional com todos os pontos geométricos que formam as \textit{LMModels} a fim de facilitar o uso dessas informações. De maneira sucinta esta estrutura é apresentada na Figura~\ref{fig-lmm-data-structure} como sendo uma matriz de 3 dimensões e cada entrada é um conjunto de dois pontos cartesianos\footnote{os pontos nas malhas da seção estão em coordenadas bidimensionais, no entanto, ao criar esta estrutura de dados, todos os pontos são convertidos para coordenadas espaciais \textit{x}, \textit{y} e \textit{z} com base nas coordenadas UTM onde a seção se localiza.} e um dado booleano que indica se houve movimentação quando a diferença entre os pontos \textit{current} e \textit{next} é maior que uma dada tolerância.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-lmm-data-structure}
+    \caption{Estrutura de dados que armazena os pontos das \textit{LMModels} do modelo.}\label{fig-lmm-data-structure}
+  \end{center}
+\end{figure}
+
+Outra informação importante é que deve se ter o modelo já com todas as seções restauradas, uma vez que qualquer edição posterior nas seções, acarretará na necessidade de recriar a estrutura de dados de \textit{LMModels}.
+
+\subsubsection{\textit{Remesh} da superfíce}
 
 
 
+\subsubsection{Coleta bordas origem/destino}
+
+\subsubsection{Definição de movimentação das amostras}
 
 
 \subsection{Exemplos e resultados}
