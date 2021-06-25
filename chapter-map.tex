@@ -288,9 +288,26 @@ A interseção de um plano transversal a um conjunto de superfícies geológicas
 
 Com a finalidade de resolver esse problema é apresentado nesta subseção a necessidade de um \textit{remesh} (regeração) da malha que forma a superfície, cujo objetivo é produzir uma nova que contenha os pontos que formam as \textit{LMModels} das seções geológicas.
 
-O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malhas de superfícies considerando curvaturas proposto por Miranda \textit{et al.}\cite{Miranda}.
+O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malhas de superfícies considerando curvaturas proposto por Miranda \textit{et al.}\cite{Miranda}. Os dados de entrada são as linhas de borda da superfície e uma superfície de suporte representada por três funções generalizadas, criadas a partir da superfície de suporte:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item 1ª função: recebe um ponto da superfície como entrada e devolve o tamanho característico da aresta de um triângulo equilátero ideal na posição desse ponto. O cálculo desse tamanho envolve o uso de uma estrutura de dados \textit{octree}\footnote{Uma estrutura de árvore onde cada nó pode possuir oito filhos e representa a subdivisão do espaço em oito octantes\cite{Donald}.} que fornece um refinamento de tamanho de acordo com a curvatura da superfície.
+  \item 2ª função: calcula o ponto ideal que irá formar um novo triângulo de acordo com uma dada aresta no processo de contração de contorno de geração da malha. Além da aresta, são passados a função a altura do triângulo e um vetor unitário na direção perpendicular à aresta que será usado para definir o plano de interseção com a superfície e assim encontrar o ponto ideal.
+  \item 3ª função: usada para melhoria na malha após a suavização. Recebe um ponto qualquer e retorna o ponto mais próximo pertencente à malha da superfície de suporte. Com a suavização, alguns nós mudam de lugar e podem acabar fora da superfície, aí entra o uso desta função para trazer de volta os pontos distantes. 
+\end{itemize}
+
+O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª funções para determinar a primeira versão da nova malha. Após isso começa a etapa de melhoria com suavização e em paralelo, o uso da 3ª função\cite{Miranda}. O resultado final é uma malha com elementos melhor discretizados em regiões de alta curvatura, como mostra a Figura~\ref{fig-remesh} onde as imagens (a) e (b) são as superfícies de suporte e as imagens (c) e (d) suas versões regeradas, respectivamente.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-remesh}
+    \caption{Exemplo de resultado obtido com algoritmo de \textit{remesh}\cite{Miranda}.}\label{fig-remesh}
+  \end{center}
+\end{figure}
 
 \subsubsection{Coleta bordas origem/destino}
+
 
 \subsubsection{Definição de movimentação das amostras}
 
