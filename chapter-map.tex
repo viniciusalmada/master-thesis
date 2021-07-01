@@ -278,7 +278,7 @@ Ao se repetir esta ação para todas as seções que compõem o modelo, é poss�
   \end{center}
 \end{figure}
 
-Outra informação importante é que deve se ter o modelo já com todas as seções restauradas, uma vez que qualquer edição posterior nas seções, acarretará na necessidade de recriar a estrutura de dados de \textit{LMModels}.
+Importante ressaltar que é preciso ter o modelo já com todas as seções restauradas, uma vez que qualquer edição posterior nas seções, acarretará na necessidade de recriar a estrutura de dados de \textit{LMModels}.
 
 \subsubsection{\textit{Remesh} da superfície}
 
@@ -288,7 +288,9 @@ A interseção de um plano transversal a um conjunto de superfícies geológicas
 
 Com a finalidade de resolver esse problema é apresentado nesta subseção a necessidade de um \textit{remesh} (regeração) da malha que forma a superfície, cujo objetivo é produzir uma nova que contenha os pontos que formam as \textit{LMModels} das seções geológicas.
 
-O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malhas de superfícies considerando curvaturas proposto por Miranda \textit{et al.}\cite{Miranda}. Os dados de entrada são as linhas de borda da superfície e uma superfície de suporte representada por três funções generalizadas, criadas a partir da superfície de suporte:
+O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malhas de superfícies considerando curvaturas proposto por Miranda \textit{et al.}\cite{Miranda}. Os dados de entrada são as linhas de borda da superfície, uma malha de suporte representada por três funções generalizadas, criadas a partir da malha de suporte e um conjunto de pontos de restrição no domínio da superfície que, após o \textit{remesh} deverão fazer parte da malha.
+
+As funções generalizadas são a maneira como a malha de suporte é representada e são apresentadas a seguir, de forma sucinta:
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
@@ -297,7 +299,7 @@ O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malha
   \item 3ª função: usada para melhoria na malha após a suavização. Recebe um ponto qualquer e retorna o ponto mais próximo pertencente à malha da superfície de suporte. Com a suavização, alguns nós mudam de lugar e podem acabar fora da superfície, aí entra o uso desta função para trazer de volta os pontos distantes. 
 \end{itemize}
 
-O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª funções para determinar a primeira versão da nova malha. Após isso começa a etapa de melhoria com suavização e em paralelo, o uso da 3ª função\cite{Miranda}. O resultado final é uma malha com elementos melhor discretizados em regiões de alta curvatura, como mostra a Figura~\ref{fig-remesh} onde as imagens (a) e (b) são as superfícies de suporte e as imagens (c) e (d) suas versões regeradas, respectivamente.
+O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª funções para determinar a primeira versão da nova malha. Após isso começa a etapa de melhoria com suavização e em paralelo, o uso da 3ª função\cite{Miranda}. O resultado final é uma malha com mais elementos em regiões de alta curvatura, como mostra a Figura~\ref{fig-remesh} onde as imagens (a) e (b) são as superfícies de suporte e as imagens (c) e (d) suas versões regeradas, respectivamente.
 
 \begin{figure} [H]
   \begin{center}
@@ -306,10 +308,85 @@ O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª
   \end{center}
 \end{figure}
 
+Os pontos de restrição usados para a regeração da malha de superfície são as \textit{LMModels} da seção, portanto, passam a ser os pontos de controle da superfície geológica. Uma vez que os pontos que formam as \textit{LMModels} são todos iguais em número, pois tomam o cenário origem da \textit{EtapaMS} inicial e são interpolações com os cenários seguintes, o \textit{remesh} pode ser feito nesta \textit{EtapaMS} inicial e essa malha ser mantido para todo o restante do processo.
+
+De uma \textit{EtapaMS} à outra, com as \textit{LMModels}, é possível ter o deslocamento das linhas de horizontes, por exemplo. Sendo os pontos das \textit{LMModels} nós da malha da superfície, esses nós passam a ter informação de posição final definida. Sendo assim, já seria possível realizar a deformação da superfície conforme metodologia já apresentada, pois o principal requisito está satisfeito. No entanto, se tratando do mapeamento de uma superfície que, num modelo geológico de multisseções, precisa estar coerente com o que ocorre nas seções, mais algumas restrições precisam ser impostas que serão vistas nas subseções a seguir.
+
 \subsubsection{Coleta bordas origem/destino}
+
+Na restauração de seções um dos principais objetivos é a eliminação do rejeito de falha, principalmente se tratando de modelos de tectônica distensiva onde há a presença de blocos divididos por essas falhas\cite{Santi}. Nestes modelos, geralmente se quer movimentar um bloco sobre uma linha de falha até um certo ponto de modo que a camada do topo esteja alinhada com a sua correspondente no bloco vizinho, como na Figura~\ref{fig-section-horizon-restored}, onde é mostrada uma seção com um horizonte restaurado com o uso da transformação \quotes{move sobre falha}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-section-horizon-restored}
+    \caption{Restauração de horizonte em uma seção geológica através de uma transformação.}\label{fig-section-horizon-restored}
+  \end{center}
+\end{figure}
+
+Esta ação de movimentar uma porção da seção até um certo limite é um comportamento necessário no mapeamento de superfícies, isto é, o mapeamento de superfícies precisa respeitar um limite de movimentação análogo àquele adotado na seção.
+
+Em geral, no uso do Sistema Recon, uma \textit{EtapaMS} representa um marco geológico ocorrido em todas as seções do modelo simultaneamente. O que para este trabalho convencionou-se que seja uma restauração do rejeito de uma falha ou uma descompactação de topo restaurado. Logo, para o mapeamento de superfícies, é necessário que cada \textit{EtapaMS} represente a restauração de uma falha (ou descompactação) ocorrida ao mesmo tempo em todas seções onde tal falha atravesse. Pois como as seções, as superfícies de horizontes também estão com as falhas cruzando seu domínio, como a Figura~\ref{fig-surfaces-horizon-faults} mostra.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=310pt]{images/fig-surfaces-horizon-faults}
+    \caption{Vista 3D de uma superfície de horizonte atravessada por várias superfícies de falhas.}\label{fig-surfaces-horizon-faults}
+  \end{center}
+\end{figure}
+
+Desse modo, no mapeamento de superfícies, analogamente à movimentação de bloco ocorrida nas seções ao longo de uma linha de falha, é necessário indicar quais bordas da superfície de horizonte serão marcadas como limites de movimentação ou bordas de origem e destino, uma vez que um trecho de borda irá de encontro a outro na região de falha. Essa indicação servirá ainda para auxiliar na definição da direção de movimentação na deformação da superfície.
+
+Este mapeamento de superfície é feito passo a passo conforme o número de \textit{EtapasMS} do modelo. Com a \textit{EtapaMS} vem a informação de qual falha está sendo restaurada\footnote{Para o caso de descompactação, a etapa de selecionar bordas não é necessária.}, daí então é necessário selecionar e marcar as bordas da superfície na região da falha para assim guiar a direção e o limite de movimentação durante a deformação da mesma.
+
+O processo em mais detalhes pode ser explicado com o auxílio do exemplo abaixo de um modelo geológico simplificado, na Figura~\ref{fig-select-borders-1}, onde há uma superfície de horizonte, uma falha, 3 seções transversais e cuja \textit{EtapaMS} corrente é a de restauração dessa falha.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-select-borders-1}
+    \caption{Modelo geológico tridimensional simplificado.}\label{fig-select-borders-1}
+  \end{center}
+\end{figure}
+
+Neste caso, tal qual ocorre nas seções, o pedaço de superfície de horizonte à direita na imagem é quem deve se movimentar e ir de encontro à parte que está do lado esquerdo. Logo, o pedaço à direita possui a borda de origem e o da esquerda, a borda de destino, como bem mostra a Figura~\ref{fig-select-borders-2}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=300pt]{images/fig-select-borders-2}
+    \caption{Indicação da localização das curvas origem e destino}\label{fig-select-borders-2}
+  \end{center}
+\end{figure}
+
+A partir dessa marcação, que na prática ocorre nos pontos do contorno da malha da superfície, são calculados os vetores direção de cada ponto da borda de origem que deverão se deslocar até interceptar a linha poligonal formada pelos pontos da curva de destino. Esse algoritmo, se baseia na direção das seções no plano \textit{xy}, como numa vista de mapa. Perceba que nesse exemplo (Figura~\ref{fig-select-borders-3}) a seção do meio (seção S2) está inclinada em relação às outras seções que são paralelas entre si, sob essa vista.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-select-borders-3}
+    \caption{Vista de mapa do modelo para evidenciar a direção das seções.}\label{fig-select-borders-3}
+  \end{center}
+\end{figure}
+
+A fim de dar mais detalhes sobre como o algoritmo de cálculo das direções funciona, considere a ilustração a seguir (Figura~\ref{fig-select-borders-4}) com base nas seções e nas bordas de origem e destino desprezando o eixo \textit{z}:
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=370pt]{images/fig-select-borders-4}
+    \caption{Procedimento para cálculo da direção dos pontos da borda de origem para a borda de destino.}\label{fig-select-borders-4}
+  \end{center}
+\end{figure}
 
 
 \subsubsection{Definição de movimentação das amostras}
+
+Outra característica presente na restauração de seções com falhas distensivas é que, conforme a metodologia de restauração, o bloco alto permanece parado enquanto o bloco baixo se movimenta deslizando-se pela linha de falha (Figura~\ref{fig-hang-foot-wall}).
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=300pt]{images/fig-hang-foot-wall}
+    \caption{Movimentação do bloco baixo sobre o bloco alto.\cite{Santi}}\label{fig-hang-foot-wall}
+  \end{center}
+\end{figure}
+
+Este é mais um comportamento necessário para se fazer o mapeamento de superfícies, mais precisamente a indicação de quais partes da malha da superfície irá sofrer deformação e 
 
 
 \subsection{Exemplos e resultados}
