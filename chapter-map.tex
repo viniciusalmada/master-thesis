@@ -312,7 +312,7 @@ Os pontos de restrição usados para a regeração da malha de superfície são 
 
 De uma \textit{EtapaMS} à outra, com as \textit{LMModels}, é possível ter o deslocamento das linhas de horizontes, por exemplo. Sendo os pontos das \textit{LMModels} nós da malha da superfície, esses nós passam a ter informação de posição final definida. Sendo assim, já seria possível realizar a deformação da superfície conforme metodologia já apresentada, pois o principal requisito está satisfeito. No entanto, se tratando do mapeamento de uma superfície que, num modelo geológico de multisseções, precisa estar coerente com o que ocorre nas seções, mais algumas restrições precisam ser impostas que serão vistas nas subseções a seguir.
 
-\subsubsection{Coleta bordas origem/destino}
+\subsubsection{Definição das bordas origem/destino}
 
 Na restauração de seções um dos principais objetivos é a eliminação do rejeito de falha, principalmente se tratando de modelos de tectônica distensiva onde há a presença de blocos divididos por essas falhas\cite{Santi}. Nestes modelos, geralmente se quer movimentar um bloco sobre uma linha de falha até um certo ponto de modo que a camada do topo esteja alinhada com a sua correspondente no bloco vizinho, como na Figura~\ref{fig-section-horizon-restored}, onde é mostrada uma seção com um horizonte restaurado com o uso da transformação \quotes{move sobre falha}.
 
@@ -374,6 +374,11 @@ A fim de dar mais detalhes sobre como o algoritmo de cálculo das direções fun
   \end{center}
 \end{figure}
 
+Em (a) estão representadas as bordas origem e destino e também as seções geológicas que cortam essas bordas. O primeira parte (b) consiste em calcular o vetor unitário que tem a mesma inclinação das seções, isso é feito com dados dos pontos de interseção da seção com as superfícies de falha na região das borda. Com as direções das seções definidas, agora se inicia o cálculo da direção dos pontos da superfície na borda de origem (c), cada ponto à esquerda da primeira seção recebe a mesma direção desta. Para pontos de borda que estão entre seções (d), a direção é calculada como uma combinação linear das direções das seções vizinhas, com base na distância do ponto até a interseção destas seções com a borda de origem. Prossegue-se com o cálculo de todas as direções dos pontos de borda (e) e assim como nos pontos à esquerda da primeira seção, os pontos que estão logo ao lado direito da última seção recebem a direção desta. Por último, em (f) são calculados os pontos de destino dos pontos da borda de origem, com o vetor direção, é traçado uma reta até interceptar (ou não) a poligonal formada pela borda de destino, caso haja a interseção, esse ponto é salvo como destino do ponto da borda de origem.
+
+E assim como os pontos das \textit{LMModels}, cada ponto da borda de origem que encontrar um correspondente na borda de destino da superfície passa a ser um ponto de controle, pois possui uma posição final definida, que irá auxiliar na deformação da superfície ao ser executado o mapeamento.
+
+Importante salientar que a definição das bordas origem e destino só é requerida para a superfície que está no topo do modelo pois a restrição na movimentação se baseia em unir partes do horizonte do topo, assim como ocorre nas seções.
 
 \subsubsection{Definição de movimentação das amostras}
 
@@ -386,10 +391,90 @@ Outra característica presente na restauração de seções com falhas distensiv
   \end{center}
 \end{figure}
 
-Este é mais um comportamento necessário para se fazer o mapeamento de superfícies, mais precisamente a indicação de quais partes da malha da superfície irá sofrer deformação e 
+Este é um caso comum que ocorre no processo de restauração, onde quase sempre uma parte da seção se movimenta em relação a uma parte que fica imóvel. E assim como discutido na subseção anterior, este comportamento também precisa ser levado para o mapeamento de superfície a fim de manter a coerência no ambiente tridimensional, uma vez que tudo trata-se do mesmo modelo.
 
+Na deformação da superfície, na definição do mapeamento da mesma, é preciso indicar, a cada etapa, quais pontos da superfície irão se movimentar e quais permanecerão imóveis. De imediato, é correto afirmar que os pontos das \textit{LMModels} que possuem posição final diferente da posição inicial e também os pontos da borda de origem que têm um correspondente na borda de destino irão se movimentar; também se pode garantir que os pontos das \textit{LMModels} que não mudam de uma \textit{EtapaMS} para outra e os pontos da borda de destino ficarão imóveis.
+
+Todos estes pontos fazem parte da malha da superfície (após o \textit{remesh}) e são eles os primeiros a receber essa marcação de \quotes{move} ou \quotes{não move}. Para o restante dos pontos a marcação é feita com o auxílio de um algoritmo de \textit{breadth-first search} (BFS) ou busca em largura. Essa BFS roda sobre um grafo construído com base na malha da superfície. 
+
+Para criar esse grafo, ocorre uma iteração por todos as arestas da malha da superfície para coleta dos índices de seus dois vértices, $v_i$ e $v_j$. Cada vértice no grafo possui uma lista de outros vértices que são seus adjacentes. Na lista do primeiro vértice $v_i$ é adicionado o segundo vértice $v_j$. Assim, no grafo, cada nó possui uma lista de seus nós adjacentes.
+
+Com o grafo pronto é preciso identificar os primeiros a receberem uma marcação de \quotes{move} ou \quotes{não move}, sumarizando:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item todos os nós da borda de origem são marcados como \quotes{move};
+  \item todos os nós da borda de destino são marcados como \quotes{não move};
+  \item Os pontos das \textit{LMModels} (que são parte da superfície) são marcados como: \quotes{move} se o correspondente na próxima \textit{EtapaMS} estiver em outra posição e \quotes{não move}, caso contrário (não há deslocamento).
+\end{itemize}
+
+A BFS é um algoritmo que realiza uma busca a partir de todos os nós do primeiro nível, daí então vai para o segundo nível que são todo os nós vizinhos do primeiro e assim por diante\cite{Nilsson}, como mostrado na Figura~\ref{fig-bfs}, sempre visitando todos os nós do nível corrente antes de incrementar a posição na profundidade dos dados.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-bfs}
+    \caption{Busca em largura ou BFS.\cite{BFS}}\label{fig-bfs}
+  \end{center}
+\end{figure}
+
+Neste caso, o primeiro nível é formado por todos os pontos inicialmente marcados, seja com \quotes{move} ou \quotes{não move}, inicia-se então a iteração com a BFS onde cada nó visitado posteriormente recebe a mesma marcação do vizinho anterior. Este laço se repete até que todos os nós da superfície tenham sido visitados.
 
 \subsection{Exemplos e resultados}
+
+Neste momento serão apresentados alguns exemplos para demonstrar, na prática, o mapeamento de superfícies com base na restauração de seções que está aqui sendo discutido. Todo o processo foi feito em uma versão experimental do Sistema Recon onde os desenvolvimentos deste trabalho têm sido implementados.
+
+\subsubsection{Exemplo: modelo geológico simplificado}
+
+Como já apresentado na Figura~\ref{fig-select-borders-1}, este é um modelo produzido manualmente que serviu para a experimentação na fase inicial do desenvolvimento desta pesquisa. Ele, de forma mais completa, apresenta três seções paralelas, dois horizontes e uma falha (Figura~\ref{fig-example-1-1}). Também possui apenas uma etapa de restauração. 
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=400pt]{images/fig-example-1-1}
+    \caption{Vista tridimensional das (a) seções e (b) superfícies do modelo simplificado.}\label{fig-example-1-1}
+  \end{center}
+\end{figure}
+
+O modelo já se encontra com suas seções restauradas, com isso então pode-se começar com a criação das \textit{LMModels} e sua estrutura de dados com a forma apresentada na Figura~\ref{fig-lmm-data-structure}. A representação visual das \textit{LMModels} criadas pode ser vista na Figura~\ref{fig-example-1-2}.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-1-2}
+    \caption{Vista tridimensional das \textit{LMModels} nas \textit{EtapasMS} 1 e 2.}\label{fig-example-1-2}
+  \end{center}
+\end{figure}
+
+\textit{LMModels} criadas, é hora de realizar o \textit{remesh} das superfícies para adicionar os pontos das \textit{LMModels} como nós da malha. A Figura~\ref{fig-example-1-3} mostra as malhas das superfícies de horizonte da parte de cima do modelo, evidenciando ainda os pontos das \textit{LMModels} que agora deverão fazer parte da malha como a imagem à direita mostra.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-1-3}
+    \caption{Superfícies de horizonte antes e depois do \textit{remesh} para inclusão das \textit{LMModels} nas malhas.}\label{fig-example-1-3}
+  \end{center}
+\end{figure}
+
+Agora que o \textit{remesh} foi feito, pode partir para a definição das bordas origem e destino da superfície de horizonte do topo, que é são aquelas que deverão se unir ao fim da deformação aplicada à superfície. Na Figura~\ref{fig-example-1-4} é possível notar os nós da borda dos pedaços de superfície do topo, dentre esses nós estão marcados aqueles que formam o trecho de borda de destino e origem, também sinalizados na imagem.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-example-1-4}
+    \caption{Seleção das bordas de origem e destino do exemplo 1.}\label{fig-example-1-4}
+  \end{center}
+\end{figure}
+
+A etapa seguinte é então o cálculo das direções dos pontos de borda e também a definição dos pontos que se movem ou não da malha da superfície. Esses dois passos são feitos após a confirmação da escolha das bordas, de forma automática. Finalmente, é chamado o algoritmo do deformador de superfícies. A próxima imagem na Figura~\ref{fig-example-1-5} mostra as superfícies deformadas segundo a restauração das seções, à direita são vistos, em destaque, os pontos da superfície que foram marcados como \quotes{move}, em verde e \quotes{não move}, em vermelho.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-1-5}
+    \caption{Mapeamento de superfície do modelo de exemplo 1.}\label{fig-example-1-5}
+  \end{center}
+\end{figure}
+
+O deformador de superfícies é chamado uma vez para cada superfície do modelo, no entanto, apenas a superfície do topo possui um conjunto de pontos de controle na borda próxima à falha que está sendo restaurada, ficando assim, as superfícies mais velhas sendo deformadas apenas com base na restauração das seções através das \textit{LMModels}.
+
+\subsubsection{Exemplo: modelo geológico da bacia de Camamu}
+
+Este segundo exemplo utiliza um modelo geológico adaptado da bacia de Camamu\cite{Camamu}, com dois horizontes e sete falhas com suas respectivas superfícies. No modelo foram criadas e restauradas 16 seções, 
 
 \section{Mapeamento do Volume}
 
