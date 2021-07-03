@@ -474,7 +474,111 @@ O deformador de superfícies é chamado uma vez para cada superfície do modelo,
 
 \subsubsection{Exemplo: modelo geológico da bacia de Camamu}
 
-Este segundo exemplo utiliza um modelo geológico adaptado da bacia de Camamu\cite{Camamu}, com dois horizontes e sete falhas com suas respectivas superfícies. No modelo foram criadas e restauradas 16 seções, 
+Este segundo exemplo utiliza um modelo geológico adaptado extraído de um trecho da bacia de Camamu\cite{Camamu}, com dois horizontes e sete falhas com suas respectivas superfícies. No modelo foram criadas e restauradas 16 seções e conta ao todo com 14 \textit{EtapasMS}. A Figura~\ref{fig-example-2-1} mostra o modelo geológico numa vista tridimensional de cima (a) com a superfície do horizonte mais recente e (b) da superfície do horizonte mais antigo além da identificação das falhas.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-1}
+    \caption{Vista de cima do modelo geológico adaptado da bacia de Camamu.}\label{fig-example-2-1}
+  \end{center}
+\end{figure}
+
+Já a Figura~\ref{fig-example-2-2} exibe as seções geológicas numa vista tridimensional.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=320pt]{images/fig-example-2-2}
+    \caption{Vista das seções que compõem o modelo geológico adaptado da bacia de Camamu.}\label{fig-example-2-2}
+  \end{center}
+\end{figure}
+
+Como já se sabe, a primeira ação para iniciar o mapeamento de superfícies é a criação das \textit{LMModels} a partir das seções restauradas e daí criar a estrutura de dados como apresentado na Figura~\ref{fig-lmm-data-structure}. As \textit{LMModels} das seções no ambiente multisseção do Sistema Recon são apresentadas na Figura~\ref{fig-example-2-3}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=320pt]{images/fig-lmmodel-ms}
+    \caption{Vista das \textit{LMModels} do modelo geológico adaptado da bacia de Camamu}.\label{fig-example-2-3}
+  \end{center}
+\end{figure}
+
+Com as \textit{LMModels} criadas, parte-se então para o \textit{remesh} das malhas das superfícies para inclusão dos nós das \textit{LMModels} da primeira \textit{EtapaMS}. Conforme já visto, a regeração das malhas de superfícies com os pontos da \textit{LMModels} é importante para que haja uma ligação direta com o que ocorre nas seções e assim ter a principal base de dados vindos da seção para o mapeamento de superfícies. A nova malha da superfície do topo é mostrada na Figura~\ref{fig-example-2-4} juntamente das \textit{LMModels}.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-3}
+    \caption{Visão geral da nova malha de superfície do modelo geológico adaptado da bacia de Camamu.}\label{fig-example-2-4}
+  \end{center}
+\end{figure}
+
+A primeira \textit{EtapaMS} possui os cenários das seções que restauram a falha 7, que são um total de 6 seções, segundo mostra a Figura~\ref{fig-example-2-5}. Nesta \textit{EtapaMS} apenas as seções que cortam a falha 7 se movimentam. Essa forma de organizar as cenários que realizam a mesma atividade em uma \textit{EtapaMS} é muito importante para o mapeamento de superfícies, pois favorece um comportamento coerente com a movimentação tectônica quando se deforma a superfície.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=300pt]{images/fig-example-2-5}
+    \caption{Falha 7 do modelo de Camamu em destaque na \textit{EtapaMS} inicial.}\label{fig-example-2-5}
+  \end{center}
+\end{figure}
+
+Com a primeira falha já definida, é possível passar para a fase de seleção das bordas origem e destino na superfície do topo. São selecionadas trechos de bordas de pedaços diferentes da superfície, pois a falha 7 está entre tais pedaços. As bordas origem e destino dessa primeira \textit{EtapaMS} podem ser vistas na Figura~\ref{fig-example-2-6}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-example-2-6}
+    \caption{Bordas origem e destino da \textit{EtapaMS} referente à falha 7.}\label{fig-example-2-6}
+  \end{center}
+\end{figure}
+
+Conforme apresentado anteriormente, a fase seguinte é o cálculo dos pontos destino dos nós da borda de origem, daí então faz-se a definição, para cada ponto da superfície, se deve ou não se mover. Com tudo isso pronto, pode-se executar o deformador de superfícies e o resultado (antes e depois) pode ser conferido na Figura~\ref{fig-example-2-7}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-7}
+    \caption{Antes e depois da execução do deformador na superfície do topo na \textit{EtapaMS} inicial.}\label{fig-example-2-7}
+  \end{center}
+\end{figure}
+
+Para a superfície mais antiga, também é chamado o deformador mas sem uma definição de bordas origem e destino, ficando restrita apenas aos pontos de controle das \textit{LMModels}. Na ilustração do antes e depois dessa superfície (Figura~\ref{fig-example-2-8}) é notável que a parte que se move não chega a coincidir com o pedaço imóvel nesta \textit{EtapaMS}, no entanto, é isso que também ocorre na restauração das seções, o que evidencia o caráter de conformidade desse mapeamento com o que acontece nas seções.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=340pt]{images/fig-example-2-8}
+    \caption{Antes e depois da execução do deformador na superfície mais antiga na \textit{EtapaMS} inicial.}\label{fig-example-2-8}
+  \end{center}
+\end{figure}
+
+Este processo é repetido para cada uma das \textit{EtapasMS} do modelo, onde sempre um novo trecho de bordas origem e destino precisa ser definido (exceto em \textit{EtapaMS} de descompactação). A sequência das Figuras~\ref{fig-example-2-9} até \ref{fig-example-2-12} destaca cada um dos mapeamentos feitos com sua respectiva \textit{EtapaMS}:
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-9}
+    \caption{Mapeamento da superfície conforme as seções da 2ª \textit{EtapaMS} (falha 6).}\label{fig-example-2-9}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-10}
+    \caption{Mapeamento da superfície conforme as seções da 3ª \textit{EtapaMS} (falha 5).}\label{fig-example-2-10}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-11}
+    \caption{Mapeamento da superfície conforme as seções da 4ª \textit{EtapaMS} (falha 4).}\label{fig-example-2-11}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-12}
+    \caption{Mapeamento da superfície conforme as seções da 5ª \textit{EtapaMS} (falha 3).}\label{fig-example-2-12}
+  \end{center}
+\end{figure}
+
+A \textit{EtapaMS} seguinte seria com a ocorrência de uma descompactação da camada do topo, o que "alivia" a camada de baixo fazendo com que haja um soerguimento do horizonte mais antigo. Para o mapeamento, as \textit{LMModels} irão trazer essa informação e, consequentemente, todos os pontos sofrerão um deslocamento, logo, todos os nós da superfície de baixo serão marcados como \quotes{move}. Daí em diante, repete-se o processo de escolha de bordas conforme a falha da \textit{EtapaMS} corrente, com a diferença de que agora apenas a superfície de baixo existirá no modelo.
+
+Pela visualização do que ocorre com as superfícies de horizonte se deformando a cada passo do conjunto de movimentações ocorrido nas seções, pode-se induzir que este processo, aqui chamado de mapeamento de superfícies, poderia ser nomeado de restauração de superfícies e uma discussão a respeito desses termos será discutido no capítulo de conclusão deste trabalho.
 
 \section{Mapeamento do Volume}
 
