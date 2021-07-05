@@ -165,11 +165,33 @@ Isso tudo é possível graças à árvore de cenários. Um cenário é a represe
 
 O primeiro cenário tem a seção em sua versão inicial e a cada nova manipulação da mesma, pode-se criar um novo cenário e assim ter este histórico. Essa maneira de organizar uma restauração é útil não só no contexto de uma seção isolada, mas principalmente quando se trabalha em modelos de multisseções que irão sofrer os mesmos processos de restauração, mas de maneiras diferentes. Com um registro do quê e quando ocorreu uma dada transformação em diferentes seções é possível ter uma visão mais geral do modelo em uma sequência cronológica.
 
+\subsection{Ambiente Multisseções}
 
+Apesar dos principais recursos do Sistema Recon sejam para se trabalhar diretamente com seção geológica, isso não significa dizer que só seja possível manipular modelos com uma única seção geológica. Uma das grandes mudanças ocorridas no programa foram a criação de ferramentas para se tratar de modelos com múltiplas seções, ou modelos multisseção.
+
+O ambiente multisseção (MS) do Sistema Recon trata-se de um visualizador 3D onde podem ser vistas as superfícies geológicas e também as seções em um contexto global do modelo.
+
+Como sistema de referências, o ambiente MS usa coordenadas UTM (Universal Transversa de Mercador) para localizar seus objetos. Neste sistema, cada ponto é representado por um par $(N, E)$ onde $N$ é a coordenada norte-sul em metros e $E$, a coordenada leste-oeste.\cite{IBGE}
+
+A Figura~\ref{fig-recon-7} exibe o Sistema Recon no ambiente MS, onde é possível notar o (1) visualizador tridimensional com superfícies e seções geológicas, (2) a lista de \textit{EtapasMS} que será apresentada a seguir juntamente da (3) lista de cenários da etapa.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-recon-7}
+    \caption{Ambiente Multisseção do Sistema Recon.}\label{fig-recon-7}
+  \end{center}
+\end{figure}
 
 \subsection{Etapas de restauração}
 
+Como brevemente apresentado, o ambiente MS permite ter uma olhar mais global do modelo e de todos os componentes que o formam. Neste contexto é então preciso organizar as seções de forma que haja o máximo de coerência do ponto de vista geral durante a restauração do modelo. Podem existir seções que compartilham uma mesma falha ou um mesmo evento tectônico, por exemplo.
 
+Como já visto, cada seção conta com um registro de cada passo dado no andamento da restauração e é um recurso presente apenas localmente e independente. No entanto, seções relativamente próximas, ou que foram restauradas de maneira semelhante precisam sincronizar esse histórico para que haja uma ordem melhor do modelo sob um aspecto global.
 
-\subsection{Ambiente Multisseções}
+Com essa finalidade, foi criado e implementado o conceito de \textit{EtapaMS} que trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
+
+No Sistema Recon, as \textit{EtapasMS} são dispostas em lista no ambiente multisseção. Ao selecionar um item dessa lista, logo abaixo é exibido o conjunto de cenários (por seção) que compõem aquela \textit{EtapaMS}, como bem mostra a Figura~\ref{fig-recon-7}.
+
+Uma forma de uso das \textit{EtapasMS} para a restauração de modelos geológicos é organizar os estados de seções diferentes que respondam ao mesmo evento ou marco geológico. Caso haja uma falha X que atravessa 3 seções e em todas elas essa falha é restaurada, basta pega o cenário de cada seção onde isso ocorre e criar uma \textit{EtapaMS} correspondente a este marco. Esta organização da restauração é parte importante para o mapeamento de superfícies e volume.
+
 
