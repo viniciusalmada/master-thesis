@@ -6,9 +6,9 @@
 
 \subsection{Introdução}
 
-O ambiente no qual este trabalho é desenvolvido é o \textit{Sistema Recon MS}, um software amplamente usado dentro da indústria de óleo e gás pela Petrobras e capaz de auxiliar na restauração de modelos geológicas.\cite{ReconTecgraf} Conta com editor gráfico, estruturas de dados topológicos, algoritmos de transformações geológicas, gráficos de pós-processamentos entre outros recursos.
+O ambiente no qual este trabalho é desenvolvido é o \textit{Sistema Recon MS}\cite{ReconTecgraf}, um software amplamente usado dentro da indústria de óleo e gás pela Petrobras e capaz de auxiliar na restauração de modelos geológicas. Conta com editor gráfico, estruturas de dados topológicos, algoritmos de transformações geológicas, gráficos de pós-processamentos entre outros recursos.
 
-O Sistema Recon é desenvolvido a partir de um convênio entre o Instituto Tecgraf/PUC-Rio e a Petrobras desde 1991. Atualmente sua equipe responsável é formada pelo Grupo de Modelagem Digital em Geociências do Tecgraf. Uma imagem (Figura~\ref{fig-recon}) da tela inicial do programa é mostrada abaixo.
+O Sistema Recon vem sendo desenvolvido a partir de um convênio entre o Instituto Tecgraf/PUC-Rio e a Petrobras desde 1991. Atualmente sua equipe responsável é formada pelo Grupo de Modelagem Digital em Geociências do Tecgraf. Uma imagem (Figura~\ref{fig-recon}) da tela inicial do programa é mostrada abaixo.
 
 \begin{figure} [H]
   \begin{center}
@@ -17,13 +17,13 @@ O Sistema Recon é desenvolvido a partir de um convênio entre o Instituto Tecgr
   \end{center}
 \end{figure}
 
-A restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo, em outras palavras busca-se realizar uma retrodeformação na seção e assim usar na interpretação estrutural de uma região de interesse.\cite{Fossen}
+De acordo com Fossen\cite{Fossen}, restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo, em outras palavras busca-se realizar uma retrodeformação na seção e utilizá-la na interpretação estrutural de uma região de interesse.
 
-Neste capítulo são apresentadas as principais características do Sistema Recon MS para o objeto deste trabalho a fim de prover uma contextualização para o que é exibido nos demais capítulos. As próximas subseções tratam da descrição dos componentes principais e recursos básicos disponibilizados pelo programa no processo de restauração de seções geológicas e também de visualização tridimensional do modelo. 
+Neste capítulo são apresentadas as principais características do Sistema Recon MS para o objeto deste trabalho a fim de prover uma contextualização para o que é exibido nos demais capítulos. As próximas subseções tratam da descrição dos componentes principais e recursos básicos disponibilizados pelo sistema no processo de restauração de seções geológicas e também de visualização tridimensional do modelo. 
 
 \subsection{Subdivisão Planar} % Falar do HED e da TopS
 
-Uma seção geológica pode ter sua representação digital como uma subdivisão planar uma vez que ela pode ser vista como um conjunto de polígonos que dividem o domínio da seção. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geológicos às quais a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em um contexto computacional da seção geológica.
+Uma seção geológica pode ser representada digitalmente por uma subdivisão planar uma vez que ela pode ser vista como um conjunto de polígonos que dividem o domínio da seção. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geológicos que a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em um contexto computacional da seção geológica.
 
 Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as camadas A, B e C possuem 3 blocos separados por falhas. Cada bloco é uma região fechada delimitada por um conjunto de segmentos. Deve-se observar ainda que essas regiões possuem atributos geológicos como idade, litologia, porosidade, etc.
 
@@ -34,7 +34,7 @@ Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as
   \end{center}
 \end{figure}
 
-Uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}.\cite{Berg} Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
+Segundo Berg\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
 
 A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. 
 
@@ -51,37 +51,37 @@ Em suma, a subdivisão planar tem os seguintes elementos topológicos:
 
 \subsection{Modelagem da Subdivisão Planar}
 
-Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio que é a implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.\cite{HED}
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio e é a implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
 
-O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas, cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
+O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas. Cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
 
 A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de elementos topológicos. No nível mais alto está a subdivisão planar, denominada como \textit{HedSolid}, então vêm \textit{HedFace}, \textit{HedLoop}, \textit{HedHalfEdge} e \textit{HedVtx} no nível mais baixo. A representação da aresta, \textit{HedEdge} encontra-se no mesmo nível da HedHalfEdge.
 
-Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todos as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
+Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todas as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
 
 Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Uma camada geológica é representada por uma face; as linhas de horizonte, falha ou sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido\footnote{Os sólidos representam uma subdivisão planar e em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada uma é um sólido diferente. Para casos onde é necessário sobreposição de partes, só é possível com a existência de mais de um sólido.}.
 
-Destaca-se que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED, visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos.
+Destaca-se que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED, visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos. Mais detalhes sobre a estrutura de dados HED podem ser encontrados em Mäntÿla~\cite{HED}, Arruda~\cite{Arruda} e Botsch \textit{et al.}~\cite{Botsch}.
 
 \subsection{Atributos Geológicos}
 
 Como já dito, os blocos que formam a seção geológica possuem propriedades próprias e precisam também estarem salvas na estrutura de dados topológica.
 
-Cada entidade do HED possui um campo reservado para um tipo genérico de informações e é neste espaço que são organizados os atributos geológicos da seção. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
+Cada entidade do HED possui um campo reservado para um tipo genérico de informações e neste espaço são organizados os atributos geológicos da seção. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
-  \item \textbf{GeoSolid}: o sólido por ser a estrutura mais alto nível, é quem vai guardar referência à seção e ao cenário ao qual pertence dentro da restauração.
+  \item \textbf{GeoSolid}: o sólido por ser a estrutura de mais alto nível, é quem vai guardar referência à seção e ao cenário ao qual pertence dentro da restauração.
   \item \textbf{GeoFace}: é a estrutura que precisa armazenar dados do material geológico que a compõe (como idade, tipo, características físicas, etc.) e malha de triângulos que pode ser manipulada pelas transformações.
   \item \textbf{GeoEdge}: estrutura que guarda o tipo de linha (de horizonte, falha, topo de sal, etc.) e a subdivisão geométrica que forma a linha. 
   \item \textbf{GeoVtx}: é a única que armazena apenas o identificador universal.
 \end{itemize}
 
-Aliás, todas as estruturas de atributos geológicos possuem um campo para salvar este identificador que possui o formato \textit{UUID} --- \textit{universally unique identifier} ou identificador único universal que é usado, por exemplo, na associação dos elementos geológicos com a malha triangular das faces, que será apresentada adiante.\cite{UUID}
+Aliás, todas as estruturas de atributos geológicos possuem um campo para salvar este identificador que possui o formato \textit{UUID} --- \textit{universally unique identifier}~\cite{UUID} ou identificador único universal que é usado, por exemplo, na associação dos elementos geológicos com a malha triangular das faces, que será apresentada adiante.
 
 \subsection{Seções Geológicas} % Falar da árvore de cenários
 
-O principal recurso do Sistema Recon é seu conjunto de ferramentas para manusear uma seção geológica, desde a digitalização das informações que a definem geometricamente, da caracterização dos materiais e propriedades, da criação de dispositivos de controle e monitoramento da restauração até o kit de transformações que irão deformar a seção.
+O principal recurso do Sistema Recon é seu conjunto de ferramentas para manipular uma seção geológica, desde a digitalização das informações que a definem geometricamente, da caracterização dos materiais e propriedades, da criação de dispositivos de controle e monitoramento da restauração até o kit de transformações que irão deformar a seção.
 
 \subsubsection{Criação de uma seção geológica}
 
@@ -93,8 +93,6 @@ Para criar uma seção geológica no Sistema Recon pode-se recorrer ao editor gr
     \caption{Sistema Recon exibindo um modelo com superfícies tridimensionais e uma seção em destaque.}\label{fig-recon-1}
   \end{center}
 \end{figure}
-
-Neste último caso, em especial no contexto deste trabalho, o ideal é que após a seção ter sido criada ocorra o mínimo de edição inicial nas linhas geradas. Isso é importante pois quanto melhor definida esteja a seção após o fatiamento, mais coerente com as superfícies tridimensionais estará o modelo como um todo. Edições nas linhas são comuns de acontecerem para que seja possível realizar a restauração da seção. Entretanto, em caso de edições maiores ocorrerá o descasamento entre seção e superfícies, mais tarde, no mapeamento da superfície, poderão haver incongruências.
 
 \subsubsection{Malhas da seção geológica}
 
@@ -131,13 +129,13 @@ Essa relação permite identificar, a partir de um vértice da malha, sobre qual
 
 \subsubsection{Transformações}
 
-As transformações geológicas são ferramentas que buscam reverter (ou simular) as movimentações e deformações ocorridas aos blocos de rocha ao longo do tempo.\cite{Santi} As transformações são aplicadas diretamente às malhas, no entanto, para sua que isso aconteça, é necessário antes a definição de \textit{Módulos} na seção. 
+As transformações geológicas são ferramentas que buscam reverter (ou simular) as movimentações e deformações ocorridas ao longo do tempo.\cite{Santi} As transformações são aplicadas diretamente às malhas, no entanto, para que isso aconteça, é necessário antes a definição de \textit{Módulos} na seção. 
 
-Módulos nada mais são que agrupamentos de faces ou blocos da seção, têm o intuito de reunir aquelas partes que devem ter recebido as mesmas deformações, podendo ser, inclusive partes de camadas diferentes.
+Módulos são agrupamentos de faces ou blocos da seção, têm o intuito de reunir aquelas partes que devem ter recebido as mesmas deformações, podendo ser, inclusive partes de camadas diferentes.
 
-Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser empregada sobre a malha de cada uma das faces que compõem aquele módulo, deformando esta malha e, por conseguinte, alterar a geometria da seção.
+Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser empregada sobre a malha de cada uma das faces que compõem aquele módulo, deformando esta malha e, por conseguinte, alterando a geometria da seção.
 
-A Figura~\ref{fig-recon-5} mostra a aba \quotes{Transformações} do Sistema Recon onde é possível ver os grupos de transformações e também a quantidade de opções disponíveis. Mais detalhes sobre cada uma delas podem ser consultados no manual do usuário do programa\cite{Recon}.
+A Figura~\ref{fig-recon-5} mostra a aba \quotes{Transformações} do Sistema Recon onde é possível ver os grupos de transformações e também as opções disponíveis. Mais detalhes sobre cada uma delas podem ser consultados no manual do usuário do programa\cite{Recon}.
 
 \begin{figure} [H]
   \begin{center}
@@ -148,13 +146,13 @@ A Figura~\ref{fig-recon-5} mostra a aba \quotes{Transformações} do Sistema Rec
 
 \subsubsection{Árvore de cenários}
 
-A restauração de seções é um processo linear no sentido de que cada novo passo depende de como estava o anterior e ainda por ser relacionado a uma escala de tempo, qualquer mudança num passo desses acarreta em um resultado diferente ao final. Além do mais, balanceamento de seções não é uma atividade de resposta única, dois geólogos podem chegar a resultados diferentes e igualmente corretos ao trabalharem com o mesmo modelo. 
+A restauração de seções é um processo linear no sentido de que cada novo passo depende de como estava o anterior. Qualquer mudança num passo desses acarreta em um resultado diferente ao final. Além do mais, balanceamento de seções não é uma atividade de resposta única, o objetivo é obter uma interpretação geológica restaurável, ou seja, seus componentes estruturais devem poder ser restauradas~\cite{Fossen}. 
 
-Diante disto, o Sistema Recon disponibiliza em sua interface de manipulação das seções um componente capaz de registrar o histórico de etapas no processo de restauração, mais que isso, ao usuário é dado a possibilidade de voltar em algum ponto e criar uma nova linha de estudo dentro desse processo todo, ou ainda apagar uma sequência de etapas a que ele julga estar incorreta.
+Diante disto, o Sistema Recon disponibiliza em sua interface de manipulação das seções um componente capaz de registrar o histórico de etapas no processo de restauração, mais que isso, ao usuário é dada a possibilidade de voltar em algum ponto e criar uma nova linha de estudo dentro desse processo, ou ainda apagar uma sequência de etapas que ele julga estar incorreta.
 
 Isso tudo é possível graças à árvore de cenários. Um cenário é a representação de um estado de restauração de uma seção. Por exemplo, se de um passo a outro da restauração ocorre uma transformação, o estado anterior pode ser registrado em um cenário e o posterior em um outro. De cada cenário pode-se criar diversos outros como se fossem diferentes linhas do tempo, ou diferentes interpretações daquele passo de restauração.
 
-Árvores são um tipo especial de estrutura de dados não-linear e neste casos de uso é definida como tendo uma raiz ou nó inicial que aponta para um ou mais outros nós. Estes, igualmente, podem apontar para outros diferentes nós numa escala hierárquica. A Figura~\ref{fig-recon-6} apresenta um exemplo de árvore de cenários tirada do Sistema Recon. Nesta imagem, cada quadrinho representa a seção num dado estado e como identificação, cada cenário também possui um número.
+Árvores são um tipo especial de estrutura de dados não-linear e neste casos de uso é definida como tendo uma raiz ou nó inicial que aponta para um ou mais nós. Estes, igualmente, podem apontar para diferentes nós numa escala hierárquica. A Figura~\ref{fig-recon-6} apresenta um exemplo de árvore de cenários tirada do Sistema Recon. Nesta imagem, cada quadrinho representa a seção num dado estado e como identificação, cada cenário também possui um número.
 
 \begin{figure} [H]
   \begin{center}
@@ -167,11 +165,11 @@ O primeiro cenário tem a seção em sua versão inicial e a cada nova manipula�
 
 \subsection{Ambiente Multisseções}
 
-Apesar dos principais recursos do Sistema Recon sejam para se trabalhar diretamente com seção geológica, isso não significa dizer que só seja possível manipular modelos com uma única seção geológica. Uma das grandes mudanças ocorridas no programa foram a criação de ferramentas para se tratar de modelos com múltiplas seções, ou modelos multisseção.
+Apesar dos principais recursos do Sistema Recon atuarem diretamente com seção geológica, isso não significa dizer que só seja possível manipular modelos com uma única seção geológica. Uma das grandes mudanças ocorridas no programa foi a criação de ferramentas para se tratar de modelos com múltiplas seções, ou modelos multisseção~\cite{Felipe},~\cite{Garcia}.
 
 O ambiente multisseção (MS) do Sistema Recon trata-se de um visualizador 3D onde podem ser vistas as superfícies geológicas e também as seções em um contexto global do modelo.
 
-Como sistema de referências, o ambiente MS usa coordenadas UTM (Universal Transversa de Mercador) para localizar seus objetos. Neste sistema, cada ponto é representado por um par $(N, E)$ onde $N$ é a coordenada norte-sul em metros e $E$, a coordenada leste-oeste.\cite{IBGE}
+Como sistema de referências, o ambiente MS usa coordenadas UTM (Universal Transversa de Mercador)~\cite{IBGE} para localizar seus objetos. Neste sistema, cada ponto é representado por um par $(N, E)$ onde $N$ é a coordenada norte-sul em metros e $E$, a coordenada leste-oeste.
 
 A Figura~\ref{fig-recon-7} exibe o Sistema Recon no ambiente MS, onde é possível notar o (1) visualizador tridimensional com superfícies e seções geológicas, (2) a lista de \textit{EtapasMS} que será apresentada a seguir juntamente da (3) lista de cenários da etapa.
 
@@ -188,10 +186,10 @@ Como brevemente apresentado, o ambiente MS permite ter uma olhar mais global do 
 
 Como já visto, cada seção conta com um registro de cada passo dado no andamento da restauração e é um recurso presente apenas localmente e independente. No entanto, seções relativamente próximas, ou que foram restauradas de maneira semelhante precisam sincronizar esse histórico para que haja uma ordem melhor do modelo sob um aspecto global.
 
-Com essa finalidade, foi criado e implementado o conceito de \textit{EtapaMS} que trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
+Com essa finalidade, foi criado e implementado o conceito de \textit{EtapaMS}. Uma \textit{EtapaMS} trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
 
 No Sistema Recon, as \textit{EtapasMS} são dispostas em lista no ambiente multisseção. Ao selecionar um item dessa lista, logo abaixo é exibido o conjunto de cenários (por seção) que compõem aquela \textit{EtapaMS}, como bem mostra a Figura~\ref{fig-recon-7}.
 
-Uma forma de uso das \textit{EtapasMS} para a restauração de modelos geológicos é organizar os estados de seções diferentes que respondam ao mesmo evento ou marco geológico. Caso haja uma falha X que atravessa 3 seções e em todas elas essa falha é restaurada, basta pega o cenário de cada seção onde isso ocorre e criar uma \textit{EtapaMS} correspondente a este marco. Esta organização da restauração é parte importante para o mapeamento de superfícies e volume.
+Uma forma de uso das \textit{EtapasMS} para a restauração de modelos geológicos é organizar os estados de seções diferentes que respondam ao mesmo evento ou marco geológico. Caso haja uma falha X que atravessa 3 seções e em todas elas essa falha é restaurada, pega-se o cenário de cada seção onde isso ocorre e cria-se uma \textit{EtapaMS} correspondente a este marco. Esta organização da restauração é parte importante para o mapeamento de superfícies e volume.
 
 
