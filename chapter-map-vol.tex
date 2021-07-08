@@ -1,7 +1,5 @@
 % -*- coding: utf-8; -*-
 
-\chapter{Mapeamento}
-
 \section{Mapeamento do Volume}
 
 O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida no domínio tridimensional do modelo. Cada ponto precisa ter informação sobre a qual camada geológica ele pertence. O mapeamento é feito com a movimentação desses pontos a cada \textit{EtapaMS} de restauração. As fontes da movimentação são os nós das malhas das seções em conjunto dos pontos do mapeamento de superfície.
@@ -15,10 +13,108 @@ Nas últimas décadas vários métodos numéricos vêm sendo desenvolvidos para 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
   \item Métodos baseados em malhas tridimensionais: métodos de elementos finitos (FEM)\cite{MEF}; métodos de diferenças finitas (FDM)\cite{MDF}; métodos de volumes finitos (FVM)\cite{MVF}; métodos lagrangeanos euleriano arbitrário (ALE)\cite{ALE}.
-  \item Métodos não baseados em malhas tridimensionais: método de partículas em células (PIC)\cite{PIC}; smooth particle hydrodynamics (SPH)\cite{SPH}; método de ponto material (MPM)\cite{MPM}; método de elementos discretos (DEM)\cite{DEM}; método de ponto material com interpolação generalizada (GIMP)\cite{GIMP}\cite{MullerGIMP}.
+  \item Métodos não baseados em malhas tridimensionais: método de partículas em células (PIC)\cite{PIC}; smooth particle hydrodynamics (SPH)\cite{SPH}; método de ponto material (MPM)\cite{MPM}; método de elementos discretos (DEM)\cite{DEM}; método de ponto material com interpolação generalizada (GIMP)\cite{GIMP,MullerGIMP}.
 \end{itemize}
 
-De maneira genérica, o problema físico-matemático para o mapeamento do volume baseado em restauração de seções e mapeamento de superfícies pode ser descrito por: dada a movimentação de um conjunto de seções e a movimentação de um conjunto de superfícies, movimentar um volume de forma compatível, respeitando restrições de movimentação nas falhas. Todos os métodos acima citados, além de outros não referenciados nesta lista, apresentam vantagens e desvantagens e poderiam ser utilizados para solucionar este problema. Todavia, a escolha de um método numérico deve contemplar as características do problema que por vezes demanda simplificações e/ou aprimoramentos
+De maneira genérica, o problema físico-matemático para o mapeamento do volume baseado em restauração de seções e mapeamento de superfícies pode ser descrito por: dada a movimentação de um conjunto de seções e a movimentação de um conjunto de superfícies, movimentar um volume de forma compatível, respeitando restrições de movimentação nas falhas. Todos os métodos acima citados, além de outros não referenciados nesta lista, apresentam vantagens e desvantagens e poderiam ser utilizados para solucionar este problema. Todavia, a escolha de um método numérico deve contemplar as características do problema que por vezes demanda simplificações e/ou aprimoramentos além da avaliação da viabilidade de uso, por exemplo: tempo para simulação, geração de dados de entrada, estabilidade numérica, entre outros. De forma geral, modelos geológicos tridimensionais apresentam características de grande complexidade geométrica. Essa complexidade, por sua vez, acarreta grandes desafios para geração de malhas, especialmente quando devem ser consideradas restrições de horizontes e falhas. Além disso, de forma geral em Geologia, as etapas de modelagem e simulação tridimensionais apresentam soluções caras computacionalmente. Tendo em vista estes aspectos, Muller~\cite{Muller} desenvolveu uma metodologia de solução do problema matemático exposto anteriormente, baseada principalmente nos métodos GIMP e ALE, apresentada a seguir.
+
+O problema físico-matemático é caracterizado pela movimentação do volume, que por sua vez é guiado pela movimentação de seções transversais e/ou superfícies. Dessa forma, as equações de conservação de massa e conservação de momento são suficientes para a solução do problema, Eqs.~\ref{eq-vol-1} e~\ref{eq-vol-2} respectivamente. Na conservação de momento, devido às características do problema, o termo relativo às forças de corpo (gravitacionais) pode ser desconsiderado.
+
+\begin{align}
+  &\frac{d\rho}{dt} + \rho \mathbf{\nabla}\cdot\boldsymbol{v} = 0\label{eq-vol-1}
+\end{align}
+
+\begin{align}
+  &\rho\frac{d\boldsymbol{v}}{dt} - \mathbf{\nabla} \cdot \boldsymbol{\sigma} = 0\label{eq-vol-2}
+\end{align}
+
+Nas equações acima $\rho$ representa densidade, $\boldsymbol{v}$ velocidade e $\boldsymbol{\sigma}$ o tensor de tensões de Cauchy. Para evitar a necessidade de geração de malhas tridimensionais, a solução das Eqs.~\ref{eq-vol-1} e~\ref{eq-vol-2} será desenvolvida para um meio representado por pontos discretos arbitrários, em suas coordenadas $\boldsymbol{x}_p$, que por sua vez representam o volume $\Omega$ do modelo. A conectividade entre esses pontos será dada por uma grade volumétrica, em suas coordenadas $\boldsymbol{x}_i$.
+
+A massa de cada ponto arbitrário pode ser descrita por:
+
+\begin{align}
+  &m_p =\int_{\Omega}\rho(\boldsymbol{x}_p)\chi(\boldsymbol{x}_p)\,d\Omega.
+\end{align}
+
+Sendo $\rho(\boldsymbol{x}_p)$ o campo de densidades e $\chi(\boldsymbol{x}_p)$ funções características. Para caracterizar a ligação entre os pontos e a grade são utilizadas funções peso $\boldsymbol{N}_{ip}$. Uma função $\boldsymbol{N}_{ip}$ representa o peso para o nó $i$ da grade avaliado na posição do ponto $p$, $\boldsymbol{N}_{ip} = \boldsymbol{N}(\boldsymbol{x}_p-\boldsymbol{x}_i)$ definido por:
+
+\begin{align}
+  &\boldsymbol{N}_{ip} = \frac{\displaystyle\int_{\Omega}\chi(\boldsymbol{x})\boldsymbol{\Phi}_i(\boldsymbol{x})\,d\Omega}{\displaystyle\int_{\Omega}\chi(\boldsymbol{x})\,d\Omega}.
+\end{align}
+
+Onde $\boldsymbol{\Phi}_i(\boldsymbol{x})$ é uma função de forma para o nó $i$. O gradiente da função peso pode ser definido por:
+
+\begin{align}
+  &\nabla\boldsymbol{N}_{ip} = \frac{\displaystyle\int_{\Omega}\chi(\boldsymbol{x})\nabla\boldsymbol{\Phi}_i(\boldsymbol{x})\,d\Omega}{\displaystyle\int_{\Omega}\chi(\boldsymbol{x})\,d\Omega}.
+\end{align}
+
+As funções características e de forma utilizadas na presente formulação são:
+
+\begin{align}
+  &\chi(\boldsymbol{x_p}) = 
+    \begin{cases}
+      1 &\text{se } |\boldsymbol{x_p}| < \cfrac{l}{2}\\
+      0 &\text{em outro caso}
+    \end{cases}\label{eq-vol-carac-1}
+\end{align}
+
+
+\begin{align}
+  &\Phi(\boldsymbol{x_p}) = 
+    \begin{cases}
+      1 - \cfrac{4\boldsymbol{x_p}^2+l}{4hl}& \text{ se } |\boldsymbol{x_p}| < \cfrac{l}{2}\\
+      \\
+      1 - \cfrac{|\boldsymbol{x_p}|}{h}& \text{ se } \cfrac{l}{2} \leqslant |\boldsymbol{x_p}| < h - \cfrac{l}{2}\\
+      \\
+      \cfrac{\left(h+\cfrac{l}{2}-|\boldsymbol{x_p}|\right)^2}{2hl}& \text{ se } h-\cfrac{l}{2} \leqslant |\boldsymbol{x_p}| < h + \cfrac{l}{2}\\
+      \\
+      0 & \text{ em outro caso}
+    \end{cases}\label{eq-vol-carac-2}
+\end{align}
+
+Nas Eqs.~\ref{eq-vol-carac-1} e~\ref{eq-vol-carac-2} $h$ representa o tamanho da célula da grade e $l$ um tamanho característico definido inicialmente em função do número de pontos contidos na célula.
+
+Como já mencionado, o volume é representado por pontos arbitrários. De forma semelhante, as seções e superfícies também serão representadas por pontos, entretanto para esses, são conhecidas suas posições iniciais e finais em cada etapa. A movimentação desses pontos, levada para os nós da grade será a responsável pela movimentação dos pontos do volume. A movimentação dos pontos de seções e superfícies pode ser convertida numa velocidade adimensional em relação ao tempo. Após isso, para um determinado tempo $t$ avalia-se em cada nó $i$ da grade a massa, momento e velocidade, respectivamente como segue:
+
+\begin{align}
+  &m_i^t = \textstyle\sum_p\boldsymbol{N}_{ip}m_p^t
+\end{align}
+
+\begin{align}
+  &\boldsymbol{p}_i^t = \textstyle\sum_p\boldsymbol{N}_{ip}m_p^t\boldsymbol{v}_p^t
+\end{align}
+
+\begin{align}
+  &\boldsymbol{v}_i^t = \boldsymbol{p}_i^t / m_i^t
+\end{align}
+
+$\sum_p$ representa a soma sobre todos os pontos que possuem contribuição para uma determinada célula da grade e $\sum_i$ representa a soma sobre todos os nós da grade que contribuem para um determinado ponto.
+
+O passo seguinte consiste numa etapa de advecção Euleriana simples que definirá a nova posição dos pontos do volume baseada nas informações que previamente foram levadas aos nós da grade. Para isto é avaliado o gradiente da velocidade de cada ponto, o tensor gradiente de deformação de cada ponto $\boldsymbol{F}_p$, que possibilitará o cálculo de deformações no volume e a posição atualizada de cada ponto.
+
+\begin{align}
+  &\boldsymbol{v}_p^{t+\Delta t} = \textstyle\sum_i\boldsymbol{N}_{ip}\boldsymbol{v}_i^{t+\Delta t}
+\end{align}
+
+\begin{align}
+  &\boldsymbol{F}_p^{t+\Delta t} = (\boldsymbol{I} + \nabla\boldsymbol{v}_p^{t+\Delta t}\Delta t) \boldsymbol{F}_p^t
+\end{align}
+
+\begin{align}
+  &\boldsymbol{x}_p^{t+\Delta t} = (\boldsymbol{I} + \nabla\boldsymbol{v}_p^{t+\Delta t}\Delta t) \boldsymbol{F}_p^t
+\end{align}
+
+Os incrementos de tempo considerados para integração temporal deste problema, virtualmente transiente, consideram as condições de Courant-Friedrichs-Lewy (CFL)~\cite{CFL}, garantindo assim a estabilidade numérica da solução.
+
+Como mencionado anteriormente, as seções e superfícies do modelo são responsáveis pela informação da movimentação que guiará a movimentação do volume. Essa movimentação, no espaço das seções e superfícies, honrou restrições de movimento dadas pelas falhas geológicas. Evidentemente, se deseja que a movimentação do volume também respeite essas restrições, ou seja, as superfícies das falhas devem ser consideradas como restrições para a movimentação do volume. Para isso, as superfícies de falha também são discretizadas por pontos. Aos pontos do volume que estarão em contato com as falhas são impostas condições especiais de movimentação. Se considerarmos em um nó $i$ da grade a velocidade de um ponto do volume $\boldsymbol{v}_i^v$ e a velocidade de um ponto da falha $\boldsymbol{v}_i^f$ teremos contato se $\left(\boldsymbol{v}_i^v-\boldsymbol{v}_i^f\right)\boldsymbol{n}_i>0$. Sendo $\boldsymbol{n}_i$ a normal da superfície da falha calculada em $i$. Se a condição de contato é satisfeita e a condição de momento garantida, as velocidade podem ser corrigidas por:
+
+\begin{align}
+  &\bar{\boldsymbol{v}}_i^v = \boldsymbol{v}^v_i - m_i^f(\boldsymbol{v}^v_i - \boldsymbol{v}^f_i)\boldsymbol{n}_i \cfrac{\boldsymbol{n}_i}{(m_i^v+m_i^f)}
+\end{align}
+
+\begin{align}
+  &\bar{\boldsymbol{v}}_i^f = \boldsymbol{v}^f_i - m_i^v(\boldsymbol{v}^v_i - \boldsymbol{v}^f_i)\boldsymbol{n}_i \cfrac{\boldsymbol{n}_i}{(m_i^v+m_i^f)}
+\end{align}
 
 \subsection{Preparação dos dados}
 
