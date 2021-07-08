@@ -1,0 +1,27 @@
+% -*- coding: utf-8; -*-
+
+\chapter{Mapeamento}
+
+\section{Mapeamento do Volume}
+
+O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida no domínio tridimensional do modelo. Cada ponto precisa ter informação sobre a qual camada geológica ele pertence. O mapeamento é feito com a movimentação desses pontos a cada \textit{EtapaMS} de restauração. As fontes da movimentação são os nós das malhas das seções em conjunto dos pontos do mapeamento de superfície.
+
+Nesta seção serão apresentados a metodologia por trás do mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método.
+
+\subsection{Metodologia}
+
+Nas últimas décadas vários métodos numéricos vêm sendo desenvolvidos para simulação de problemas físicos em modelos tridimensionais, dentre os quais destacam-se alguns, divididos em dois grupos e listados a seguir:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item Métodos baseados em malhas tridimensionais: métodos de elementos finitos (FEM)\cite{MEF}; métodos de diferenças finitas (FDM)\cite{MDF}; métodos de volumes finitos (FVM)\cite{MVF}; métodos lagrangeanos euleriano arbitrário (ALE)\cite{ALE}.
+  \item Métodos não baseados em malhas tridimensionais: método de partículas em células (PIC)\cite{PIC}; smooth particle hydrodynamics (SPH)\cite{SPH}; método de ponto material (MPM)\cite{MPM}; método de elementos discretos (DEM)\cite{DEM}; método de ponto material com interpolação generalizada (GIMP)\cite{GIMP}\cite{MullerGIMP}.
+\end{itemize}
+
+De maneira genérica, o problema físico-matemático para o mapeamento do volume baseado em restauração de seções e mapeamento de superfícies pode ser descrito por: dada a movimentação de um conjunto de seções e a movimentação de um conjunto de superfícies, movimentar um volume de forma compatível, respeitando restrições de movimentação nas falhas. Todos os métodos acima citados, além de outros não referenciados nesta lista, apresentam vantagens e desvantagens e poderiam ser utilizados para solucionar este problema. Todavia, a escolha de um método numérico deve contemplar as características do problema que por vezes demanda simplificações e/ou aprimoramentos
+
+\subsection{Preparação dos dados}
+
+\subsection{Exemplos e resultados}
+
+

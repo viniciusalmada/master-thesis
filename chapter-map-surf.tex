@@ -1,136 +1,8 @@
 % -*- coding: utf-8; -*-
 
-\chapter{Mapeamento}
-
-O mapeamento descrito neste trabalho é baseado exclusivamente na restauração de seções geológicas. Para tanto, há necessidade de uma camada de informações proveniente das seções que contenha os dados a serem usados no mapeamento tridimensional. Essas informações podem ser extraídas com um tipo de mapeamento 2D presente nas seções, com o uso de \textit{linhas de mapeamento}.
-
-Neste capítulo serão apresentados o conceito de linha de mapeamento presente no Sistema Recon, suas características, alguns casos de uso e também as derivações.
-
-Após isso, haverá uma abordagem acerca dos procedimentos matemáticos e algoritmos computacionais presentes no mapeamento de superfícies e do volume, com inclusão de exemplos e discussão a respeito dos resultados obtidos em cada um.
-
-\section{Linhas de Mapeamento}
-
-Linhas de mapeamento são linhas formadas por \textit{pontos de mapeamento}. Estes pontos são objetos mapeados nas malhas da seção e guardam informação referente à sua localização dentro desta malha.
-
-Um ponto de mapeamento, em razão dos tipos de entidades topológicas presentes na malha, pode ser do tipo nó, aresta ou elemento:
-
-\renewcommand{\labelitemi}{•}
-\begin{itemize}
-  \item Nó: o ponto está sobre um nó da malha. É guardado o identificador desse nó.
-  \item Aresta: caso onde o ponto localiza-se sobre uma aresta de elemento. Além do identificador da aresta, é armazenada a coordenada paramétrica do ponto.
-  \item Elemento: o ponto encontra-se no interior de um elemento. Guarda-se o identificador do elemento e as coordenadas baricêntricas do ponto.
-\end{itemize}
-
-A criação dessas linhas se dá pela definição de uma linha-guia que pode cruzar diferentes regiões da seção. Para cada região interceptada, é criada uma parte de linha de mapeamento, essa parte armazena o identificador da malha da região. A interseção dos pontos da linha-guia com a malha produz os pontos de mapeamento.
-
-A linha de mapeamento pode ser criada em qualquer cenário durante a restauração da seção e sua geometria pode ser calculada com base na malha em função dos pontos de mapeamento que a formam. Após a criação, uma versão da linha de mapeamento é gerada para cada cenário anterior e subsequente ao que foi usado na definição da linha-guia, é assim que 
-ocorre o mapeamento dessa linha ao longo das etapas de restauração da seção.
-
-O requisito para que seja calculada a geometria da linha em diferentes cenários é que a malha mantenha a mesma topologia, no entanto, mesmo em casos de edição, é possível realizar uma interpolação dos atributos presentes na malha para sua nova versão, incluem-se nisso as partes de linha de mapeamento que irão também receber uma nova versão equivalente dada a alteração na topologia da malha.
-
-Dentro do Sistema Recon, a linha de mapeamento é um recurso importante na interpretação dos resultados gerados na restauração do modelo. Com ela é possível ter uma linha que acompanha a movimentação da malha de um cenário a outro.
-
-As linhas de mapeamento (Figura~\ref{fig-linemap}) permitem realizar um mapeamento geométrico ao longo de uma restauração tomando como base uma linha-guia poligonal definida pelo usuário.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=400pt]{images/fig-linhas-de-mapeamento-ed}
-    \caption{Linhas de mapeamento em uma seção.}\label{fig-linemap}
-  \end{center}
-\end{figure}
-
-A Figura~\ref{fig-linemap-history} apresenta o resultado após uma transformação do tipo \textit{Move-Sobre-Falha} onde é possível observar, além da deformação da camada, a linha de mapeamento sofrendo a mesma movimentação. Este tipo de uso pode ser interpretado como se houvesse ali um falso horizonte para avaliar o quantidade de movimento na restauração do rejeito.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=420pt]{images/fig-linemap-history}
-    \caption{Linhas de mapeamento em diferentes etapas}\label{fig-linemap-history}
-  \end{center}
-\end{figure}
-
-
-O processo de criação da linha de mapeamento é feito para cada parte individualmente, de forma que ao visualizar as partes tem-se a linha de mapeamento completa. Na Figura~\ref{fig-linemap-malhas} é possível ver uma linha de mapeamento cortando algumas regiões diferentes.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=250pt]{images/fig-linhas-de-mapeamento-malhas}
-    \caption{Linhas de mapeamento cortando múltiplas faces.}\label{fig-linemap-malhas}
-  \end{center}
-\end{figure}
-
-Na Figura~\ref{fig-linemap-parts} estão evidenciadas as partes que formam a linha de mapeamento. Como já dito, cada parte está associada à malha de um região diferente.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=250pt]{images/fig-lm-parts}
-    \caption{Partes de uma linha de mapeamento}\label{fig-linemap-parts}
-  \end{center}
-\end{figure}
-
-A Figura~\ref{fig-lm-topo} mostra a identificação dos pontos em uma parte de linha de mapeamento e a Tabela~\ref{tab-lm-topo} exibe quais informações topológicas são salvas de cada ponto.
-
-\begin{figure} [hbt!]
-  \begin{center}
-    \includegraphics[width=260pt]{images/fig-lm-topo}
-    \caption{Informações topológicas da malha mapeadas para a linha de mapeamento.}\label{fig-lm-topo}
-  \end{center}
-\end{figure}
-
-\input{tables/table-lm-topo}
-
-\section{Derivações das Linhas de Mapeamento}
-
-As linhas de mapeamento têm também casos de usos mais especializados dentro do Sistema Recon, como na criação e representação de poços. Poços são criados semelhantemente às linhas ou por importação de modelos com poços em 3D. Possuem característica de serem linhas quase verticalizadas e possuem uma finalidade mais limitada. Nos casos de poços 3D, a linha correspondente ao poço é apenas uma projeção do objeto tridimensional no plano da seção.
-
-Há o uso nas chamadas linhas de interseção (\textit{CrossLine}) que servem para identificar e mapear as linhas de cruzamento entre seções no espaço tridimensional do multisseções, com isso é possível ter uma noção do que ocorre com seções transversais mesmo estando no domínio bidimensional da restauração.
-
-Por último, foi criada a \textit{linha de mapeamento do modelo} ou \textit{LMModel}, cujo objetivo é servir como um mapeamento das linhas que representam os elementos geológicas ao longo da restauração do modelo. Assim, é possível ter um acompanhamento do que ocorre com as entidades geológicas na seção, além de poder verificar como se deu a movimentação de cada ponto de horizonte, falha ou topo de sal ao longo da restauração.
-
-As \textit{LMModels} são linhas de mapeamento baseadas no pontos do contorno da malha das regiões, ou seja, as partes que a formam possuem apenas pontos de mapeamento do tipo nó.
-
-Pelo objetivo proposto, as \textit{LMModels} são linhas de mapeamento que tomam a geometria das entidades geológicas como entrada, então não há necessidade de criar uma linha-guia como é feita na linha de mapeamento original, a própria linha de horizonte, falha, ou topo de sal é usada como linha-guia.
-
-Conforme o elemento geológico base, há um tipo de \textit{LMModel} e informações adicionais armazenadas:
-
-\renewcommand{\labelitemi}{•}
-\begin{itemize}
-  \item Horizonte: é guardado a informação de idade deste horizonte.
-  \item Falha: o identificador da falha é o dado armazenado.
-  \item Topo de sal: apenas uma referência direta à linha original.
-\end{itemize}
-
-Todas essas informações  geológicas atreladas ao mapeamento topológico das \textit{LMModels}, quando em conjunto com as diversas seções geológicas de um modelo multisseções, são o que fazem dela o principal dado para a realização de um mapeamento de informações de evolução do modelo tridimensional ao longo do tempo, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
-
-A maneira de trabalhar com \textit{LMModels} é com a organização delas em estruturas de dados que formam subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte), o que será visto adiante. Com isso é obtido o conjunto de informações que representam a restauração das seções no Sistema Recon.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=350pt]{images/fig-lmmodel-example}
-    \caption{\textit{LMModels} em uma seção geológica no Sistema Recon}\label{fig-lmmodel-example}
-  \end{center}
-\end{figure}
-
-A Figura~\ref{fig-lmmodel-example} mostra \textit{LMModels} de dois horizontes diferentes. A representação delas dentro do Sistema Recon é feita com uma linha de maior espessura que as linhas de horizonte, no entanto, os pontos são os mesmos do contorno da malha. Perceba na Figura~\ref{fig-lmmodel-mesh-diff} a diferença entre a linha de horizonte e a \textit{LMModel}, evidenciando o contorno da malha entre as duas regiões.
-
-\begin{figure} [h!]
-  \begin{center}
-    \includegraphics[width=275pt]{images/fig-lmmodel-mesh-diff}
-    \caption{Diferença entre \textit{LMModel} e a linha de horizonte e uma seção geológica no Sistema Recon}\label{fig-lmmodel-mesh-diff}
-  \end{center}
-\end{figure}
-
-A próxima ilustração na Figura~\ref{fig-lmmodel-ms} apresenta as \textit{LMModels} de dois horizontes em um modelo multisseções. É esse conjunto de informações no ambiente tridimensional que será usado como parâmetro para o mapeamento de superfícies no Sistema Recon.
-
-\begin{figure} [h!]
-  \begin{center}
-    \includegraphics[width=300pt]{images/fig-lmmodel-ms}
-    \caption{\textit{LMModels} no ambiente multisseções do Sistema Recon}\label{fig-lmmodel-ms}
-  \end{center}
-\end{figure}
-
 \section{Mapeamento de superfícies}
 
-\subsection{Metodologia}
+\subsection{Metodologia}\label{surface-mapping-metodology}
 
 Na seção anterior foi apresentado um tipo de mapeamento bidimensional que é usado dentro da restauração de seções do Sistema Recon. Aqui será mostrado o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante da restauração das seções geológicas. A metodologia a seguir foi apresentada por Müller\cite{Muller} para tratar a deformação de superfícies com o uso de restrições presentes no domínio da mesma e através de minimização de uma energia.
 
@@ -155,7 +27,7 @@ Uma RBF é representada pela combinação linear de kernels radialmente simétri
   &\boldsymbol{d}(x)=\sum_{j=1}^m \boldsymbol{w}_j\varphi_j(\boldsymbol{x})+\sum_{k=1}^4 \boldsymbol{\lambda}_k\pi_k(\boldsymbol{x})\label{eq-surf-rbf}
 \end{align}
 
-De volta ao início do problema, o interesse é solucionar a PDE tri-harmônica $\Delta^3\boldsymbol{d}(x)=0$, para isso é preciso escolher uma função kernel que seja solução fundamental dessa equação. Foi mostrado por Botsch\cite{Botsch} que $\varphi(r)=r^3$ é uma solução fundamental que leva para uma superfície de variação mínima. Para solução baseada em superfície, essa minimização deve ser obtida de forma explícita. Os coeficientes $\boldsymbol{w}_j$ e $\boldsymbol{\lambda}_k$ são obtidos com a solução de um sistema linear (Eq.~\ref{eq-ls-surf-deformer}) de equações $(m+4)\times(m+4)$ desde que se satisfaça a interpolação dos $m$ pontos de controle com as restrições impostas nas posições $x_j=s_j$.\cite{Muller}
+De volta ao início do problema, o interesse é solucionar a PDE tri-harmônica $\Delta^3\boldsymbol{d}(x)=0$. Para isso é preciso escolher uma função kernel que seja solução fundamental dessa equação. Foi mostrado por Botsch\cite{Botsch} que $\varphi(r)=r^3$ é uma solução fundamental que leva para uma superfície de variação mínima. Para solução baseada em superfície, essa minimização deve ser obtida de forma explícita. Os coeficientes $\boldsymbol{w}_j$ e $\boldsymbol{\lambda}_k$ são obtidos com a solução de um sistema linear (Eq.~\ref{eq-ls-surf-deformer}) de equações $(m+4)\times(m+4)$ desde que se satisfaça a interpolação dos $m$ pontos de controle com as restrições impostas nas posições $x_j=s_j$.\cite{Muller}
 
 \begin{align}
   \begin{bmatrix}
@@ -223,6 +95,8 @@ O gráfico da Figura~\ref{fig-eg-surf-deformer-3} a seguir destaca o campo de de
  
 A metodologia mostrada anteriormente é capaz de realizar a deformação de superfície mediante conhecimento da posição inicial da mesma e também de informação de movimentação de pontos de controle, pontos estes que devem fazer parte do domínio da superfície. Desse modo, no contexto de restauração de seções no Sistema Recon, o mapeamento de superfície é obtido com a deformação desta superfície de acordo com parâmetros provenientes das seções, em outras palavras, o mapeamento de superfície usa dados das seções como pontos de controle para se conseguir um comportamento equivalente no ambiente tridimensional. Essa é forma sucinta de dizer a maneira como o o mapeamento de superfície é feito. Nesta subseção serão apresentadas as etapas que permitem o uso do deformador de superfícies com o intuito de se obter o mapeamento de superfícies.
 
+Importante salientar que o ideal é que após a seção ter sido criada ocorra o mínimo de edição inicial nas linhas geradas. Isso é importante pois quanto melhor definida esteja a seção após o fatiamento, mais coerente com as superfícies tridimensionais estará o modelo como um todo. Edições nas linhas são comuns de acontecerem para que seja possível realizar a restauração da seção. Entretanto, em caso de edições maiores ocorrerá o descasamento entre seção e superfícies e, nesta etapa, poderão haver incongruências.
+
 \subsubsection{\textit{LMModels}}
 
 O objetivo aqui é mostrar como obter informação de deslocamento dos horizontes entre etapas de restauração de uma seção a partir de \textit{LMModels}. Esse deslocamento é o dado principal vindo das seções para o mapeamento de superfície, o deslocamento de pontos de horizonte; horizontes estes que coincidem com a superfície tridimensional, uma vez que as seções geológicas são cortes transversais planos de um conjunto de superfícies tridimensionais.
@@ -258,9 +132,9 @@ Para exemplificar melhor este problema, considere a seção geológica da Figura
   \end{center}
 \end{figure}
 
-Para que seja feito o cálculo de deslocamento entre as \textit{LMModels} destes cenários é necessário uma interpolação entre as malhas, como já dito. Essa interpolação vai dizer quais os pontos da \textit{LMModel} do cenário origem correspondem no cenário 2 e assim ter dados para encontrar informações de deslocamento de uma etapa a outra.
+Para que seja feito o cálculo de deslocamento entre as \textit{LMModels} destes cenários é necessário uma interpolação entre as malhas, como já dito. Essa interpolação irá fornecer os pontos no cenário 2 que correspondem àqueles da \textit{LMModel} no cenário origem e assim ter dados para encontrar informações de deslocamento de uma etapa a outra.
 
-Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} tomará como base para interpolação aquela criada no cenário origem, já que é um cenário mais restrito para edições após o início da restauração, além de um outro motivo que será apresentado adiante. Um esquema mais explicativo é visto na Figura~\ref{fig-lmm-interp2}.
+Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} tomará como base para interpolação aquela criada no cenário origem, já que é um cenário mais restrito para edições após o início da restauração, além de um outro motivo que será apresentado adiante. Um esquema ilustrativo é visto na Figura~\ref{fig-lmm-interp2}.
 
 \begin{figure} [H]
   \begin{center}
@@ -269,7 +143,7 @@ Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} 
   \end{center}
 \end{figure}
 
-Ao se repetir esta ação para todas as seções que compõem o modelo, é possível criar uma estrutura de dados multidimensional com todos os pontos geométricos que formam as \textit{LMModels} a fim de facilitar o uso dessas informações. De maneira sucinta esta estrutura é apresentada na Figura~\ref{fig-lmm-data-structure} como sendo análoga a uma matriz de 3 dimensões e cada elemento é um conjunto de dois pontos cartesianos\footnote{os pontos nas malhas da seção estão em coordenadas bidimensionais, no entanto, ao criar esta estrutura de dados, todos os pontos são convertidos para coordenadas espaciais \textit{x}, \textit{y} e \textit{z} com base nas coordenadas UTM onde a seção se localiza.} e um dado booleano que indica se houve movimentação quando a diferença entre os pontos \textit{current} e \textit{next} é maior que uma dada tolerância.
+Ao se repetir esta ação para todas as seções que compõem o modelo, é possível criar uma estrutura de dados multidimensional com todos os pontos geométricos que formam as \textit{LMModels} a fim de facilitar o uso dessas informações. De maneira sucinta, esta estrutura é apresentada na Figura~\ref{fig-lmm-data-structure} como sendo análoga a uma matriz de 3 dimensões onde cada elemento é um conjunto de dois pontos cartesianos\footnote{os pontos nas malhas da seção estão em coordenadas bidimensionais, no entanto, ao criar esta estrutura de dados, todos os pontos são convertidos para coordenadas espaciais \textit{x}, \textit{y} e \textit{z} com base nas coordenadas UTM onde a seção se localiza.} e um dado booleano que indica se houve movimentação quando a diferença entre os pontos \textit{current} e \textit{next} é maior que uma dada tolerância.
 
 \begin{figure} [H]
   \begin{center}
@@ -282,11 +156,11 @@ Importante ressaltar que é preciso ter o modelo já com todas as seções resta
 
 \subsubsection{\textit{Remesh} da superfície}
 
-Na parte sobre a metodologia do deformador de superfície, apresentada anteriormente, é apontado a necessidade de haver pontos de controle pertencentes à superfície, pontos estes que precisam ter sua posição final conhecida. Pois bem, uma parte destes pontos de controle são as \textit{LMModels}, ou melhor, os pontos que representam o histórico de movimentação das \textit{LMModels}.
+No item~\ref{surface-mapping-metodology} foi apontada a necessidade de haver pontos de controle pertencentes à superfície, pontos estes que precisam ter sua posição final conhecida. Pois bem, uma parte destes pontos de controle são as \textit{LMModels}, ou melhor, os pontos que representam o histórico de movimentação das \textit{LMModels}.
 
 A interseção de um plano transversal a um conjunto de superfícies geológicas tridimensionais é o que produz a seção geológica, onde cada linha de horizonte é a representação de uma parte da superfície no plano bidimensional. Não por acaso, as \textit{LMModels} são mapeamentos dessas linhas de horizonte e, portanto, também mapeiam a superfície. No entanto, os pontos que formam a \textit{LMModel} foram gerados com base nas malhas de triângulos da seção e não possuem qualquer relação com os pontos que estão na superfície.
 
-Com a finalidade de resolver esse problema é apresentado nesta subseção a necessidade de um \textit{remesh} (regeração) da malha que forma a superfície, cujo objetivo é produzir uma nova que contenha os pontos que formam as \textit{LMModels} das seções geológicas.
+Com a finalidade de resolver esse problema é apresentado nesta subseção a necessidade de um \textit{remesh} (regeração) da malha que forma a superfície, cujo objetivo é produzir uma nova malha que contenha os pontos que formam as \textit{LMModels} das seções geológicas.
 
 O \textit{remesh} é realizado com auxílio do algoritmo de regeração de malhas de superfícies considerando curvaturas proposto por Miranda \textit{et al.}\cite{Miranda}. Os dados de entrada são as linhas de borda da superfície, uma malha de suporte representada por três funções generalizadas, criadas a partir da malha de suporte e um conjunto de pontos de restrição no domínio da superfície que, após o \textit{remesh} deverão fazer parte da malha.
 
@@ -295,8 +169,8 @@ As funções generalizadas são a maneira como a malha de suporte é representad
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
   \item 1ª função: recebe um ponto da superfície como entrada e devolve o tamanho característico da aresta de um triângulo equilátero ideal na posição desse ponto. O cálculo desse tamanho envolve o uso de uma estrutura de dados \textit{octree}\footnote{Uma estrutura de árvore onde cada nó pode possuir oito filhos e representa a subdivisão do espaço em oito octantes\cite{Donald}.} que fornece um refinamento de tamanho de acordo com a curvatura da superfície.
-  \item 2ª função: calcula o ponto ideal que irá formar um novo triângulo de acordo com uma dada aresta no processo de contração de contorno de geração da malha. Além da aresta, são passados a função a altura do triângulo e um vetor unitário na direção perpendicular à aresta que será usado para definir o plano de interseção com a superfície e assim encontrar o ponto ideal.
-  \item 3ª função: usada para melhoria na malha após a suavização. Recebe um ponto qualquer e retorna o ponto mais próximo pertencente à malha da superfície de suporte. Com a suavização, alguns nós mudam de lugar e podem acabar fora da superfície, aí entra o uso desta função para trazer de volta os pontos distantes. 
+  \item 2ª função: calcula o ponto ideal que irá formar um novo triângulo de acordo com uma dada aresta no processo de contração de contorno de geração da malha. Além da aresta, são passados à função a altura do triângulo e um vetor unitário na direção perpendicular à aresta que será usado para definir o plano de interseção com a superfície e assim encontrar o ponto ideal.
+  \item 3ª função: usada para melhoria na malha após a suavização. Recebe um ponto qualquer e retorna o ponto mais próximo pertencente à malha da superfície de suporte. Com a suavização, alguns nós mudam de lugar e podem acabar fora da superfície, ocorrendo isso, esta terceira função é utilizada para trazer de volta os pontos distantes. 
 \end{itemize}
 
 O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª funções para determinar a primeira versão da nova malha. Após isso começa a etapa de melhoria com suavização e em paralelo, o uso da 3ª função\cite{Miranda}. O resultado final é uma malha com mais elementos em regiões de alta curvatura, como mostra a Figura~\ref{fig-remesh} onde as imagens (a) e (b) são as superfícies de suporte e as imagens (c) e (d) suas versões regeradas, respectivamente.
@@ -308,13 +182,13 @@ O algoritmo utiliza avanço de fronteira na primeira fase e faz uso da 1ª e 2ª
   \end{center}
 \end{figure}
 
-Os pontos de restrição usados para a regeração da malha de superfície são as \textit{LMModels} da seção, portanto, passam a ser os pontos de controle da superfície geológica. Uma vez que os pontos que formam as \textit{LMModels} são todos iguais em número, pois tomam o cenário origem da \textit{EtapaMS} inicial e são interpolações com os cenários seguintes, o \textit{remesh} pode ser feito nesta \textit{EtapaMS} inicial e essa malha ser mantido para todo o restante do processo.
+Os pontos de restrição usados para a regeração da malha de superfície são as \textit{LMModels} da seção, portanto, passam a ser os pontos de controle da superfície geológica. Uma vez que os pontos que formam as \textit{LMModels} são todos iguais em número, pois tomam o cenário origem da \textit{EtapaMS} inicial e são interpolações com os cenários seguintes, o \textit{remesh} pode ser feito nesta \textit{EtapaMS} inicial e essa malha ser mantida para todo o restante do processo.
 
 De uma \textit{EtapaMS} à outra, com as \textit{LMModels}, é possível ter o deslocamento das linhas de horizontes, por exemplo. Sendo os pontos das \textit{LMModels} nós da malha da superfície, esses nós passam a ter informação de posição final definida. Sendo assim, já seria possível realizar a deformação da superfície conforme metodologia já apresentada, pois o principal requisito está satisfeito. No entanto, se tratando do mapeamento de uma superfície que, num modelo geológico de multisseções, precisa estar coerente com o que ocorre nas seções, mais algumas restrições precisam ser impostas que serão vistas nas subseções a seguir.
 
 \subsubsection{Definição das bordas origem/destino}
 
-Na restauração de seções um dos principais objetivos é a eliminação do rejeito de falha, principalmente se tratando de modelos de tectônica distensiva onde há a presença de blocos divididos por essas falhas\cite{Santi}. Nestes modelos, geralmente se quer movimentar um bloco sobre uma linha de falha até um certo ponto de modo que a camada do topo esteja alinhada com a sua correspondente no bloco vizinho, como na Figura~\ref{fig-section-horizon-restored}, onde é mostrada uma seção com um horizonte restaurado com o uso da transformação \quotes{move sobre falha}.
+Na restauração de seções um dos principais objetivos é a eliminação do rejeito de falha, principalmente se tratando de modelos de tectônica distensiva onde há a presença de blocos divididos por essas falhas\cite{Santi}. Nestes modelos, geralmente se quer movimentar um bloco sobre uma linha de falha até um certo ponto, de modo que a camada do topo esteja alinhada com a sua correspondente no bloco vizinho. A Figura~\ref{fig-section-horizon-restored} mostra uma seção com um horizonte restaurado com o uso da transformação \quotes{move sobre falha}.
 
 \begin{figure} [H]
   \begin{center}
@@ -325,7 +199,7 @@ Na restauração de seções um dos principais objetivos é a eliminação do re
 
 Esta ação de movimentar uma porção da seção até um certo limite é um comportamento necessário no mapeamento de superfícies, isto é, o mapeamento de superfícies precisa respeitar um limite de movimentação análogo àquele adotado na seção.
 
-Em geral, no uso do Sistema Recon, uma \textit{EtapaMS} representa um marco geológico ocorrido em todas as seções do modelo simultaneamente. O que para este trabalho convencionou-se que seja uma restauração do rejeito de uma falha ou uma descompactação de topo restaurado. Logo, para o mapeamento de superfícies, é necessário que cada \textit{EtapaMS} represente a restauração de uma falha (ou descompactação) ocorrida ao mesmo tempo em todas seções onde tal falha atravesse. Pois como as seções, as superfícies de horizontes também estão com as falhas cruzando seu domínio, como a Figura~\ref{fig-surfaces-horizon-faults} mostra.
+Em geral, no uso do Sistema Recon, uma \textit{EtapaMS} representa um marco geológico ocorrido em todas as seções do modelo simultaneamente. O que para este trabalho convencionou-se que seja uma restauração do rejeito de uma falha ou uma descompactação de topo restaurado. Logo, para o mapeamento de superfícies, é necessário que cada \textit{EtapaMS} represente a restauração de uma falha (ou descompactação) ocorrida ao mesmo tempo em todas seções onde tal falha atravesse. Pois como nas seções, as superfícies de horizontes também estão com as falhas cruzando seu domínio, como a Figura~\ref{fig-surfaces-horizon-faults} mostra.
 
 \begin{figure} [H]
   \begin{center}
@@ -334,9 +208,9 @@ Em geral, no uso do Sistema Recon, uma \textit{EtapaMS} representa um marco geol
   \end{center}
 \end{figure}
 
-Desse modo, no mapeamento de superfícies, analogamente à movimentação de bloco ocorrida nas seções ao longo de uma linha de falha, é necessário indicar quais bordas da superfície de horizonte serão marcadas como limites de movimentação ou bordas de origem e destino, uma vez que um trecho de borda irá de encontro a outro na região de falha. Essa indicação servirá ainda para auxiliar na definição da direção de movimentação na deformação da superfície.
+Como forma de definir limites de movimentação na deformação da superfície, pode-se indicar bordas de origem e destino da superficie. Esse é um procedimento análogo à movimentação de bloco ocorrida nas seções ao longo de uma falha. Essa indicação servirá ainda para auxiliar na definição da direção de movimentação das partes envolvidas em uma dada \textit{EtapaMS} na deformação da superfície.
 
-Este mapeamento de superfície é feito passo a passo conforme o número de \textit{EtapasMS} do modelo. Com a \textit{EtapaMS} vem a informação de qual falha está sendo restaurada\footnote{Para o caso de descompactação, a etapa de selecionar bordas não é necessária.}, daí então é necessário selecionar e marcar as bordas da superfície na região da falha para assim guiar a direção e o limite de movimentação durante a deformação da mesma.
+Este mapeamento de superfície é feito passo a passo conforme o número de \textit{EtapasMS} do modelo. Com a \textit{EtapaMS} vem a informação de qual falha está sendo restaurada\footnote{Para o caso de descompactação, a etapa de selecionar bordas não é necessária.}, com isso é necessário selecionar e marcar as bordas da superfície na região da falha para assim guiar a direção e o limite de movimentação durante a deformação da mesma.
 
 O processo em mais detalhes pode ser explicado com o auxílio do exemplo abaixo de um modelo geológico simplificado, na Figura~\ref{fig-select-borders-1}, onde há uma superfície de horizonte, uma falha, 3 seções transversais e cuja \textit{EtapaMS} corrente é a de restauração dessa falha.
 
@@ -347,7 +221,7 @@ O processo em mais detalhes pode ser explicado com o auxílio do exemplo abaixo 
   \end{center}
 \end{figure}
 
-Neste caso, tal qual ocorre nas seções, o pedaço de superfície de horizonte à direita na imagem é quem deve se movimentar e ir de encontro à parte que está do lado esquerdo. Logo, o pedaço à direita possui a borda de origem e o da esquerda, a borda de destino, como bem mostra a Figura~\ref{fig-select-borders-2}.
+Neste caso, tal qual ocorre nas seções, o pedaço de superfície de horizonte à direita na imagem é quem deve se movimentar e ir de encontro à parte que está do lado esquerdo. Logo, o pedaço à direita possui a borda de origem e o da esquerda, a borda de destino, como mostra a Figura~\ref{fig-select-borders-2}.
 
 \begin{figure} [H]
   \begin{center}
@@ -374,13 +248,13 @@ A fim de dar mais detalhes sobre como o algoritmo de cálculo das direções fun
   \end{center}
 \end{figure}
 
-Em (a) estão representadas as bordas origem e destino e também as seções geológicas que cortam essas bordas. O primeira parte (b) consiste em calcular o vetor unitário que tem a mesma inclinação das seções, isso é feito com dados dos pontos de interseção da seção com as superfícies de falha na região das borda. Com as direções das seções definidas, agora se inicia o cálculo da direção dos pontos da superfície na borda de origem (c), cada ponto à esquerda da primeira seção recebe a mesma direção desta. Para pontos de borda que estão entre seções (d), a direção é calculada como uma combinação linear das direções das seções vizinhas, com base na distância do ponto até a interseção destas seções com a borda de origem. Prossegue-se com o cálculo de todas as direções dos pontos de borda (e) e assim como nos pontos à esquerda da primeira seção, os pontos que estão logo ao lado direito da última seção recebem a direção desta. Por último, em (f) são calculados os pontos de destino dos pontos da borda de origem, com o vetor direção, é traçado uma reta até interceptar (ou não) a poligonal formada pela borda de destino, caso haja a interseção, esse ponto é salvo como destino do ponto da borda de origem.
+Em (a) estão representadas as bordas origem e destino e também as seções geológicas que cortam essas bordas. A primeira parte (b) consiste em calcular o vetor unitário que tem a mesma inclinação das seções, isso é feito com dados dos pontos de interseção da seção com as superfícies de falha na região das borda. Com as direções das seções definidas, agora se inicia o cálculo da direção dos pontos da superfície na borda de origem (c), cada ponto à esquerda da primeira seção recebe a mesma direção desta. Para pontos de borda que estão entre seções (d), a direção é calculada como uma combinação linear das direções das seções vizinhas, com base na distância do ponto até a interseção destas seções com a borda de origem. Prossegue-se com o cálculo de todas as direções dos pontos de borda (e) e assim como nos pontos à esquerda da primeira seção, os pontos que estão logo ao lado direito da última seção recebem a direção desta. Por último, em (f) são calculados os pontos de destino dos pontos da borda de origem, com o vetor direção, é traçado uma reta até interceptar (ou não) a poligonal formada pela borda de destino, caso haja a interseção, esse ponto é salvo como destino do ponto da borda de origem.
 
-E assim como os pontos das \textit{LMModels}, cada ponto da borda de origem que encontrar um correspondente na borda de destino da superfície passa a ser um ponto de controle, pois possui uma posição final definida, que irá auxiliar na deformação da superfície ao ser executado o mapeamento.
+E assim como os pontos das \textit{LMModels}, cada ponto da borda de origem que encontrar um ponto correspondente na borda de destino da superfície passa a ser um ponto de controle, pois possui uma posição final definida, que irá auxiliar na deformação da superfície ao ser executado o mapeamento.
 
 Importante salientar que a definição das bordas origem e destino só é requerida para a superfície que está no topo do modelo pois a restrição na movimentação se baseia em unir partes do horizonte do topo, assim como ocorre nas seções.
 
-\subsubsection{Definição de movimentação das amostras}
+\subsubsection{Definição de movimentação dos nós da superfície}
 
 Outra característica presente na restauração de seções com falhas distensivas é que, conforme a metodologia de restauração, o bloco alto permanece parado enquanto o bloco baixo se movimenta deslizando-se pela linha de falha (Figura~\ref{fig-hang-foot-wall}).
 
@@ -391,11 +265,11 @@ Outra característica presente na restauração de seções com falhas distensiv
   \end{center}
 \end{figure}
 
-Este é um caso comum que ocorre no processo de restauração, onde quase sempre uma parte da seção se movimenta em relação a uma parte que fica imóvel. E assim como discutido na subseção anterior, este comportamento também precisa ser levado para o mapeamento de superfície a fim de manter a coerência no ambiente tridimensional, uma vez que tudo trata-se do mesmo modelo.
+Este é um caso comum que ocorre no processo de restauração, onde quase sempre uma parte da seção se movimenta em relação a uma parte que fica imóvel. E assim como discutido na subseção anterior, este comportamento também precisa ser levado para o mapeamento de superfície a fim de manter a coerência no ambiente tridimensional, uma vez que trata-se do mesmo modelo.
 
 Na deformação da superfície, na definição do mapeamento da mesma, é preciso indicar, a cada etapa, quais pontos da superfície irão se movimentar e quais permanecerão imóveis. De imediato, é correto afirmar que os pontos das \textit{LMModels} que possuem posição final diferente da posição inicial e também os pontos da borda de origem que têm um correspondente na borda de destino irão se movimentar; também se pode garantir que os pontos das \textit{LMModels} que não mudam de uma \textit{EtapaMS} para outra e os pontos da borda de destino ficarão imóveis.
 
-Todos estes pontos fazem parte da malha da superfície (após o \textit{remesh}) e são eles os primeiros a receber essa marcação de \quotes{move} ou \quotes{não move}. Para o restante dos pontos a marcação é feita com o auxílio de um algoritmo de \textit{breadth-first search} (BFS) ou busca em largura. Essa BFS roda sobre um grafo construído com base na malha da superfície. 
+Todos estes pontos fazem parte da malha da superfície (após o \textit{remesh}) e são eles os primeiros a receber essa marcação de \quotes{move} ou \quotes{não move}. Para o restante dos pontos a marcação é feita com o auxílio de um algoritmo de \textit{breadth-first search} (BFS) ou busca em largura~\cite{Nilsson}. Essa BFS roda sobre um grafo construído com base na malha da superfície. 
 
 Para criar esse grafo, ocorre uma iteração por todos as arestas da malha da superfície para coleta dos índices de seus dois vértices, $v_i$ e $v_j$. Cada vértice no grafo possui uma lista de outros vértices que são seus adjacentes. Na lista do primeiro vértice $v_i$ é adicionado o segundo vértice $v_j$. Assim, no grafo, cada nó possui uma lista de seus nós adjacentes.
 
@@ -421,11 +295,11 @@ Neste caso, o primeiro nível é formado por todos os pontos inicialmente marcad
 
 \subsection{Exemplos e resultados}
 
-Neste momento serão apresentados alguns exemplos para demonstrar, na prática, o mapeamento de superfícies com base na restauração de seções que está aqui sendo discutido. Todo o processo foi feito em uma versão experimental do Sistema Recon onde os desenvolvimentos deste trabalho têm sido implementados.
+Neste item serão apresentados alguns exemplos para demonstrar o mapeamento de superfícies com base na restauração de seções. Todo o processo foi feito em uma versão experimental do Sistema Recon onde os desenvolvimentos deste trabalho têm sido implementados.
 
 \subsubsection{Exemplo: modelo geológico simplificado}
 
-Como já apresentado na Figura~\ref{fig-select-borders-1}, este é um modelo produzido manualmente que serviu para a experimentação na fase inicial do desenvolvimento desta pesquisa. Ele, de forma mais completa, apresenta três seções paralelas, dois horizontes e uma falha (Figura~\ref{fig-example-1-1}). Também possui apenas uma etapa de restauração. 
+Como já apresentado na Figura~\ref{fig-select-borders-1}, este é um modelo produzido manualmente que serviu para a experimentação na fase inicial do desenvolvimento deste trabalho. Ele, de forma mais completa, apresenta três seções paralelas, dois horizontes e uma falha (Figura~\ref{fig-example-1-1}). Também possui apenas uma etapa de restauração. 
 
 \begin{figure} [H]
   \begin{center}
@@ -443,7 +317,7 @@ O modelo já se encontra com suas seções restauradas, com isso então pode-se 
   \end{center}
 \end{figure}
 
-\textit{LMModels} criadas, é hora de realizar o \textit{remesh} das superfícies para adicionar os pontos das \textit{LMModels} como nós da malha. A Figura~\ref{fig-example-1-3} mostra as malhas das superfícies de horizonte da parte de cima do modelo, evidenciando ainda os pontos das \textit{LMModels} que agora deverão fazer parte da malha como a imagem à direita mostra.
+Após a criação das \textit{LMModels} realiza-se o \textit{remesh} das superfícies para adicionar os pontos das \textit{LMModels} como nós da malha. A Figura~\ref{fig-example-1-3} mostra as malhas das superfícies de horizonte da parte de cima do modelo, evidenciando ainda os pontos das \textit{LMModels} que agora deverão fazer parte da malha como a imagem à direita mostra.
 
 \begin{figure} [H]
   \begin{center}
@@ -452,7 +326,7 @@ O modelo já se encontra com suas seções restauradas, com isso então pode-se 
   \end{center}
 \end{figure}
 
-Agora que o \textit{remesh} foi feito, pode partir para a definição das bordas origem e destino da superfície de horizonte do topo, que é são aquelas que deverão se unir ao fim da deformação aplicada à superfície. Na Figura~\ref{fig-example-1-4} é possível notar os nós da borda dos pedaços de superfície do topo, dentre esses nós estão marcados aqueles que formam o trecho de borda de destino e origem, também sinalizados na imagem.
+Logo depois do \textit{remesh}, parte-se para a definição das bordas origem e destino da superfície de horizonte do topo, que são aquelas que deverão se unir ao fim da deformação aplicada à superfície. Na Figura~\ref{fig-example-1-4} é possível notar os nós da borda dos pedaços de superfície do topo, dentre esses nós estão marcados aqueles que formam o trecho de borda de destino e origem, também sinalizados na imagem.
 
 \begin{figure} [H]
   \begin{center}
@@ -461,7 +335,7 @@ Agora que o \textit{remesh} foi feito, pode partir para a definição das bordas
   \end{center}
 \end{figure}
 
-A etapa seguinte é então o cálculo das direções dos pontos de borda e também a definição dos pontos que se movem ou não da malha da superfície. Esses dois passos são feitos após a confirmação da escolha das bordas, de forma automática. Finalmente, é chamado o algoritmo do deformador de superfícies. A próxima imagem na Figura~\ref{fig-example-1-5} mostra as superfícies deformadas segundo a restauração das seções, à direita são vistos, em destaque, os pontos da superfície que foram marcados como \quotes{move}, em verde e \quotes{não move}, em vermelho.
+Na etapa seguinte, calculam-se as direções dos pontos de borda e também a definição dos pontos que se movem ou não da malha da superfície. Esses dois passos são feitos após a confirmação da escolha das bordas, de forma automática. Finalmente, é chamado o algoritmo do deformador de superfícies. A próxima imagem na Figura~\ref{fig-example-1-5} mostra as superfícies deformadas segundo a restauração das seções. À direita são vistos, em destaque, os pontos da superfície que foram marcados como \quotes{move}, em verde e \quotes{não move}, em vermelho.
 
 \begin{figure} [H]
   \begin{center}
@@ -492,7 +366,7 @@ Já a Figura~\ref{fig-example-2-2} exibe as seções geológicas numa vista trid
   \end{center}
 \end{figure}
 
-Como já se sabe, a primeira ação para iniciar o mapeamento de superfícies é a criação das \textit{LMModels} a partir das seções restauradas e daí criar a estrutura de dados como apresentado na Figura~\ref{fig-lmm-data-structure}. As \textit{LMModels} das seções no ambiente multisseção do Sistema Recon são apresentadas na Figura~\ref{fig-example-2-3}.
+Como já se sabe, a primeira ação para iniciar o mapeamento de superfícies é a criação das \textit{LMModels} a partir das seções restauradas e após isso criar a estrutura de dados como apresentado na Figura~\ref{fig-lmm-data-structure}. As \textit{LMModels} das seções no ambiente multisseção do Sistema Recon são apresentadas na Figura~\ref{fig-example-2-3}.
 
 \begin{figure} [H]
   \begin{center}
@@ -519,7 +393,7 @@ A primeira \textit{EtapaMS} possui os cenários das seções que restauram a fal
   \end{center}
 \end{figure}
 
-Com a primeira falha já definida, é possível passar para a fase de seleção das bordas origem e destino na superfície do topo. São selecionadas trechos de bordas de pedaços diferentes da superfície, pois a falha 7 está entre tais pedaços. As bordas origem e destino dessa primeira \textit{EtapaMS} podem ser vistas na Figura~\ref{fig-example-2-6}.
+Com a primeira falha já definida, é possível passar para a fase de seleção das bordas origem e destino na superfície do topo. São selecionados trechos de bordas de pedaços diferentes da superfície, pois a falha 7 está entre tais pedaços. As bordas origem e destino dessa primeira \textit{EtapaMS} podem ser vistas na Figura~\ref{fig-example-2-6}.
 
 \begin{figure} [H]
   \begin{center}
@@ -528,7 +402,7 @@ Com a primeira falha já definida, é possível passar para a fase de seleção 
   \end{center}
 \end{figure}
 
-Conforme apresentado anteriormente, a fase seguinte é o cálculo dos pontos destino dos nós da borda de origem, daí então faz-se a definição, para cada ponto da superfície, se deve ou não se mover. Com tudo isso pronto, pode-se executar o deformador de superfícies e o resultado (antes e depois) pode ser conferido na Figura~\ref{fig-example-2-7}.
+Conforme apresentado anteriormente, a fase seguinte é o cálculo dos pontos destino dos nós da borda de origem. Faz-se a definição, para cada ponto da superfície, do atributo \quotes{move} ou \quotes{não move}. Após isso pode-se executar o deformador de superfícies e o resultado (antes e depois) pode ser conferido na Figura~\ref{fig-example-2-7}.
 
 \begin{figure} [H]
   \begin{center}
@@ -578,14 +452,15 @@ Este processo é repetido para cada uma das \textit{EtapasMS} do modelo, onde se
 
 A \textit{EtapaMS} seguinte seria com a ocorrência de uma descompactação da camada do topo, o que \quotes{alivia} a camada de baixo fazendo com que haja um soerguimento do horizonte mais antigo. Para o mapeamento, as \textit{LMModels} irão trazer essa informação e, consequentemente, todos os pontos sofrerão um deslocamento, logo, todos os nós da superfície de baixo serão marcados como \quotes{move}. Daí em diante, repete-se o processo de escolha de bordas conforme a falha da \textit{EtapaMS} corrente, com a diferença de que agora apenas a superfície de baixo existirá no modelo.
 
-Pela visualização do que ocorre com as superfícies de horizonte se deformando a cada passo do conjunto de movimentações ocorrido nas seções, pode-se induzir que este processo, aqui chamado de mapeamento de superfícies, poderia ser nomeado de restauração de superfícies e uma breve discussão a respeito desses termos pode ser conferida no capítulo de conclusão deste trabalho.
+Uma última ilustração do mapeamento de superfícies nesse modelo pode ser vista na Figura~\ref{fig-example-2-13} sob um ponto de vista global.
 
-\section{Mapeamento do Volume}
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-example-2-13}
+    \caption{Mapeamento da superfície do modelo de Camamu.(a) Etapa inicial, (b) falha 7, (c) falha 6, (d) falha 5, (e) falha 4 e (f) falha 5.}\label{fig-example-2-13}
+  \end{center}
+\end{figure}
 
-\subsection{Metodologia}
-
-\subsection{Preparação dos dados}
-
-\subsection{Exemplos e resultados}
+Pela visualização do que acontece com as superfícies de horizonte se deformando a cada passo do conjunto de movimentações ocorrido nas seções, pode-se induzir que este processo, aqui chamado de mapeamento de superfícies, poderia ser nomeado de restauração de superfícies e uma breve discussão a respeito desses termos pode ser conferida no capítulo de conclusão deste trabalho.
 
 
