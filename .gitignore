@@ -10,3 +10,5 @@ texput.log
 *.out
 *.toc
 tiny.synctex.gz
+tiny.fdb_latexmk
+tiny.fls
