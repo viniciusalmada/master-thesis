@@ -1,10 +1,8 @@
 % -*- coding: utf-8; -*-
 
-\chapter{Mapeamento}
-
 \section{Mapeamento do Volume}
 
-O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida no domínio tridimensional do modelo. Cada ponto precisa ter informação sobre a qual camada geológica ele pertence. O mapeamento é feito com a movimentação desses pontos a cada \textit{EtapaMS} de restauração. As fontes da movimentação são os nós das malhas das seções em conjunto dos pontos do mapeamento de superfície.
+O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida no domínio tridimensional do modelo. Cada ponto precisa ter informação sobre a qual camada geológica ele pertence. O mapeamento é feito com a movimentação desses pontos a cada \textit{EtapaMS} de restauração, realizando uma deformação do volume que está discretizado por esses pontos. As fontes da movimentação são os nós das malhas das seções em conjunto dos pontos do mapeamento de superfície.
 
 Nesta seção serão apresentados a metodologia por trás do mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método.
 
@@ -187,7 +185,7 @@ Apesar de todos esses recursos para se gerar os pontos, descartar os de fora do 
 \begin{figure} [H]
   \begin{center}
     \includegraphics[width=200pt]{images/fig-vol-errors}
-    \caption{Erro passivo de ocorrer na geração da nuvem de pontos.}\label{fig-vol-errors}
+    \caption{Erro passível de ocorrer na geração da nuvem de pontos.}\label{fig-vol-errors}
   \end{center}
 \end{figure}
 
@@ -195,8 +193,29 @@ Entretanto, são casos muito isolados e tendem a se reduzir ainda mais conforme 
 
 \subsubsection{Movimentação dos pontos}
 
-Com a nuvem de pontos já criada, pode-se iniciar a movimentação desses pontos segundo o deslocamento apresentado pelas seções e superfícies entre uma \emph{EtapaMS} e outra.
+Com a nuvem de pontos já criada, pode-se iniciar a movimentação desses pontos segundo o deslocamento apresentado pelas seções e superfícies entre uma \emph{EtapaMS} e outra. 
+
+Como já dito, uma \emph{EtapaMS} é um conjunto de cenários, cada um pertencente a uma seção. Pela \emph{EtapaMS} seguinte também é possível fazer a ligação entre um cenário e outro de uma seção. Mais especificamente, pela lista de \emph{EtapasMS} pode-se ter o histórico de cenários da restauração de uma seção.
+
+O objetivo neste passo é ter o deslocamento dos pontos das malhas da seção entre uma \emph{EtapaMS} e a próxima. Este cálculo é feito semelhantemente à interpolação das \emph{LMModels} apresentada no item~\ref{lmmodels-surface-map}. Dessa forma, para cada ponto de malha da seção na \emph{EtapaMS} $A$ vai possuir um correspondente na malha da seção na \emph{EtapaMS} $B$.
+
+Estes pontos são colocados em uma estrutura de dados especial e cada um com um atributo armazenando o seu destino na \emph{EtapaMS} seguinte.
+
+O mesmo é feito para as superfícies após o mapeamento delas, com a vantagem de não precisar de uma interpolação (já que a malha da superfície não muda de uma \emph{EtapaMS} a outra). Para cada ponto da malha de superfície, é registrado seu correspondente na \emph{EtapaMS} seguinte. Os pontos das superfícies são adicionados à mesma estrutura de dados dos pontos das seções.
+
+O último dado depende do tipo de marco geológico ocorrido entre as \emph{EtapaMS}. Em caso de descompactação, só são levados em conta pontos de seções e superfícies excluindo aqueles da camada a ser removida. Já em caso de restauração de falha, é preciso pegar os nós da malha da falha que está sendo restaurada e enviar ao deformador de volume como restrição junto da estrutura de dados com os pontos das seções e superfícies. Um resumo destes passos é apresentado na Figura~\ref{fig-vol-algorithm}.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-vol-algorithm}
+    \caption{Conjunto de dados para se fazer o mapeamento de volume.}\label{fig-vol-algorithm}
+  \end{center}
+\end{figure}
+
+O resultado é uma nuvem de pontos atualizada que será usada no próximo passo do mapeamento e assim ter um volume coerente com o ocorrido nas seções e superfícies.
 
 \subsection{Exemplos e resultados}
+
+
 
 
