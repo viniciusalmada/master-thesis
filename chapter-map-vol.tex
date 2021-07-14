@@ -2,9 +2,9 @@
 
 \section{Mapeamento do Volume}
 
-O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida no domínio tridimensional do modelo. Cada ponto precisa ter informação sobre a qual camada geológica ele pertence. O mapeamento é feito com a movimentação desses pontos a cada \textit{EtapaMS} de restauração, realizando uma deformação do volume que está discretizado por esses pontos. As fontes da movimentação são os nós das malhas das seções em conjunto dos pontos do mapeamento de superfície.
+No presente item será apresentado o mapeamento da movimentação das seções no volume. A movimentação das seções em cada \emph{EtapaMS} de restauração acabará por determinar uma movimentação do volume. Tendo em vista que as superfícies do modelo foram mapeadas como apresentado anteriormente, a movimentação dessas superfícies também é mapeada no volume.
 
-Nesta seção serão apresentados a metodologia por trás do mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método.
+Nesta seção serão apresentados a metodologia para o mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método. Uma breve discussão sobre os resultados será realizada.
 
 \subsection{Metodologia}\label{vol-metodology}
 
@@ -135,21 +135,21 @@ Em síntese, com
 
 \subsection{Preparação dos dados}
 
-O uso desse procedimento dentro do Sistema Recon para realizar o mapeamento do volume requer uma série de dados extraídos da restauração das seções e do mapeamento de superfícies, neste subseção item serão apresentados esses requisitos e o modo de tratamento dos dados.
+O uso desse procedimento dentro do Sistema Recon para realizar o mapeamento do volume requer uma série de dados extraídos da restauração das seções e do mapeamento de superfícies, neste subitem serão apresentados os requisitos e o modo de tratamento dos dados.
 
 \subsubsection{Lista de falhas e \emph{EtapasMS}}
 
-Assim como no mapeamento de superfícies, é preciso que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Além disso é necessário que também tenha sido feito o mapeamento de superfícies e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}.
+Assim como no mapeamento de superfícies, é preciso que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Além disso, caso tenha sido feito o mapeamento de superfícies, é possível extrair dados desse mapeamento e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}.
 
 Ao iniciar o mapeamento de volume, o primeiro passo é o levantamento de quantas \emph{EtapasMS} existem no modelo. Isto é necessário porque o mapeamento do volume também é feito por \emph{EtapaMS}, mais precisamente de uma \emph{EtapaMS} atual em relação à próxima. Ou seja, a entrada de dados vem principalmente das seções e superfícies em relação ao passo seguinte da restauração do modelo.
 
-Após isso, busca-se todas as superfícies tridimensionais do modelo, incluindo as de falhas e horizontes\footnote{As de horizonte precisam estar no estado original do modelo, ou seja, antes de haver deformação pelo mapeamento de superfícies. Neste caso, superfícies da \emph{EtapaMS} inicial.}. O porquê dessa busca é que as superfícies serão o principal parâmetro para a geração da nuvem de pontos que irão representar o volume discretizado. É com informação dessas superfícies que um ponto será marcado como pertencente a uma ou outra camada geológica.
+Após isso, busca-se todas as superfícies tridimensionais do modelo, incluindo as de falhas e horizontes\footnote{As de horizonte precisam estar no estado original do modelo, ou seja, antes de haver deformação pelo mapeamento de superfícies. Neste caso, superfícies da \emph{EtapaMS} inicial.}. As superfícies serão o principal parâmetro para a geração da nuvem de pontos que irão representar o volume discretizado.
 
-Com todos esses dados levantados, parte-se à geração da nuvem de pontos. Importante ressaltar que esses pontos serão os mesmos durante todo o processo. Em outras palavras, o passo seguinte do mapeamento usa a nuvem de pontos do passo anterior.
+Com todos esses dados levantados, parte-se à geração da nuvem de pontos. Importante ressaltar que a geração da nuvem de pontos só é realizada uma única vez. Na etapa de descompactação serão removidos os pontos correspondentes à camada removida.
 
 \subsubsection{Geração da nuvem de pontos} 
 
-A nuvem de pontos espaciais neste mapeamento, como já dito, é o volume geológico discretizado. Para sua criação, é preciso identificar o domínio tridimensional do modelo. Isto é feito com o cálculo da caixa envoltória do de todo o modelo, em termos práticos, é a união das caixas envoltórias de todas as superfícies.
+A nuvem de pontos espaciais neste mapeamento, como já dito, é o volume geológico discretizado. Para sua criação, é preciso identificar o domínio tridimensional do modelo. Isto é feito com o cálculo da caixa envoltória de todo o modelo, em termos práticos, é a união das caixas envoltórias de todas as superfícies.
 
 Com esta informação já é possível realizar a geração do grade volumétrica (Figura~\ref{fig-vol-grid}). Essa grade não é visualizada no modelo, apenas uma abstração utilizada no cálculo da movimentação e também para a geração dos pontos. Cada célula da grade é responsável por abrigar 8 pontos, como mostra a Figura~\ref{fig-vol-cell}.
 
@@ -169,7 +169,7 @@ Com esta informação já é possível realizar a geração do grade volumétric
 
 Cada célula possui as mesmas dimensões, na Figura~\ref{fig-vol-cell}, os comprimentos em $x$, $y$ e $z$ são obtidos pela divisão da caixa envoltória pelo número de subdivisões requerida e representados por $l_x$, $l_y$ e $l_z$ respectivamente. Os pontos internos são localizados segundo esses comprimentos; também na Figura~\ref{fig-vol-cell} as coordenadas são obtidas a partir de $a$, $b$ e $c$, que são, respectivamente, $l_x/4$, $l_z/4$ e $l_y/4$.
 
-No entanto, apenas criar as células e então os pontos não é a única etapa. Os pontos que estão dentro da caixa envoltória mas fora do modelo geológico, precisam ser descartados. Ou seja, pontos acima da superfície de horizonte mais recente, precisam ser removidos. Além disso, dentre aqueles que restam é preciso que se defina qual camada tal ponto pertence. Esta definição pode ser melhor explicada com uma ilustração em 2D, como na Figura~\ref{fig-vol-2d}. Cada ponto entre entre duas superfícies de horizonte é marcado como pertencente à camada de cima. Os pontos abaixo da última superfície (mais antiga) são definidos como pertencentes a esta.
+No entanto, apenas criar as células e então os pontos não é a única etapa. Os pontos que estão dentro da caixa envoltória mas fora do modelo geológico, precisam ser descartados. Ou seja, pontos acima da superfície de horizonte mais recente, precisam ser removidos. Além disso, dentre aqueles que restam é preciso que se defina a qual camada tal ponto pertence. Esta definição pode ser melhor explicada com uma ilustração em 2D, como na Figura~\ref{fig-vol-2d}. Cada ponto entre entre duas superfícies de horizonte é marcado como pertencente à camada de cima. Os pontos abaixo da última superfície (mais antiga) são definidos como pertencentes a esta.
 
 \begin{figure} [H]
   \begin{center}
@@ -281,3 +281,8 @@ Diferente do mapeamento de superfícies, aqui no volume não há necessidade de 
 
 Quando há uma \emph{EtapaMS} de descompactação, os pontos de seções e superfícies continuam sendo guia de movimentação porém, os pontos da camada do topo são removidas da nuvem de pontos e assim manter o volume do modelo atualizado segundo o estado corrente da restauração. A Figura~\ref{fig-vol-ex-7} mostra o antes e depois da descompactação neste modelo usado como exemplo.
 
+Conforme os resultados obtidos movimentação do volume pode ser vista como uma boa aproximação. Pois percebe-se que o volume se comportou de forma relativamente coerente com as seções, respeitando, inclusive, a restrição das superfícies de falhas.
+
+Este processo de mapeamento do volume apresenta facilidade de uso e representa bem modelos geológicos complexos, sem uma necessidade explícita de definição do volume. Além do mais, o método numérico empregado é capaz de fornecer bons resultados com eficiência computacional.
+
+Com esta metodologia tem-se a possibilidade de mapear um ponto qualquer no ambiente multisseções ao longo da restauração de um modelo geológico. Há ainda a chance de movimentar pontos de seções não restauradas com base na restauração das demais, uma forma de restaurar uma seção geológica passivamente.
