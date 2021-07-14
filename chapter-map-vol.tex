@@ -6,7 +6,7 @@ O mapeamento do volume geológico é feito com o uso uma nuvem de pontos contida
 
 Nesta seção serão apresentados a metodologia por trás do mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método.
 
-\subsection{Metodologia}
+\subsection{Metodologia}\label{vol-metodology}
 
 Nas últimas décadas vários métodos numéricos vêm sendo desenvolvidos para simulação de problemas físicos em modelos tridimensionais, dentre os quais destacam-se alguns, divididos em dois grupos e listados a seguir:
 
@@ -212,10 +212,72 @@ O último dado depende do tipo de marco geológico ocorrido entre as \emph{Etapa
   \end{center}
 \end{figure}
 
-O resultado é uma nuvem de pontos atualizada que será usada no próximo passo do mapeamento e assim ter um volume coerente com o ocorrido nas seções e superfícies.
+O resultado é uma nuvem de pontos atualizada que será usada no próximo passo do mapeamento e assim ter um volume coerente com o a movimentação tectônica das seções e superfícies.
 
 \subsection{Exemplos e resultados}
 
+Neste item será mostrado um exemplo de mapeamento do volume feito no mesmo modelo usado no mapeamento de superfície já apresentado no item~\ref{ex-2-surf}.
 
+Para este exemplo foi adotado uma subdivisão para geração da grade volumétrica de $70$ unidades em $x$, $70$ unidades em $y$ e $60$ em $z$. Um total de $1.518.053$ pontos foram criados no domínio do modelo geológico\footnote{Ao realizar uma verificação simples, foram definidas $70\times70\times60=294.000$ células, cada uma contendo $8$ pontos, logo, aproximadamente $35\%$ dos pontos foram descartados por estarem fora do domínio do modelo.}. A Figura~\ref{fig-vol-ex-1} a seguir exibe o modelo geológico com apenas as superfícies de horizonte à esquerda e a nuvem de pontos gerada à direita.
 
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-1}
+    \caption{Superfícies do modelo geológico e nuvem de pontos gerada.}\label{fig-vol-ex-1}
+  \end{center}
+\end{figure}
+
+Perceba pela imagem da direita que há pontos no topo marcados como sendo da camada geológica de baixo, isso acontece pela presença de buracos na superfície do topo, problema já discutido na Figura~\ref{fig-vol-errors}.
+
+Neste modelo já estão feitas todas as restaurações de seções e também o mapeamento de superfície (como apresentado no item~\ref{ex-2-surf}). A primeira \emph{EtapaMS} restaura a falha 7 do modelo. Essa falha intercepta apenas 6 seções geológicas (Figura~\ref{fig-example-2-5}), logo apenas estas seções irão contribuir com pontos, cujos deslocamentos são maiores que zero, para a movimentação do volume. 
+
+De acordo com o apresentado anteriormente, os pontos das seções e das superfícies são unidos numa estrutura de dados onde cada ponto possui um atributo guardando sua posição final na \emph{EtapaMS} seguinte. A Figura~\ref{fig-vol-ex-2} mostra os pontos dessa estrutura para esse primeiro passo, evidenciando apenas aqueles próximo das seções cruzadas pela falha 7, além dos pontos da própria superfície de falha 7.
+
+Conforme metodologia apresentada (item~\ref{vol-metodology}), a movimentação conhecida dos pontos de seção e superfície é a responsável por fazer a movimentação dos pontos do volume. Para esta \emph{EtapaMS} é apresentada na Figura~\ref{fig-vol-ex-3} a nova nuvem de pontos com a execução do deformador de volume.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-2}
+    \caption{Pontos com informação de movimentação da primeira etapa do mapeamento do volume: (a) e (c) antes do movimento, (b) e (d) após o movimento.}\label{fig-vol-ex-2}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-3}
+    \caption{Movimentação da nuvem de pontos devido à primeira \emph{EtapaMS} de restauração do modelo.}\label{fig-vol-ex-3}
+  \end{center}
+\end{figure}
+
+Diferente do mapeamento de superfícies, aqui no volume não há necessidade de uma interação, só é preciso que os requisitos estejam prontos (seções e superfícies). Nas Figuras a seguir são mostrados o mapeamento do volume para cada \emph{EtapaMS} subsequente até que se tenha a camada do topo restaurada.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-4}
+    \caption{Movimentação da nuvem de pontos devido à \emph{EtapaMS} que restaura a falha 6.}\label{fig-vol-ex-4}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-5}
+    \caption{Movimentação da nuvem de pontos devido à \emph{EtapaMS} que restaura a falha 5.}\label{fig-vol-ex-5}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-vol-ex-6}
+    \caption{Movimentação da nuvem de pontos devido à \emph{EtapaMS} que restaura a falha 4.}\label{fig-vol-ex-6}
+  \end{center}
+\end{figure}
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=350pt]{images/fig-vol-ex-7}
+    \caption{Movimentação da nuvem de pontos devido à \emph{EtapaMS} de descompactação da camada do topo.}\label{fig-vol-ex-7}
+  \end{center}
+\end{figure}
+
+Quando há uma \emph{EtapaMS} de descompactação, os pontos de seções e superfícies continuam sendo guia de movimentação porém, os pontos da camada do topo são removidas da nuvem de pontos e assim manter o volume do modelo atualizado segundo o estado corrente da restauração. A Figura~\ref{fig-vol-ex-7} mostra o antes e depois da descompactação neste modelo usado como exemplo.
 
