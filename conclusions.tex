@@ -2,5 +2,11 @@
 
 \chapter{Conclusão}
 
-Assim, como uma proposta para trabalho futuro, pode-se buscar combinar
-os dois enfoques...
+Este trabalho propôs um mapeamento do comportamento de superfícies e volume baseado na restauração de seções geológicas. Uma maneira de levantar informações a respeito do comportamento tridimensional a partir da movimentação tectônica gerada pelo balanceamento das seções geológicas.
+
+Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com enfoque maior naquilo que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e por fim, as linhas de mapeamento.
+
+Este mapeamento realizado nas seções foi base para a criação das \emph{LMModels} e com isso se obteve o mapeamento das entidades geológicas ao longo da restauração. Ao exportar as \emph{LMModels} para um ambiente multisseções, foi possível associar este mapeamento às superfícies tridimensionais. A organização e uso desses dados de \emph{LMModels} serviram como parâmetros para, através de um método numérico, realizar uma deformação às superfícies a fim de submetê-las à mesma movimentação das seções. O responsável por essa deformação vem do processo de minimização de uma energia de alta ordem, tri-harmônica, que resulta em uma superfície de mínima variação.
+
+Em relação ao volume, foi idealizado que ele fosse discretizado em uma nuvem de pontos contida no domínio do modelo. Os pontos das malhas das seções também 
+
