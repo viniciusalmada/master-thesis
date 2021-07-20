@@ -6,18 +6,18 @@
 
 \subsection{Introdução}
 
-O ambiente no qual este trabalho é desenvolvido é o \textit{Sistema Recon MS}\cite{ReconTecgraf}, um software amplamente usado dentro da indústria de óleo e gás pela Petrobras e capaz de auxiliar na restauração de modelos geológicas. Conta com editor gráfico, estruturas de dados topológicos, algoritmos de transformações geológicas, gráficos de pós-processamentos entre outros recursos.
+O ambiente no qual este trabalho é desenvolvido é o \textit{Sistema Recon MS}~\cite{ReconTecgraf}, um software amplamente usado dentro da indústria de óleo e gás pela Petrobras e capaz de auxiliar na restauração de modelos geológicas. Conta com editor gráfico, estruturas de dados topológicos, algoritmos de transformações geológicas, gráficos de pós-processamentos entre outros recursos.
 
 O Sistema Recon vem sendo desenvolvido a partir de um convênio entre o Instituto Tecgraf/PUC-Rio e a Petrobras desde 1991. Atualmente sua equipe responsável é formada pelo Grupo de Modelagem Digital em Geociências do Tecgraf. Uma imagem (Figura~\ref{fig-recon}) da tela inicial do programa é mostrada abaixo.
 
 \begin{figure} [H]
   \begin{center}
     \includegraphics[width=\textwidth]{images/fig-recon}
-    \caption{Captura de tela do Sistema Recon MS\cite{Recon}.}\label{fig-recon}
+    \caption{Captura de tela do Sistema Recon MS~\cite{Recon}.}\label{fig-recon}
   \end{center}
 \end{figure}
 
-De acordo com Fossen\cite{Fossen}, restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo, em outras palavras busca-se realizar uma retrodeformação na seção e utilizá-la na interpretação estrutural de uma região de interesse.
+De acordo com Fossen~\cite{Fossen}, restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo, em outras palavras busca-se realizar uma retrodeformação na seção e utilizá-la na interpretação estrutural de uma região de interesse.
 
 Neste capítulo são apresentadas as principais características do Sistema Recon MS para o objeto deste trabalho a fim de prover uma contextualização para o que é exibido nos demais capítulos. As próximas subseções tratam da descrição dos componentes principais e recursos básicos disponibilizados pelo sistema no processo de restauração de seções geológicas e também de visualização tridimensional do modelo. 
 
@@ -29,12 +29,12 @@ Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as
 
 \begin{figure} [h]
   \begin{center}
-    \includegraphics[width=400pt]{images/fig-subdivisao-planar}
-    \caption{Seção geológica como uma subdivisão planar.\cite{Ferraz}}\label{fig-subdivisao-planar}
+    \includegraphics[width=\textwidth]{images/fig-subdivisao-planar}
+    \caption{Seção geológica como uma subdivisão planar~\cite{Ferraz}}\label{fig-subdivisao-planar}
   \end{center}
 \end{figure}
 
-Segundo Berg\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
+Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
 
 A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. 
 
@@ -51,7 +51,7 @@ Em suma, a subdivisão planar tem os seguintes elementos topológicos:
 
 \subsection{Modelagem da Subdivisão Planar}
 
-Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio e é a implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio e é a implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
 
 O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas. Cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
 
@@ -105,7 +105,7 @@ A seção geológica é representada como uma subdivisão planar, como já citad
   \end{center}
 \end{figure}
 
-As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. Cada face possui uma malha independente das outras. No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos.\cite{Tops} A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
+As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. Cada face possui uma malha independente das outras. No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS}~\cite{Tops} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos. A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
 
 \begin{figure} [H]
   \begin{center}
@@ -129,13 +129,13 @@ Essa relação permite identificar, a partir de um vértice da malha, sobre qual
 
 \subsubsection{Transformações}
 
-As transformações geológicas são ferramentas que buscam reverter (ou simular) as movimentações e deformações ocorridas ao longo do tempo.\cite{Santi} As transformações são aplicadas diretamente às malhas, no entanto, para que isso aconteça, é necessário antes a definição de \textit{Módulos} na seção. 
+As transformações geológicas são ferramentas que buscam reverter (ou simular) as movimentações e deformações ocorridas ao longo do tempo~\cite{Santi}. As transformações são aplicadas diretamente às malhas, no entanto, para que isso aconteça, é necessário antes a definição de \textit{Módulos} na seção. 
 
 Módulos são agrupamentos de faces ou blocos da seção, têm o intuito de reunir aquelas partes que devem ter recebido as mesmas deformações, podendo ser, inclusive partes de camadas diferentes.
 
 Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser empregada sobre a malha de cada uma das faces que compõem aquele módulo, deformando esta malha e, por conseguinte, alterando a geometria da seção.
 
-A Figura~\ref{fig-recon-5} mostra a aba \quotes{Transformações} do Sistema Recon onde é possível ver os grupos de transformações e também as opções disponíveis. Mais detalhes sobre cada uma delas podem ser consultados no manual do usuário do programa\cite{Recon}.
+A Figura~\ref{fig-recon-5} mostra a aba \quotes{Transformações} do Sistema Recon onde é possível ver os grupos de transformações e também as opções disponíveis. Mais detalhes sobre cada uma delas podem ser consultados no manual do usuário do programa~\cite{Recon}.
 
 \begin{figure} [H]
   \begin{center}
