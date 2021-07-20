@@ -2,11 +2,31 @@
 
 \chapter{Conclusão}
 
+\section{Resumo}
+
 Este trabalho propôs um mapeamento do comportamento de superfícies e volume baseado na restauração de seções geológicas. Uma maneira de levantar informações a respeito do comportamento tridimensional a partir da movimentação tectônica gerada pelo balanceamento das seções geológicas.
 
 Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com enfoque maior naquilo que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e por fim, as linhas de mapeamento.
 
 Este mapeamento realizado nas seções foi base para a criação das \emph{LMModels} e com isso se obteve o mapeamento das entidades geológicas ao longo da restauração. Ao exportar as \emph{LMModels} para um ambiente multisseções, foi possível associar este mapeamento às superfícies tridimensionais. A organização e uso desses dados de \emph{LMModels} serviram como parâmetros para, através de um método numérico, realizar uma deformação às superfícies a fim de submetê-las à mesma movimentação das seções. O responsável por essa deformação vem do processo de minimização de uma energia de alta ordem, tri-harmônica, que resulta em uma superfície de mínima variação.
 
-Em relação ao volume, foi idealizado que ele fosse discretizado em uma nuvem de pontos contida no domínio do modelo. Os pontos das malhas das seções também 
+Em relação ao volume, idealizou-se que ele fosse discretizado em uma nuvem de pontos contida no domínio do modelo. Esses pontos devem sofrer uma movimentação segundo o deslocamento dos pontos das seções de uma \emph{EtapaMS} a outra. A fim de melhorar essa movimentação, podem ser usados os pontos das superfícies que foram deformadas no mapeamento de superfícies em conjunto dos pontos das seções. A nuvem de pontos é criada a partir de uma grade volumétrica (cada célula da grade com 8 pontos). Os pontos das seções e superfícies, que possuem posição final definida, são os que movimentam os pontos da grade. 
+
+\section{Mapeamento x Restauração}
+
+A restauração de seções geológicas é uma atividade já consagrada na interpretação estrutural e fornece resultados satisfatórios de maneira eficiente. No entanto, ao considerar apenas seções transversais em modelos geológicos, que são tridimensionais, pode, em algum momento, acarretar na dissociação do comportamento real ocorrido. Em razão disso, pode-se partir a estudos que também levem em conta características 3D. Por outro lado, soluções assim podem ser custosas e ineficientes.
+
+Este trabalho realizou uma busca e tratamento de informações provenientes da restauração de seções e as aplicou para deformar as superfícies e movimentar uma nuvem de pontos. Esse processo foi chamado de mapeamento pois trata-se de um levantamento e processamento de dados com o objetivo de caracterizar uma entidade geológica, assim como é feito no mapeamento geológico~\cite{Geoscan}. Neste caso, o objetivo foi realizar uma definição do comportamento das superfícies geológicas e do volume com os dados da restauração de seções.
+
+Uma restauração de superfícies geológicas seria um processo análogo à restauração de seções, no entanto, com suas premissas geológicas e métodos próprios. É possível que nem sejam usadas seções transversais para esse intuito. E se incluir o volume para uma restauração do modelo 3D diretamente, mais questões acerca da metodologia precisam ser feitas. 
+
+Uma restauração 3D deve levar em conta ainda mais aspectos, como parâmetros geomecânicos além dos geométricos. Alguns autores~\cite{Santi_3dgeological, Massot, DURANDRIARD2010441} já apresentaram propostas para esta finalidade. Propostas estas que incluem uma malha volumétrica, uso de elementos finitos, caracterização do material e definição de condições de contorno entre outros itens.
+
+O que foi apresentado neste trabalho foi uma proposta inovadora cujo propósito se baseou na restauração 2D para se obter uma mapeamento de informações tridimensionais a custo relativamente baixo e computacionalmente eficiente.
+
+\section{Propostas de trabalhos futuros}
+
+
+
+
 
