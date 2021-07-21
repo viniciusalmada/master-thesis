@@ -24,9 +24,16 @@ Uma restauração 3D deve levar em conta ainda mais aspectos, como parâmetros g
 
 O que foi apresentado neste trabalho foi uma proposta inovadora cujo propósito se baseou na restauração 2D para se obter uma mapeamento de informações tridimensionais a custo relativamente baixo e computacionalmente eficiente.
 
-\section{Propostas de trabalhos futuros}
+\section{Observações}
 
+A atividade chamada de fatiamento apresentada no item~\ref{item-section-creation} produz uma seção geológica a partir de um conjunto de superfícies tridimensionais. No entanto, a depender do estado do dado de entrada, as linhas de horizontes e falhas geradas podem não ser suficientes para que haja uma seção geológica apta para se realizar uma restauração. É comum que sejam feitas edições nas linhas como extensões e aparas a fim de fechar regiões e manter uma subdivisão planar contínua.
 
+Estas edições acabam por gerar uma separação entre a superfície 3D e a seção bidimensional. Como as linhas de horizonte das seções são base das \emph{LMModels} usadas no mapeamento de superfícies, ao realizar a exportação dos dados para o deformador, podem ocorrer movimentações inesperadas e assim obter resultados não coerentes com a restauração de seções. Consequentemente, isto se estende à realização do mapeamento do volume.
 
+\section{Propostas para trabalhos futuros}
 
+Em primeiro lugar, sendo este trabalho uma maneira de adaptar informações 2D para um ambiente tridimensional, é muito oportuno que sejam desenvolvidos mecanismos e ferramentas que tenham como intuito manter uma ligação entre as duas visões do modelo. Isto irá trazer mais qualidade às informações presentes no modelo geológico.
 
+A edição nas linhas pós-criação das seções vista no item anterior são sempre passíveis de acontecer. Como são nas seções que todo o trabalho de restauração ocorre, o modelo geológico deve ser guiado por estas alterações feitas pelos geólogos. Em outros termos, edições nas linhas das seções devem ser propagadas às superfícies para manter a coesão entre essas partes, uma vez que representam a mesma entidade geológica sob pontos de vista diferentes.
+
+Em relação ao mapeamento do volume, como já citado, é dado a possibilidade de manter um acompanhamento de um ponto qualquer no domínio do modelo geológico ao longo de cada passo da restauração. Pode-se inclusive trabalhar na movimentação de uma seção geológica inteira a partir da restauração de seções vizinhas. Propõe-se ainda uma aplicação das transformações geológicas, que são usadas nas seções, no volume como uma maneira de movimentar a nuvem de pontos sem depender somente dos pontos das seções.
