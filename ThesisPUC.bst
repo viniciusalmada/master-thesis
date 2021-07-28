@@ -27,7 +27,7 @@ ENTRY
     year
   }
   {}
-  { label }
+  { label extra.label sort.label }
 
 INTEGERS { output.state before.all mid.sentence after.sentence after.block }
 
@@ -79,7 +79,7 @@ FUNCTION {output.check}
 FUNCTION {output.bibitem}
 { newline$
   "\bibitem[" write$
-  key write$
+  label write$
   "]{" write$
   cite$ write$
   "}" write$
