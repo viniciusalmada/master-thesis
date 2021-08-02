@@ -2,11 +2,11 @@
 
 \chapter{Mapeamento do Volume}
 
-No presente item será apresentado o mapeamento da movimentação das seções no volume. A movimentação das seções em cada \emph{EtapaMS} de restauração acabará por determinar uma movimentação do volume. Tendo em vista que as superfícies do modelo foram mapeadas como apresentado anteriormente, a movimentação dessas superfícies também é mapeada no volume. 
+No presente capítulo é apresentado o mapeamento da movimentação das seções no volume. A movimentação das seções em cada \emph{EtapaMS} de restauração acabará por determinar uma movimentação do volume. Tendo em vista que as superfícies do modelo foram mapeadas como apresentado anteriormente, a movimentação dessas superfícies também é mapeada no volume. 
 
-Este mapeamento do volume tem o intuito de fornecer uma maneira de realizar o acompanhamento de pontos dispostos no domínio tridimensional do modelo geológico durante o processo de restauração. Com isso, é possível obter ainda mais informações sobre o que ocorre fora das seções e superfícies geológicas.
+Este mapeamento do volume tem o intuito de fornecer uma maneira de realizar o acompanhamento de pontos dispostos no domínio tridimensional do modelo geológico durante o processo de restauração. Com isso, é possível obter mais informações sobre o que ocorre fora das seções e superfícies geológicas.
 
-Neste capítulo serão apresentados a metodologia para o mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método. Uma breve discussão sobre a metodologia de mapeamento do volume é descrita nesta subseção. A implementação computacional dessa metodologia foi realizada na biblioteca \emph{MGeo Deformer} por Müller~\cite{Muller}.
+Neste capítulo são apresentados a metodologia para o mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método. Uma breve discussão sobre a metodologia de mapeamento do volume também é descrita neste capítulo. A implementação computacional dessa metodologia foi realizada na biblioteca \emph{MGeo Deformer} por Müller~\cite{Muller}.
 
 \section{Metodologia}\label{vol-metodology}
 
@@ -147,7 +147,7 @@ Assim como no mapeamento de superfícies, é preciso que o modelo esteja com a r
 
 Ao iniciar o mapeamento de volume, o primeiro passo é o levantamento de quantas \emph{EtapasMS} existem no modelo. Isso é necessário porque o mapeamento do volume também é feito por \emph{EtapaMS}, mais precisamente de uma \emph{EtapaMS} atual em relação à próxima. Ou seja, a entrada de dados vem principalmente das seções e superfícies em relação ao passo seguinte da restauração do modelo.
 
-Após isso, busca-se todas as superfícies tridimensionais do modelo, incluindo as de falhas e horizontes\footnote{As superfícies de horizonte precisam estar no estado original do modelo, ou seja, antes de haver deformação pelo mapeamento de superfícies. Neste caso, superfícies da \emph{EtapaMS} inicial.}. As superfícies são o principal parâmetro para a geração da nuvem de pontos que representam o volume discretizado.
+Após isso, busca-se todas as superfícies tridimensionais do modelo, incluindo as de falhas e horizontes. As superfícies são o principal parâmetro para a geração da nuvem de pontos que representam o volume discretizado\footnote{Para a geração da nuvem de pontos, as superfícies de horizonte precisam estar no estado original do modelo, ou seja, antes de haver deformação pelo mapeamento de superfícies. Nesse caso, são as superfícies da \emph{EtapaMS} inicial.}.
 
 Com todos esses dados levantados, parte-se à geração da nuvem de pontos. Importante ressaltar que a geração da nuvem de pontos só é realizada uma única vez. Na etapa de descompactação serão removidos os pontos correspondentes à camada removida.
 

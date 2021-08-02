@@ -116,7 +116,7 @@ As faces têm um atributo muito importante para o trabalho de restauração, que
   \end{center}
 \end{figure}
 
-A importância das malhas dentro da restauração de seções no Sistema Recon se dá por conta das transformações geológicas. A malha de uma face tem vários usos, sendo que o mais importante é permitir avaliar o campo de deformações sofrido pela face em função das transformações geológicas. Mais detalhes sobre as transformações geológicas serão apresentados na sequência.
+A importância das malhas dentro da restauração de seções no Sistema Recon se dá por conta das transformações geológicas. A malha de uma face tem vários usos, sendo que o mais importante é permitir avaliar o campo de deformações sofrido pela face em função das transformações geológicas. Mais detalhes sobre as transformações geológicas são apresentados na sequência.
 
 A estrutura \textit{TopS} permite armazenar atributos em seus elementos topológicos. Em especial nos vértices da malha, no Sistema Recon, é armazenado o \textit{UUID} do atributo geológico da entidade topológica do HED sobre a qual aquele vértice está localizado. Se o vértice da malha está no interior da face, ele guarda o \textit{UUID} da \textit{GeoFace} dessa face, o mesmo para caso esteja sobre uma aresta (\textit{GeoEdge}) ou vértice (\textit{GeoVertex}). A Figura~\ref{fig-recon-4} mostra um exemplo da forma como esses dados são obtidos.
 
@@ -137,7 +137,7 @@ Módulos são agrupamentos de faces ou blocos da seção e têm o intuito de reu
 
 Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser aplicada à malha de cada uma das faces que compõem aquele módulo.
 
-Como visto na Figura~\ref{fig-recon-5} as transformações geológicas se dividem em grupos conforme o tipo de regime tectônico. Para os modelos aos quais este trabalho se propõe, podem se destacar as transformações do grupo \emph{Distensivo} e também as \emph{Gravitacionais} como a descompactação que trata-se da remoção da camada do topo, geralmente após a restauração desta, o que acaba por gerar um aumento na altura das camadas inferiores. Mais informações sobre as transformações presentes no Sistema Recon MS podem ser consultadas no manual do usuário do sistema~\cite{Recon}.
+Como visto na Figura~\ref{fig-recon-5} as transformações geológicas se dividem em grupos conforme o tipo de regime tectônico. Para os modelos aos quais este trabalho se propõe, podem se destacar as transformações do grupo \emph{Distensivo} e também as \emph{Gravitacionais} como a descompactação que trata-se da remoção da camada do topo, geralmente após a restauração desta, o que acaba por gerar um aumento na espessura das camadas inferiores. Mais informações sobre as transformações presentes no Sistema Recon MS podem ser consultadas no manual do usuário do sistema~\cite{Recon}.
 
 \begin{figure} [H]
   \begin{center}

@@ -2,9 +2,9 @@
 
 \chapter{Mapeamento de superfícies}
 
-\section{Metodologia}\label{surface-mapping-metodology}
+No capítulo anterior foi apresentada a criação de linhas de mapeamento nas seções geológicas que servem como pontos de controle para o mapeamento das deformações sofridas pelas diversas seções para deformações das superfícies na restauração geológica tridimensional no Sistema Recon. Este capítulo mostra o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções geológicas como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante da restauração das seções geológicas. A metodologia descrita a seguir foi apresentada por Müller~\cite{Muller} para tratar a deformação de superfícies com o uso de restrições presentes no domínio da mesma e através de minimização de uma energia.
 
-No capítulo anterior foi apresentada a criação de linhas de mapeamento nas seções geológicas que servem como pontos de controle para o mapeamento das deformações sofridas pelas diversas seções para deformações das superfícies na restauração geológica tridimensional no Sistema Recon. Esta seção mostra o mapeamento de superfícies que, neste trabalho, pode ser definido como o uso de informações das seções geológicas como parâmetros matemáticos para deformar os pontos da superfície e assim obter uma configuração coerente com a movimentação tectônica resultante da restauração das seções geológicas. A metodologia descrita a seguir foi apresentada por Müller~\cite{Muller} para tratar a deformação de superfícies com o uso de restrições presentes no domínio da mesma e através de minimização de uma energia.
+\section{Metodologia}\label{surface-mapping-metodology}
 
 A deformação de uma superfície pode ser modelada como um problema variacional com funções Lagrangeanas descritas pelo operador de Laplace com diferentes ordens e que podem descrever diferentes energias. A energia de superfície de membrana é uma EDP (equação diferencial parcial) de segunda ordem, descrita pelo operador de Laplace $\Delta{q}$ e a equação $\Delta{q}=0$ minimiza a área da superfície. A energia de placas-finas que minimiza a curvatura da superfície é descrita pela EDP de quarta ordem $\Delta^2{q}=0$. Já para minimização da variação da curvatura de superfícies pode ser usada uma EDP de sexta ordem, ou tri-harmônica, $\Delta^3{q}=0$, e a superfície resultante desta minimização é dita superfície de mínima variação~\cite{Muller, Botsch}.
 
@@ -111,7 +111,7 @@ A \textit{LMModel} em si não possui pontos geométricos, ela armazena apenas os
   \end{center}
 \end{figure}
 
-Para que possa estabelecer uma relação direta de deslocamento entre pontos de uma \textit{LMModel} para diferentes cenários é necessário que se faça uma interpolação entre as malhas envolvidas. Esta ação serve para assegurar que se tenha um mesmo número de pontos formando a \textit{LMModel} correspondente ao longo da restauração de uma seção.
+Para que se possa estabelecer uma relação direta de deslocamento entre pontos de uma \textit{LMModel} para diferentes cenários é necessário que se faça uma interpolação entre as malhas envolvidas. Esta ação serve para assegurar que se tenha um mesmo número de pontos formando a \textit{LMModel} correspondente ao longo da restauração de uma seção.
 
 Para exemplificar melhor esse problema, considere a seção geológica da Figura~\ref{fig-lmm-interp1} (a) que destaca os pontos que formam a \textit{LMModel} do horizonte A (do topo). Considera-se que na etapa seguinte (cenário 2), houve uma transformação e uma edição na malha, com isso a \textit{LMModel} correspondente teve diminuição no número de pontos, como mostra a Figura~\ref{fig-lmm-interp1} (b).
 
@@ -124,7 +124,7 @@ Para exemplificar melhor esse problema, considere a seção geológica da Figura
 
 Para que seja feito o cálculo de deslocamento entre as \textit{LMModels} destes cenários é necessário uma interpolação entre as malhas, como já dito. Essa interpolação fornece os pontos no cenário 2 que correspondem àqueles da \textit{LMModel} no cenário origem e assim ter dados para encontrar informações de deslocamento de uma etapa a outra.
 
-Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} toma como base para interpolação aquela criada no cenário origem, já que é um cenário mais restrito para edições após o início da restauração. Além disso, os pontos das \emph{LMModels} do cenário origem serão usados com restrição para o \emph{remesh} da malha de superfície (item~\ref{surface-remesh}). Um esquema ilustrativo é visto na Figura~\ref{fig-lmm-interp2}.
+Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} toma como base para interpolação aquela criada no cenário origem, já que é um cenário mais restrito para edições após o início da restauração. Além disso, os pontos das \emph{LMModels} do cenário origem são usados com restrição para o \emph{remesh} da malha de superfície (item~\ref{surface-remesh}). Um esquema ilustrativo é visto na Figura~\ref{fig-lmm-interp2}.
 
 \begin{figure} [H]
   \begin{center}
@@ -220,7 +220,7 @@ Neste caso, tal qual ocorre nas seções, o pedaço de superfície de horizonte 
   \end{center}
 \end{figure}
 
-A partir dessa marcação, que na prática ocorre nos pontos do contorno da malha da superfície, são calculados os vetores direção de cada ponto da borda de origem que deverão se deslocar até interceptar a linha poligonal formada pelos pontos da curva de destino. Esse algoritmo, se baseia na direção das seções no plano \textit{xy}, como numa vista de mapa. Observa-se pela Figura~\ref{fig-select-borders-3} com vista em mapa, que nesse exemplo a seção do meio (seção S2) está inclinada em relação às outras seções que são paralelas entre si.
+A partir dessa marcação, que na prática ocorre nos pontos do contorno da malha da superfície, são calculados os vetores direção de cada ponto da borda de origem que deverão se deslocar até interceptar a linha poligonal formada pelos pontos da curva de destino. Esse algoritmo, se baseia na direção das seções no plano \textit{xy}, como numa vista de mapa. Observa-se pela Figura~\ref{fig-select-borders-3}, com vista em mapa, que nesse exemplo a seção do meio (seção S2) está inclinada em relação às outras seções que são paralelas entre si.
 
 \begin{figure} [H]
   \begin{center}
