@@ -6,11 +6,36 @@
 
 Este trabalho propõe uma metodologia para o mapeamento de superfícies geológicas e volume geológico baseado na restauração de seções geológicas. Essa metodologia é uma maneira de levantar informações a respeito do comportamento de um modelo geológico tridimensional a partir da movimentação tectônica gerada pelo balanceamento de seções geológicas.
 
-Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com mais ênfase nos procedimentos que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos, pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e, por fim, as linhas de mapeamento.
+\subsection*{Sistema Recon MS}
 
-Para mapear as transformações geológicas sofridas pelas seções geológicas ao longo da restauração para as superfícies de horizonte, falhas e topos de sal, assim como para o volume do modelo tridimensional, são criadas nas seções linhas de mapeamento (\emph{LMModel}). Ao exportar as \emph{LMModels} para um ambiente multisseções, foi possível associá-las às superfícies tridimensionais. A organização e uso desses dados de \emph{LMModels} serviram como parâmetros para, através de um método numérico, realizar uma deformação às superfícies a fim de submetê-las à mesma movimentação das seções. O responsável por essa deformação vem do processo de minimização de uma energia de alta ordem, tri-harmônica, que resulta em uma superfície de mínima variação.
+Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com mais ênfase nos procedimentos que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos, pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e as linhas de mapeamento. Para mapear as transformações geológicas sofridas pelas seções geológicas ao longo da restauração para as superfícies de horizonte, falhas e topos de sal, assim como para o volume do modelo tridimensional, são criadas nas seções as linhas de mapeamento do modelo (\emph{LMModel}). 
 
-Em relação ao volume, idealizou-se que ele fosse discretizado em uma nuvem de pontos contida no domínio do modelo. Esses pontos devem sofrer uma movimentação segundo o deslocamento dos pontos das seções de uma \emph{EtapaMS} a outra. A fim de melhorar essa movimentação, podem ser usados os pontos das superfícies que foram deformadas no mapeamento de superfícies em conjunto dos pontos das seções. A nuvem de pontos é criada a partir de uma grade volumétrica (cada célula da grade com 8 pontos). Os pontos das seções e superfícies, que possuem posição final definida, são os que movimentam os pontos da grade. 
+\subsection*{Mapeamento de superfícies}
+
+Em relação ao mapeamento de superfícies geológicas, as seguintes atividades foram realizadas:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item breve discussão acerca da metodologia para deformar a superfície;
+  \item exportação e organização das \emph{LMModels} das seções para uso como pontos de controle na deformação da superfície\footnote{Este item é realizado no início do mapeamento, após a restauração das seções geológicas.};
+  \item recriação da malha de superfície para incluir os pontos de controle como nós da malha na etapa inicial de restauração\footnote{Esta atividade só ocorre na primeira etapa de restauração. A nova malha é mantida até o final do processo.};
+  \item seleção de bordas origem e destino e cálculo da direção de movimentação de seus pontos para também serem usadas como pontos de controle;
+  \item definição de quais pontos da malha da superfície estão livres para se movimentar (e quais não estão) numa dada etapa de restauração;
+  \item apresentação de exemplos de uso do mapeamento.
+\end{itemize}
+
+\subsection*{Mapeamento do volume}
+
+Para o mapeamento do volume, são listadas a seguir as atividades feitas:
+
+\renewcommand{\labelitemi}{•}
+\begin{itemize}
+  \item apresentação da metodologia de movimentação da nuvem de pontos que representa o volume geológico;
+  \item organização das \emph{EtapasMS} e levantamento das superfícies presentes no modelo;
+  \item geração da nuvem de pontos na etapa inicial\footnote{A nuvem de pontos só é criada uma única vez tomando por base o estado das superfícies do modelo em seu estágio inicial.};
+  \item levantamento e organização do deslocamento dos pontos da seções (e do mapeamento de superfícies) para realizar a movimentação do volume;
+  \item apresentação de exemplo de uso do mapeamento de volume.
+\end{itemize}
 
 \section{Mapeamento x Restauração}
 
