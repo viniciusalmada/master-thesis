@@ -4,7 +4,7 @@
 
 \section{Resumo}
 
-Este trabalho propõe uma metodologia para o mapeamento de superfícies geológicas e volume geológico baseado na restauração de seções geológicas. Essa metodologia é uma maneira de levantar informações a respeito do comportamento de um modelo geológico tridimensional a partir da movimentação tectônica gerada pelo balanceamento de seções geológicas.
+Este trabalho propõe primeiramente uma metodologia para o mapeamento de superfícies geológicas. Uma vez atingido esse objetivo, propõe-se uma abordagem alternativa para o mapeamento volumétrico de modelos geológicos baseado em restauração de seções. Essa metodologia pode ser vista como uma estratégia visando levantar informações a respeito do comportamento de um modelo geológico tridimensional a partir da movimentação tectônica gerada pelo balanceamento de seções geológicas.
 
 \subsection*{Sistema Recon MS}
 
@@ -20,8 +20,8 @@ Em relação ao mapeamento de superfícies geológicas, as seguintes atividades 
   \item exportação e organização das \emph{LMModels} das seções para uso como pontos de controle na deformação das superfícies\footnote{Este item é realizado no início do mapeamento, após a restauração das seções geológicas.};
   \item recriação da malha de superfície para incluir os pontos de controle como nós da malha na etapa inicial de restauração\footnote{Esta atividade só ocorre na primeira etapa de restauração. A nova malha é mantida até o final do processo.};
   \item seleção de bordas origem e destino e cálculo da direção de movimentação de seus pontos para também serem usadas como pontos de controle;
-  \item definição de quais pontos da malha da superfície estão livres para se movimentar (e quais não estão) numa dada etapa de restauração;
-  \item apresentação de exemplos de uso do mapeamento.
+  \item definição do conjunto de nós da malha de superfície considerados livres para se movimentar (e quais não estão) numa dada etapa de restauração;
+  \item apresentação de exemplos de aplicação do mapeamento de superfícies.
 \end{itemize}
 
 \subsection*{Mapeamento do volume}
@@ -39,15 +39,15 @@ Para o mapeamento do volume, são listadas a seguir as atividades feitas:
 
 \section{Mapeamento x Restauração}
 
-A restauração de seções geológicas é uma atividade já consagrada na interpretação estrutural e fornece resultados satisfatórios de maneira eficiente. No entanto, a consideração de apenas seções transversais de modelos geológicos, que são tridimensionais, na restauração pode acarretar na dissociação do comportamento real ocorrido. Em razão disso, pode-se partir a estudos que também levem em conta características 3D. Por outro lado, soluções tridimensionais para a restauração geológica ainda não são totalmente entendidas, assim como podem ser custosas e ineficientes.
+A restauração de seções geológicas é uma atividade já consagrada na interpretação estrutural e fornece resultados satisfatórios de maneira eficiente. No entanto, a consideração de apenas seções transversais de modelos geológicos, que são tridimensionais, na restauração pode acarretar na dissociação do comportamento real ocorrido. Em razão disso, pode-se partir a estudos que também levem em conta características 3D. Por outro lado, soluções tridimensionais para a restauração geológica pode ser considerado ainda hoje um problema aberto para a modelagem geológico-estrutural. Além disso, em geral tendem a ser custosos e fora do controle do geólogo no processo.
 
-Este trabalho realizou uma busca e tratamento de informações provenientes da restauração de seções (atualmente mais entendida) e as aplicou para deformar as superfícies e movimentar uma nuvem de pontos. Esse processo foi chamado de mapeamento pois trata-se de um levantamento e processamento de dados com o objetivo de caracterizar uma entidade geológica, assim como é feito no mapeamento geológico~\cite{Geoscan}. Nesse caso, o objetivo foi realizar uma definição do comportamento das superfícies geológicas e do volume com os dados da restauração de seções.
+Este trabalho realizou uma busca e tratamento de informações provenientes da restauração de seções (atualmente mais entendida) e as aplicou para deformar as superfícies e movimentar uma nuvem de pontos. Esse processo foi chamado de mapeamento por tratar-se de levantamento e processamento de dados com o objetivo de caracterizar uma entidade geológica, assim como é feito no mapeamento geológico~\cite{Geoscan}. Nesse caso, o objetivo foi obter um padrão do comportamento das superfícies geológicas e do volume utilizando-se os resultados da restauração de seções.
 
-Uma restauração de superfícies geológicas seria um processo análogo à restauração de seções, no entanto, com suas premissas geológicas e métodos próprios. É possível que nem sejam usadas seções transversais para esse intuito. E se incluir o volume para uma restauração do modelo 3D diretamente, mais questões acerca da metodologia precisam ser feitas. 
+A restauração de superfícies geológicas seria um processo análogo à restauração de seções, no entanto, com suas premissas geológicas e métodos próprios. É provável que não sejam necessárias o uso de seções transversais para esse objetivo. Mais especificamente no caso de se incluir o volume para uma restauração do modelo 3D, mais questões acerca da metodologia necessitarão ser elaboradas. 
 
 Uma restauração 3D deve levar em conta ainda mais aspectos, como parâmetros geomecânicos além dos geométricos. Alguns autores~\cite{Santi_3dgeological, Massot, DURANDRIARD2010441} já apresentaram propostas para esta finalidade. Propostas estas que incluem uma malha volumétrica, uso de elementos finitos, caracterização do material e definição de condições de contorno entre outros aspectos.
 
-O que foi apresentado neste trabalho foi uma proposta inovadora cujo propósito se baseou na restauração 2D para se obter uma mapeamento de informações tridimensionais a custo relativamente baixo e computacionalmente eficiente.
+O que foi apresentado neste trabalho foi uma proposta alternativa cujo propósito se baseou em restauração 2D para se obter uma mapeamento de informações tridimensionais a custo relativamente baixo computacionalmente.
 
 \section{Observações}
 
@@ -57,10 +57,10 @@ Estas edições acabam por gerar uma separação entre a superfície 3D e a seç
 
 \section{Propostas para trabalhos futuros}
 
-Em primeiro lugar, sendo este trabalho uma maneira de adaptar informações 2D para um ambiente tridimensional, é muito oportuno que sejam desenvolvidos mecanismos e ferramentas que tenham como intuito manter uma ligação entre as duas visões do modelo. Isto irá trazer mais qualidade às informações presentes no modelo geológico.
+Em primeiro lugar, sendo este trabalho uma maneira de utilizar informações 2D para obter resultados tridimensionais, é fundamental que sejam desenvolvidos mecanismos e ferramentas que estabeleçam e persistam conexões entre as duas estruturas do modelo (seções e superfícies). Isto garantirá uma maior consistência às informações presentes no modelo geológico.
 
 A edição nas linhas pós-criação das seções geológicas são sempre passíveis de acontecer. Como são nas seções que todo o trabalho de restauração ocorre, o modelo geológico deve ser guiado por estas alterações feitas pelos geólogos. Em outros termos, edições nas linhas das seções devem ser propagadas às superfícies para manter a coesão entre essas partes, uma vez que representam a mesma entidade geológica sob pontos de vista diferentes.
 
-Pode-se concluir que tanto para a restauração 3D baseada em seções transversais quanto em uma restauração 3D propriamente dita, é fundamental que os dados de entrada das superfícies geológicas iniciais para o processo de restauração tenham consistência geométrica. Esse requisito acarreta na necessidade de uma ferramenta adicional para compatibilizar geometricamente as superfícies de entrada, uma vez que essas superfícies iniciais, em quase toda a totalidade dos casos, apresentam inconsistências geométricas. Esta é uma importante proposta para trabalho futuro.
+Pode-se concluir que tanto para a restauração 3D baseada em seções transversais quanto em uma restauração 3D propriamente dita, é fundamental que os dados de entrada das superfícies geológicas iniciais para o processo de restauração tenham consistência geométrica. Esse pré-requisito justifica a necessidade de se desenvolver uma ferramenta adicional para compatibilizar geometricamente as superfícies de entrada, uma vez que essas superfícies iniciais, em quase toda a totalidade dos casos, apresentam inconsistências geométricas. Esta é uma importante proposta para trabalho futuro.
 
-Em relação ao mapeamento do volume, como já citado, é dado a possibilidade de manter um acompanhamento de um ponto qualquer no domínio do modelo geológico ao longo de cada passo da restauração. Pode-se inclusive trabalhar na movimentação de uma seção geológica inteira a partir da restauração de seções vizinhas. Propõe-se ainda uma aplicação das transformações geológicas, que são usadas nas seções, no volume como uma maneira de movimentar a nuvem de pontos sem depender somente dos pontos das seções.
+Em relação ao mapeamento do volume, como já citado, é dada a possibilidade de manter um acompanhamento de um ponto qualquer no domínio do modelo geológico ao longo de cada passo da restauração. Pode-se inclusive trabalhar na movimentação de uma seção geológica inteira a partir da restauração de seções vizinhas. Propõe-se ainda uma aplicação das transformações geológicas, que são usadas nas seções, no volume como uma maneira de movimentar a nuvem de pontos sem depender somente dos pontos das seções.

@@ -119,8 +119,6 @@
     {Departamento de Informática}{PUC-Rio}
   \jurymember{Márcio Rodrigues de Santi}{Dr.}
     {Instituto Tecgraf}{PUC-Rio}
-  \jurymember{André Maués Brabo Pereira}{Prof.}
-    {Universidade Federal Fluminense}{Universidade Federal Fluminense}
 }
 
 %%%
@@ -135,10 +133,22 @@
 %%%
 
 \acknowledgment{%
-  \noindent Primeiro parágrafo de agradecimento ...
+  \noindent Para que este trabalho fosse realizado eu tive ajuda e colaboração de várias pessoas e empresas às quais sou extremamente grato.
+
   \bigskip
 
-  \noindent Segundo parágrafo de agradecimento ...
+  Agradeço imensamente à minha noiva, Mohara (lê-se \emph{Môara}), por toda paciência, incentivo, companheirismo e amor que me deram ânimo e forças em todos os momentos, principalmente naqueles onde fiquei travado, sem ideias. 
+  
+  Agradeço à minha família pelo incentivo e apoio que, mesmo distante há tanto tempo, nunca me faltaram, em especial aos meus irmãos, Vitória e Venâncio, meu pai, Jeovani, meus avós Eleuza e Jeca Velho e a todos os meus tios, tias e primos. À família da Mohara pela confiança e estímulo desde que decidimos vir ao Rio.
+
+  Agradeço a todos os professores com quem tive aulas durante esse período por todo conhecimento compartilhado, conselhos, provas, críticas e cobranças. Em especial ao meu orientador Luiz Fernando Martha, pessoa que admiro desde antes de conhecer pessoalmente, por ser uma inspiração para mim, por ter me aceitado como seu orientando e pela confiança para desenvolver esse trabalho.
+
+  Agradeço especialmente ao Márcio Santi por ter me dado a oportunidade que eu mais desejava depois que entrei no mestrado, a de contribuir com projetos do Instituto Tecgraf (um local que admiro desde a graduação e sempre sonhei fazer parte); ao André Müller, o coorientador desta dissertação, por todo o conhecimento, sugestões, conselhos e inspiração durante esse período, sou admirador do seu trabalho; à Gisele por ter me apresentado às minhas primeiras tarefas dentro do Recon e por todas as questões que me ajudou a resolver; à Camila e Diego, os geólogos que sempre me auxiliaram nas dúvidas que tive durante todas as fases desta dissertação; ao Flávio Szenberg por toda a disposição para me dar explicações e pelas críticas e dicas no uso das ferramentas de desenvolvimento; ao Bueno pelas contribuições diretas na implementação deste trabalho e por ter me auxiliado na resolução dos problemas que surgiram; ao Bruno pelas explicações acerca do funcionamento de alguns dos módulos do Recon e pela ajuda na escrita de código; ao Paulo por me ajudar nos problemas referentes à máquina, rede ou qualquer outro empecilho na programação e todos os demais colegas do Grupo de Modelagem Digital em Geociências do Instituto Tecgraf.
+
+  À banca examinadora por aceitar o convite. Ao CENPES/Petrobras por ter cedido um de seus modelos para uso como exemplo deste trabalho. Ao Instituto Tecgraf e à Capes pelo suporte financeiro durante o curso de mestrado.
+
+
+
 }
 
 %%%
@@ -174,29 +184,39 @@
 %%%
 
 \abstract{%
-  A restauração geológica busca reverter processos geológicos, partindo de uma região com sua geometria atual para sua configuração original, prévia à deformação. A restauração geológica de seções transversais é um dos principais recursos da indústria de óleo e gás para auxiliar na interpretação e validação. Em geral, processos geológicos acontecem de forma tridimensional. No entanto, a restauração 3D é complexa e cara e não faz parte do fluxo de trabalho tradicional que preza por soluções rápidas e eficientes como a restauração de seções 2D. Este trabalho apresenta uma metodologia e o desenvolvimento de ferramentas para mapear o movimento tridimensional baseado na restauração de seções geológicas. Esta metodologia divide o problema em duas etapas. O primeiro passo mapeia o movimento das seções para as superfícies do modelo com o uso de um deformador de superfícies. Na sequência, o movimento das seções junto do movimento das superfícies mapeiam o movimento do volume, aqui discretizado em uma nuvem de pontos. A solução numérica do primeiro passo realiza a movimentação das superfícies considerando pontos de controle, restrições impostas pelo movimento das seções transversais em conjunto com a minimização da função tri-harmônica a fim de produzir superfícies de variação mínima. O segundo passo faz a movimentação do volume baseado em pontos de controle dados pela movimentação das seções adicionadas ao movimento das superfícies obtidas no passo 1. A base de desenvolvimento para estes estudos é o Sistema Recon-MS, um software desenvolvido pela PETROBRAS em parceria com o Instituto Tecgraf/PUC-Rio, em que, dentre outros recursos, permite a restauração de modelos geológicos.
+  A restauração geológica busca reverter processos geológicos, partindo de uma região com sua geometria atual para sua configuração original, prévia à deformação. A restauração geológica de seções transversais é um dos principais recursos da indústria de óleo e gás para auxiliar na interpretação e validação. Em geral, processos geológicos acontecem de forma tridimensional. No entanto, a restauração 3D é complexa e cara e não faz parte do fluxo de trabalho tradicional que preza por soluções rápidas e eficientes como a restauração de seções 2D. Este trabalho apresenta uma metodologia e o desenvolvimento de ferramentas para mapear o movimento tridimensional baseado na restauração de seções geológicas. Esta metodologia divide o problema em duas etapas. O primeiro passo mapeia o movimento das seções para as superfícies do modelo com o uso de um deformador de superfícies. Na sequência, o movimento das seções junto do movimento das superfícies mapeiam o movimento do volume, aqui discretizado em uma nuvem de pontos. A solução numérica do primeiro passo realiza a movimentação das superfícies considerando pontos de controle, restrições impostas pelo movimento das seções transversais em conjunto com a minimização da função tri-harmônica a fim de produzir superfícies de variação mínima. O segundo passo faz a movimentação do volume baseado em pontos de controle dados pela movimentação das seções adicionadas ao movimento das superfícies obtidas no passo 1. A base de desenvolvimento para estes estudos é o Sistema Recon-MS, um sistema computacional desenvolvido pela PETROBRAS em parceria com o Instituto Tecgraf/PUC-Rio, no qual, dentre outros recursos, permite a restauração de modelos geológicos, através de algoritmos geométricos e cinemáticos.
 }
 
 \abstractuk{%
-  Geological restoration aims to reverse geological processes, starting from a region with its current geometry to its original configuration, prior to deformation. The geological restoration of cross-section is one of the oil and gas industry's key capabilities to aid interpretation and validation. In general, geological processes occur in a three-dimensional way. However, 3D restoration is complex and expensive and not part of the traditional workflow that emphasizes fast and efficient solutions such as restoring 2D sections. This work presents a methodology and the development of tools to map the three-dimensional movement based on the restoration of geological sections. This methodology divides the problem into two steps. The first step maps the movement of cross sections to model surfaces using a surface deformer. Next, the movement of the sections together with the movement of the surfaces map the movement of the volume, here discretized in a point cloud. The numerical solution of the first step performs the movement of surfaces considering control points, restrictions imposed by the movement of cross sections together with the minimization of the tri-harmonic function in order to produce surfaces with minimum variation. The second step is the movement of the volume based on control points given by the movement of the sections added to the movement of the surfaces obtained in step 1. The development basis for these studies is the Recon-MS System, a software developed by PETROBRAS in partnership with the Tecgraf/PUC-Rio Institute, which, among other resources, allows the restoration of geological models.}
+  Geological restoration aims to reverse geological processes, starting from a region with its current geometry to its original configuration, prior to deformation. The geological restoration of cross-section is one of the oil and gas industry's key capabilities to aid interpretation and validation. In general, geological processes occur in a three-dimensional way. However, 3D restoration is complex and expensive and not part of the traditional workflow that emphasizes fast and efficient solutions such as restoring 2D sections. This work presents a methodology and the development of tools to map the three-dimensional movement based on the restoration of geological sections. This methodology divides the problem into two steps. The first step maps the movement of cross sections to model surfaces using a surface deformer. Next, the movement of the sections together with the movement of the surfaces map the movement of the volume, here discretized in a point cloud. The numerical solution of the first step performs the movement of surfaces considering control points, restrictions imposed by the movement of cross sections together with the minimization of the tri-harmonic function in order to produce surfaces with minimum variation. The second step is the movement of the volume based on control points given by the movement of the sections added to the movement of the surfaces obtained in step 1. The development basis for these studies is the Recon-MS System, a computational system developed by PETROBRAS in partnership with the Tecgraf/PUC-Rio Institute, which, among other resources, allows the restoration of geological models, through of geometric and kinematic algorithms.}
 
 %%%
 %%% Dedication
 %%%
 
-%\dedication{%
- % Para minha mãe
-%}
+\dedication{%
+ \emph{À minha mãe, Jacilene...}
+}
 
 %%%
 %%% Epigraph
 %%%
 
-%\epigraph{%
-%  My beautifull epigraph
-%}
-%\epigraphauthor{Wassily Kandinsky}
-%\epigraphbook{Regards sur le passé}
+\epigraph{%
+  Seasons, they will change
+
+  Life will make you grow
+
+  Dreams will make you cry, cry, cry
+
+  Everything is temporary
+
+  Everything will slide
+
+  Love will never die, die, die.
+}
+\epigraphauthor{Imagine Dragons}
+\epigraphbook{Bird}
 
 %%%
 %%% Hyphenation
