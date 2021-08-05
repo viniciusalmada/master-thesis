@@ -2,13 +2,13 @@
 
 \chapter{Linhas de Mapeamento}
 
-O mapeamento descrito neste trabalho é baseado exclusivamente na restauração de seções geológicas. Para tanto, há necessidade de uma camada de informações proveniente das seções que contenha os dados a serem usados no mapeamento tridimensional. Essas informações podem ser extraídas com auxílio de um objeto geométrico auxiliar presente nas seções geológicas: \textit{linhas de mapeamento}.
+O mapeamento descrito neste trabalho é baseado exclusivamente na restauração de seções geológicas. Para tanto, há a necessidade de uma camada de informações proveniente das seções que contenha os dados a serem usados no mapeamento tridimensional. Essas informações podem ser extraídas com auxílio de um objeto geométrico auxiliar presente nas seções geológicas: \textit{linhas de mapeamento}.
 
 Neste capítulo é apresentado o conceito de linha de mapeamento presente no Sistema Recon, suas características, alguns casos de uso e também suas derivações.
 
 \section{Conceito}
 
-Linhas de mapeamento são linhas formadas por \textit{pontos de mapeamento}. Estes pontos são objetos mapeados nas malhas da seção e guardam informação referente à sua localização dentro desta malha.
+Linhas de mapeamento são linhas formadas por \textit{pontos de mapeamento}. Estes pontos são objetos mapeados nas malhas da seção e guardam a informação referente à sua localização dentro desta malha.
 
 Um ponto de mapeamento, em razão dos tipos de entidades topológicas presentes na malha, pode ser do tipo nó, aresta ou elemento:
 
@@ -92,14 +92,14 @@ Conforme o tipo do elemento geológico base, há um tipo de \textit{LMModel} e i
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
-  \item Horizonte: é guardado a informação de idade deste horizonte.
+  \item Horizonte: a informação de idade deste horizonte.
   \item Falha: o identificador da falha é o dado armazenado.
   \item Topo de sal: apenas uma referência direta à linha original.
 \end{itemize}
 
 Todas essas informações  geológicas atreladas ao mapeamento topológico das \textit{LMModels}, quando em conjunto com as diversas seções geológicas de um modelo multisseções, são o que fazem dela o principal dado para a realização de um mapeamento de informações de evolução do modelo tridimensional ao longo do tempo, já que trazem todo o histórico de movimentação das camadas de um modelo geológico.
 
-A maneira de trabalhar com \textit{LMModels} é com a organização delas em estruturas de dados que formam subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte), o que é visto na sequência. Com isso, é obtido o conjunto de informações que representam a restauração das seções no Sistema Recon.
+A utilização das \emph{LMModels} neste trabalho é feito com o auxílio de estruturas de dados que organizam as informações em subconjuntos divididos por etapa de restauração e idade (caso de linhas de horizonte), o que é visto na sequência. Com isso, é obtido o conjunto de informações que representam a restauração das seções no Sistema Recon.
 
 \begin{figure} [h]
   \begin{center}

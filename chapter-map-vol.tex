@@ -6,7 +6,7 @@ No presente capítulo é apresentado o mapeamento da movimentação das seções
 
 Este mapeamento do volume tem o intuito de fornecer uma maneira de realizar o acompanhamento de pontos dispostos no domínio tridimensional do modelo geológico durante o processo de restauração. Com isso, é possível obter mais informações sobre o que ocorre fora das seções e superfícies geológicas.
 
-Neste capítulo são apresentados a metodologia para o mapeamento do volume e o sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método. Uma breve discussão sobre a metodologia de mapeamento do volume também é descrita neste capítulo. A implementação computacional dessa metodologia foi realizada na biblioteca \emph{MGeo Deformer} por Müller~\cite{Muller}.
+Neste capítulo são apresentadas a metodologia para o mapeamento do volume e sua aplicação dentro do Sistema Recon, bem como detalhes sobre os requisitos para utilização do método. Uma breve discussão sobre a metodologia de mapeamento do volume também é descrita neste capítulo. A implementação computacional dessa metodologia foi realizada na biblioteca \emph{MGeo Deformer} por Müller~\cite{Muller}.
 
 \section{Metodologia}\label{vol-metodology}
 
@@ -155,7 +155,7 @@ Com todos esses dados levantados, parte-se à geração da nuvem de pontos. Impo
 
 A nuvem de pontos espaciais neste mapeamento, como já dito, é o volume geológico discretizado. Para sua criação, é preciso identificar o domínio tridimensional do modelo. Isto é feito com o cálculo da caixa envoltória de todo o modelo, em termos práticos, é a união das caixas envoltórias de todas as superfícies.
 
-Com esta informação já é possível realizar a geração do grade volumétrica (Figura~\ref{fig-vol-grid}). Essa grade não é visualizada no modelo, apenas uma abstração utilizada no cálculo da movimentação e também para a geração dos pontos. Cada célula da grade é responsável por abrigar 8 pontos, como mostra a Figura~\ref{fig-vol-cell}.
+Com esta informação já é possível realizar a geração da grade volumétrica (Figura~\ref{fig-vol-grid}). Essa grade não é visualizada no modelo, apenas uma abstração utilizada no cálculo da movimentação e também para a geração dos pontos. Cada célula da grade é responsável por abrigar 8 pontos, como mostra a Figura~\ref{fig-vol-cell}.
 
 \begin{figure} [H]
   \begin{center}
@@ -173,7 +173,7 @@ Com esta informação já é possível realizar a geração do grade volumétric
 
 Cada célula possui as mesmas dimensões, na Figura~\ref{fig-vol-cell}, os comprimentos em $x$, $y$ e $z$ são obtidos pela divisão da caixa envoltória pelo número de subdivisões requerida e representados por $l_x$, $l_y$ e $l_z$ respectivamente. Os pontos internos são localizados segundo esses comprimentos; também na Figura~\ref{fig-vol-cell} as coordenadas são obtidas a partir de $a$, $b$ e $c$, que são, respectivamente, $l_x/4$, $l_z/4$ e $l_y/4$.
 
-No entanto, apenas criar as células e então os pontos não é a única etapa. Os pontos que estão dentro da caixa envoltória mas fora do modelo geológico, precisam ser descartados. Ou seja, pontos acima da superfície de horizonte mais recente, precisam ser removidos. Além disso, dentre aqueles que restam é preciso que se defina a qual camada tal ponto pertence. Esta definição pode ser melhor explicada com uma ilustração em 2D, como na Figura~\ref{fig-vol-2d}. Cada ponto entre entre duas superfícies de horizonte é marcado como pertencente à camada de cima. Os pontos abaixo da última superfície (mais antiga) são definidos como pertencentes a esta.
+No entanto, apenas criar as células e então os pontos não é a única etapa. Os pontos que estão dentro da caixa envoltória mas fora do modelo geológico, precisam ser descartados. Ou seja, pontos acima da superfície de horizonte mais recente, precisam ser removidos. Além disso, dentre aqueles que restam é preciso que se defina a qual camada tal ponto pertence. Esta definição pode ser melhor explicada com uma ilustração em 2D, como na Figura~\ref{fig-vol-2d}. Cada ponto entre duas superfícies de horizonte é marcado como pertencente à camada de cima. Os pontos abaixo da última superfície (mais antiga) são definidos como pertencentes a esta.
 
 \begin{figure} [H]
   \begin{center}
@@ -193,7 +193,7 @@ Apesar de todos esses recursos para se gerar os pontos, descartar os de fora do 
   \end{center}
 \end{figure}
 
-Entretanto, são casos muito isolados e tendem a se reduzir ainda mais conforme se aumente o número de células na grade volumétrica. Além do mais, são problemas que não interferem na movimentação dos pontos. É algo que deixa a nuvem de pontos menos fidedigna ao volume geológica mas nem um pouco crítico.
+Entretanto, são casos muito isolados e tendem a se reduzir ainda mais conforme se aumente o número de células na grade volumétrica. Além do mais, são problemas que não interferem na movimentação dos pontos. É algo que deixa a nuvem de pontos menos fidedigna ao volume geológico mas nem um pouco crítico.
 
 \subsection{Movimentação dos pontos}
 
@@ -222,7 +222,7 @@ O resultado é uma nuvem de pontos atualizada que será usada no próximo passo 
 
 Nesta seção é mostrado um exemplo de mapeamento do volume feito no mesmo modelo usado no mapeamento de superfície já apresentado no item~\ref{ex-2-surf}.
 
-Para este exemplo foi adotado uma subdivisão para geração da grade volumétrica de $70$ unidades em $x$, $70$ unidades em $y$ e $60$ em $z$. Um total de $1.518.053$ pontos foram criados no domínio do modelo geológico\footnote{Ao realizar uma verificação simples, foram definidas $70\times70\times60=294.000$ células, cada uma contendo $8$ pontos, logo, aproximadamente $35\%$ dos pontos foram descartados por estarem fora do domínio do modelo.}. A Figura~\ref{fig-vol-ex-1} a seguir exibe o modelo geológico com apenas as superfícies de horizonte à esquerda e a nuvem de pontos gerada à direita.
+Para este exemplo foi adotada uma subdivisão para geração da grade volumétrica de $70$ unidades em $x$, $70$ unidades em $y$ e $60$ em $z$. Um total de $1.518.053$ pontos foram criados no domínio do modelo geológico\footnote{Ao realizar uma verificação simples, foram definidas $70\times70\times60=294.000$ células, cada uma contendo $8$ pontos, logo, aproximadamente $35\%$ dos pontos foram descartados por estarem fora do domínio do modelo.}. A Figura~\ref{fig-vol-ex-1} a seguir exibe o modelo geológico com apenas as superfícies de horizonte à esquerda e a nuvem de pontos gerada à direita.
 
 \begin{figure} [H]
   \begin{center}

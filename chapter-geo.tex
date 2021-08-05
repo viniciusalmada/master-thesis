@@ -17,7 +17,7 @@ O Sistema Recon vem sendo desenvolvido a partir de um convênio entre o Institut
   \end{center}
 \end{figure}
 
-De acordo com Fossen~\cite{Fossen}, restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo. Em outras palavras busca-se realizar uma retrodeformação na seção e utilizá-la na interpretação estrutural de uma região de interesse.
+De acordo com Fossen~\cite{Fossen}, restauração de seções geológicas pode ser entendida como uma manipulação da seção a fim de realizar a reconstituição dela ao seu estado anterior às deformações ocorridas ao longo do tempo. Em outras palavras, busca-se realizar uma retrodeformação na seção e utilizá-la na interpretação estrutural de uma região de interesse.
 
 Um dos principais objetivos da restauração de uma seção geológica é a validação de sua interpretação estrutural. A validação se dá quando a retrodeformação identifica que o processo de formação da seção tem consistência geológica. Quando a restauração identifica essa consistência, a seção geológica é dita \emph{balanceada}. Por isso, o processo de restauração também é chamado de \emph{balanceamento} da seção geológica.
 
@@ -53,7 +53,7 @@ Em suma, a subdivisão planar tem os seguintes elementos topológicos:
 
 \subsection{Modelagem da Subdivisão Planar}
 
-Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio e é a implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio. Ela consiste na implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
 
 O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas. Cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
 
@@ -73,7 +73,7 @@ Cada entidade do HED possui um campo reservado para um tipo genérico de informa
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
-  \item \textbf{GeoSolid}: o sólido por ser a estrutura de mais alto nível, é quem vai guardar referência à seção e ao cenário ao qual pertence dentro da restauração.
+  \item \textbf{GeoSolid}: o sólido, por ser a estrutura de mais alto nível, guarda a referência à seção e ao cenário ao qual pertence dentro da restauração.
   \item \textbf{GeoFace}: é a estrutura que precisa armazenar dados do material geológico que a compõe (como idade, tipo, características físicas, etc.) e malha de triângulos que pode ser manipulada pelas transformações.
   \item \textbf{GeoEdge}: estrutura que guarda o tipo de linha (de horizonte, falha, topo de sal, etc.) e a subdivisão geométrica que forma a linha. 
   \item \textbf{GeoVtx}: é a única que armazena apenas o identificador universal.
@@ -137,7 +137,7 @@ Módulos são agrupamentos de faces ou blocos da seção e têm o intuito de reu
 
 Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser aplicada à malha de cada uma das faces que compõem aquele módulo.
 
-Como visto na Figura~\ref{fig-recon-5} as transformações geológicas se dividem em grupos conforme o tipo de regime tectônico. Para os modelos aos quais este trabalho se propõe, podem se destacar as transformações do grupo \emph{Distensivo} e também as \emph{Gravitacionais} como a descompactação que trata-se da remoção da camada do topo, geralmente após a restauração desta, o que acaba por gerar um aumento na espessura das camadas inferiores. Mais informações sobre as transformações presentes no Sistema Recon MS podem ser consultadas no manual do usuário do sistema~\cite{Recon}.
+Como visto na Figura~\ref{fig-recon-5} as transformações geológicas se dividem em grupos conforme o tipo de regime tectônico. Para os modelos aos quais este trabalho se propõe, podem se destacar as transformações do grupo \emph{Distensivo} e também as \emph{Gravitacionais} como a descompactação que trata da remoção da camada do topo, geralmente após a restauração desta, o que acaba por gerar um aumento na espessura das camadas inferiores. Mais informações sobre as transformações presentes no Sistema Recon MS podem ser consultadas no manual do usuário do sistema~\cite{Recon}.
 
 \begin{figure} [H]
   \begin{center}
@@ -184,7 +184,7 @@ A Figura~\ref{fig-recon-7} exibe o Sistema Recon no ambiente MS, onde é possív
 
 \subsection{Etapas de restauração}
 
-Como brevemente apresentado, o ambiente MS permite ter uma olhar mais global do modelo e de todos os componentes que o formam. Nesse contexto é então preciso organizar as seções de forma que haja o máximo de coerência do ponto de vista geral durante a restauração do modelo. Podem existir seções que compartilham uma mesma falha ou um mesmo evento tectônico, por exemplo.
+Como brevemente apresentado, o ambiente MS permite ter um olhar mais global do modelo e de todos os componentes que o formam. Nesse contexto é então preciso organizar as seções de forma que haja o máximo de coerência do ponto de vista geral durante a restauração do modelo. Podem existir seções que compartilham uma mesma falha ou um mesmo evento tectônico, por exemplo.
 
 Como já visto, cada seção conta com um registro de cada passo dado no andamento da restauração e é um recurso presente apenas localmente e independente. No entanto, seções relativamente próximas, ou que foram restauradas de maneira semelhante precisam sincronizar esse histórico para que haja uma ordem melhor do modelo sob um aspecto global.
 
