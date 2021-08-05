@@ -8,7 +8,7 @@ Este trabalho propõe uma metodologia para o mapeamento de superfícies geológi
 
 \subsection*{Sistema Recon MS}
 
-Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com mais ênfase nos procedimentos que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos, pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e as linhas de mapeamento. Para mapear as transformações geológicas sofridas pelas seções geológicas ao longo da restauração para as superfícies de horizonte, falhas e topos de sal, assim como para o volume do modelo tridimensional, são criadas nas seções as linhas de mapeamento do modelo (\emph{LMModel}). 
+Inicialmente foi apresentado uma breve caracterização do que se trata a restauração de seções geológicas com mais ênfase nos procedimentos que o Sistema Recon MS, base de desenvolvimento, oferece para realizar tal atividade. Dentre os recursos fornecidos, pode-se citar a estrutura de dados topológicos HED, geração de malhas em seções, transformações geométricas e as linhas de mapeamento. Para mapear as transformações geológicas sofridas pelas seções geológicas ao longo da restauração para as superfícies de horizontes, falhas e topos de sal, assim como para o volume do modelo tridimensional, são criadas nas seções as linhas de mapeamento do modelo (\emph{LMModel}). 
 
 \subsection*{Mapeamento de superfícies}
 
@@ -17,7 +17,7 @@ Em relação ao mapeamento de superfícies geológicas, as seguintes atividades 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
   \item breve discussão acerca da metodologia para deformar a superfície;
-  \item exportação e organização das \emph{LMModels} das seções para uso como pontos de controle na deformação da superfície\footnote{Este item é realizado no início do mapeamento, após a restauração das seções geológicas.};
+  \item exportação e organização das \emph{LMModels} das seções para uso como pontos de controle na deformação das superfícies\footnote{Este item é realizado no início do mapeamento, após a restauração das seções geológicas.};
   \item recriação da malha de superfície para incluir os pontos de controle como nós da malha na etapa inicial de restauração\footnote{Esta atividade só ocorre na primeira etapa de restauração. A nova malha é mantida até o final do processo.};
   \item seleção de bordas origem e destino e cálculo da direção de movimentação de seus pontos para também serem usadas como pontos de controle;
   \item definição de quais pontos da malha da superfície estão livres para se movimentar (e quais não estão) numa dada etapa de restauração;
@@ -39,7 +39,7 @@ Para o mapeamento do volume, são listadas a seguir as atividades feitas:
 
 \section{Mapeamento x Restauração}
 
-A restauração de seções geológicas é uma atividade já consagrada na interpretação estrutural e fornece resultados satisfatórios de maneira eficiente. No entanto, a consideração de apenas seções transversais de modelos geológicos, que são tridimensionais, na restauração pode acarretar na dissociação do comportamento real ocorrido. Em razão disso, pode-se partir a estudos que também levem em conta características 3D. Por outro lado, soluções tridimensionais para a restauração geológica ainda não são totalmente entendidas, assim podem ser custosas e ineficientes.
+A restauração de seções geológicas é uma atividade já consagrada na interpretação estrutural e fornece resultados satisfatórios de maneira eficiente. No entanto, a consideração de apenas seções transversais de modelos geológicos, que são tridimensionais, na restauração pode acarretar na dissociação do comportamento real ocorrido. Em razão disso, pode-se partir a estudos que também levem em conta características 3D. Por outro lado, soluções tridimensionais para a restauração geológica ainda não são totalmente entendidas, assim como podem ser custosas e ineficientes.
 
 Este trabalho realizou uma busca e tratamento de informações provenientes da restauração de seções (atualmente mais entendida) e as aplicou para deformar as superfícies e movimentar uma nuvem de pontos. Esse processo foi chamado de mapeamento pois trata-se de um levantamento e processamento de dados com o objetivo de caracterizar uma entidade geológica, assim como é feito no mapeamento geológico~\cite{Geoscan}. Nesse caso, o objetivo foi realizar uma definição do comportamento das superfícies geológicas e do volume com os dados da restauração de seções.
 

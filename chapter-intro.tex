@@ -6,25 +6,23 @@ A restauração estrutural de modelos geológicos permite quantificar a intensid
 
 Dentre os método usados na restauração estrutural, um dos mais abordados é o balanceamento de seções geológicas. No balanceamento de seções são usados cortes transversais resultantes da interseção de um plano vertical com um modelo geológico. Essa seção geológica passa a ser manipulada segundo uma série de técnicas e premissas geológicas com o intuito de se chegar ao estado original, pré-deformação. O manuseio da seção geológica no sentido contrário ao tempo dá-se o nome de \emph{restauração}~\cite{Fossen}. Do ponto de vista computacional, a restauração de seções geológicas apresenta ferramentas 2D simples, rápidas e eficientes~\cite{GarciaTese}.
 
-A aplicação de restauração de seções geológicas é capaz de fornecer a quantidade de encurtamento ou extensão uma região, analisar a evolução estrutural da área, definir épocas de atividades das falhas, de movimentação de sal e obter uma estimativa do momento de desenvolvimento de uma armadilha de hidrocarbonetos~\cite{DURANDRIARD-3D, Guedes}. Neste método de restauração estrutural as seções transversais são criadas paralelamente à direção principal de transporte tectônico. Entretanto, em modelos com falhas mais complexas ou com transporte em direções diversas, algumas das premissas geológicas podem não corretamente usadas~\cite{GarciaTese}. Além disso, por mais simples que seja uma movimentação tectônica, ela se dá em um domínio tridimensional. Portanto, o uso apenas de seções geológicas para restauração estrutural sempre deixa de considerar o que ocorre na parte de fora das seções.
+A aplicação de restauração de seções geológicas é capaz de fornecer a quantidade de encurtamento ou extensão uma região, analisar a evolução estrutural da área, definir épocas de atividades das falhas, de movimentação de sal e obter uma estimativa do momento de desenvolvimento de uma armadilha de hidrocarbonetos~\cite{DURANDRIARD-3D, Guedes}. No geral, no método de restauração estrutural as seções transversais são criadas paralelamente à direção principal de transporte tectônico. Entretanto, em modelos com falhas mais complexas ou com transporte em direções diversas, algumas das premissas geológicas podem não corretamente usadas~\cite{GarciaTese}. Além disso, por mais simples que seja uma movimentação tectônica, ela se dá em um domínio tridimensional. Portanto, o uso apenas de seções geológicas para restauração estrutural sempre deixa de considerar o que ocorre no volume entre seções.
 
-Para se chegar a uma interpretação estrutural mais completa da restauração de um modelo geológico pode-se partir para uma restauração 3D. Neste caso, todo o modelo geológico precisa passar pelo processo de restauração de maneira completa. Isso envolve acrescentar uma série de restrições, etapas de checagem da consistência do modelo e uma representação discreta mais complexa, como o uso de malhas de elementos finitos~\cite{DURANDRIARD2010441}. Esse tipo de solução requer mais informações e pode envolver um alto custo computacional para se chegar em um bom resultado.
+Para se chegar a uma interpretação estrutural mais completa da restauração de um modelo geológico pode-se partir para uma restauração 3D. Nesse caso, todo o modelo geológico precisa passar pelo processo de restauração de maneira completa. Isso envolve acrescentar uma série de restrições, etapas de verificação da consistência do modelo e uma representação discreta mais complexa, como o uso de malhas de elementos finitos~\cite{DURANDRIARD2010441}. Esse tipo de solução requer a definição de modelos geológicos mais complexos, que não estão completamente difundidos na área. Além disso, a restauração 3D requer mais informações e pode envolver um alto custo computacional para se chegar em um bom resultado.
 
 \section{Motivação}
 
-A restauração de seções geológicas se prova um método eficiente para auxiliar na interpretação estrutural de uma região. A inclusão de um procedimento de restauração tridimensional pode acarretar em custos elevados e mesmo assim gerar resultados não compensatórios.
-
-As seções geológicas representam o modelo geológico como uma discretização. Ao aumentar o número de seções no processo de restauração, as informações geradas sobre o transporte tectônico ficam mais amplas em relação ao modelo completo. Essas informações de cada seção geológica em conjunto podem ser usadas para se fazer uma extrapolação para o que ocorre fora da seção dentro do modelo.
+A restauração de seções geológicas se prova um método eficiente para auxiliar na interpretação estrutural de uma região. As seções geológicas representam o modelo geológico como uma discretização. Ao aumentar o número de seções no processo de restauração, as informações geradas sobre o transporte tectônico ficam mais amplas em relação ao modelo completo. Essas informações de cada seção geológica em conjunto podem ser usadas para se fazer uma extrapolação para o que ocorre no volume entre seções do modelo.
 
 O modelo geológico de uma determinada região é formado por diversos tipos de estruturas e com uma metodologia própria de criação~\cite{Rodrigues}. Em modelos voltados à restauração de seções podem ser usados aqueles com superfícies tridimensionais representado o topo das camadas geológicas ali presentes. As seções geológicas terão linhas representando as superfícies interceptadas pelo plano transversal das seções.
 
-Ao realizar a restauração das seções geológicas, as linhas que representam as superfícies geológicas sofrem uma deformação segundo a metodologia de restauração. No entanto, essa deformação não é aplicada às superfícies o que gera uma dissociação das seções e superfícies. Aquelas linhas, contudo, possuem a informação do quanto se deformaram entre um passo e outro da restauração das seções.
+Ao realizar a restauração das seções geológicas, as linhas que representam as superfícies geológicas sofrem transformações (deslocamento e deformações) segundo a metodologia de restauração. No entanto, essas transformações não são aplicadas às superfícies o que gera uma dissociação das seções e superfícies. Aquelas linhas das seções, contudo, possuem a informação do quanto se deformaram entre um passo e outro da restauração das seções.
 
-Essas informações de deformação da seção geológica podem ser usadas para mapear o comportamento da superfície geológica e assim obter uma superfície condizente ao ocorrido na seção.
+Essas informações de deformação da seção geológica podem ser usadas para mapear o comportamento da superfície geológica e assim obter uma superfície condizente com as transformações sofridas pelas seções.
 
-O mapeamento de informações para realizar a caracterização de uma ou mais estruturas dentro da Geologia é uma ferramenta bastante presente. Cita-se como casos de uso o mapeamento geológico-estrutural que faz uso de técnicas para descrever estruturas geológicas e suas distribuições no espaço de uma determinada região~\cite{Borges, Felipe} e o mapeamento de paleorrelevos. Esse último é interpretado como sendo o estado da superfície geológica em um dado momento no tempo~\cite{Archela}.
+O mapeamento de informações para realizar a caracterização de uma ou mais estruturas dentro da Geologia é uma ferramenta bastante presente. Cita-se como casos de uso o mapeamento geológico-estrutural que utiliza técnicas para descrever estruturas geológicas e suas distribuições no espaço de uma determinada região~\cite{Borges, Felipe}, e o mapeamento de paleorrelevos. Esse último é interpretado como sendo o estado da superfície geológica em um dado momento no tempo~\cite{Archela}.
 
-Adicionalmente, as informações de movimentação tectônica produzida pelas seções também podem ser estendidas para um mapeamento do volume. Neste caso, um ponto qualquer no domínio do modelo geológico pode vir a sofrer um deslocamento com base na movimentação das seções geológicas adjacentes.
+Adicionalmente, as informações de movimentação tectônica produzida pelas seções também podem ser estendidas para um mapeamento do volume. Nesse caso, um ponto qualquer no domínio do modelo geológico pode vir a sofrer um deslocamento com base na movimentação das seções geológicas adjacentes.
 
 \section{Objetivos}
 
@@ -48,13 +46,13 @@ A implementação computacional deste trabalho foi realizado no Sistema Recon MS
 
 \section{Escopo}
 
-O presente trabalho encontra-se dividido em 6 capítulos listados adiante.
+O presente trabalho encontra-se dividido em 6 capítulos, resumidos a seguir.
 
 No capítulo 2 é apresentado o processo de restauração de seções geológicas no ambiente computacional usado como base de desenvolvimento deste trabalho, bem como tudo que envolve essa atividade para obtenção da movimentação tectônica.
 
 O capítulo 3 introduz o mapeamento usado nas seções geológicas dentro do Sistema Recon. Incluindo a apresentação do mapeamento das entidades geológicas durante a restauração de seção.
 
-Já os capítulos 4 e 5 mostras a forma de preparação dos dados a partir das seções geológicas para o mapeamento de superfícies e volume, respectivamente. Em cada capítulo são apresentados a metodologia de implementação destes mapeamentos, casos de uso e discussão dos resultados.
+Os capítulos 4 e 5 mostram a forma de preparação dos dados a partir das seções geológicas para o mapeamento de superfícies e volume, respectivamente. Em cada capítulo são apresentados a metodologia de implementação destes mapeamentos, casos de uso e discussão dos resultados.
 
 O capítulo 6 possui a conclusão, sugestão de trabalhos posteriores e as últimas considerações acerca deste estudo.
 
