@@ -141,6 +141,15 @@ O uso desse procedimento dentro do Sistema Recon para realizar o mapeamento do v
 
 Após isso, esse conjunto de informações é passado ao \emph{deformador de volume} que é a implementação computacional da metodologia apresentada anteriormente. O deformador de volume está presente na biblioteca \emph{MGeo Deformer}~\cite{Muller}.
 
+Em síntese, o fluxo de trabalho para realizar o mapeamento do volume de um modelo geológico é apresentado na Figura~\ref{fig-volume-mapping-workflow} a seguir:
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-volume-mapping-workflow}
+    \caption{Fluxo de trabalho para executar o mapeamento do volume.}\label{fig-volume-mapping-workflow}
+  \end{center}
+\end{figure}
+
 \subsection{Lista de falhas e \emph{EtapasMS}}
 
 Assim como no mapeamento de superfícies, é preciso que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Além disso, caso tenha sido feito o mapeamento de superfícies, é possível extrair dados desse mapeamento e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}.

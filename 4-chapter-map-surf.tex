@@ -94,6 +94,15 @@ A metodologia mostrada anteriormente é capaz de realizar a deformação de supe
 
 Importante salientar que o ideal é que após a seção ter sido criada ocorra o mínimo de edição inicial nas linhas geradas. Isso é importante pois quanto melhor definida esteja a seção após o fatiamento (item~\ref{item-section-creation}), mais coerente com as superfícies tridimensionais estará o modelo como um todo. Edições nas linhas são comuns de acontecerem para que seja possível realizar a restauração da seção, entretanto, em caso de edições maiores ocorrerá o descasamento entre seção e superfícies e, nesta etapa, poderão haver incongruências.
 
+A fim de facilitar o entendimento do processo geral para realizar o mapeamento de superfícies de um modelo geológico, é apresentado na Figura~\ref{fig-surface-mapping-workflow} um fluxograma com os passos necessários. Esses passos são explicados nas subseções a seguir.
+
+\begin{figure} [H]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-surface-mapping-workflow}
+    \caption{Fluxo de trabalho para executar o mapeamento de superfícies.}\label{fig-surface-mapping-workflow}
+  \end{center}
+\end{figure}
+
 \subsection{\textit{LMModels}}\label{lmmodels-surface-map}
 
 O objetivo desta subseção é mostrar como obter informação de deslocamento dos horizontes entre etapas de restauração de uma seção geológica a partir de \textit{LMModels}. O deslocamento de pontos de horizonte é o dado principal vindo das seções para o mapeamento de deformações de horizontes, uma vez que as seções geológicas são cortes transversais planos de um conjunto de superfícies tridimensionais.

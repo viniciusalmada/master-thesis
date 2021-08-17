@@ -38,24 +38,21 @@ Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as
 
 Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
 
-A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. 
+A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos.
 
-No entanto, há ainda um último componente topológico: o \textit{loop} ou \textit{laço} que é, de forma sucinta, um subconjunto conexo e ordenado de arestas. Com essa definição, a \textit{face} pode ser interpretada como uma união de laços, um deles sendo externo (delimitando a fronteira externa da face) e zero ou mais internos.
-
-Em suma, a subdivisão planar tem os seguintes elementos topológicos:
+Em suma, a subdivisão planar tem os seguintes elementos topológicos~\footnote{Há ainda o elemento \emph{loop} ou laço que auxilia na definição de faces internas, porém para contextualização deste trabalho optou-se por apresentar apenas os elementos vértice, aresta e face.}:
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
   \item \textbf{Vértice}: representa um ponto único dentro do plano.
   \item \textbf{Aresta} (edge): segmento de curva com vértices como limites.
-  \item \textbf{Laço} (loop): subconjunto conexo e ordenado de arestas.
   \item \textbf{Face}: região delimitada por um ou mais laços.
 \end{itemize}
 
 \subsection{Modelagem da Subdivisão Planar}
 
-Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \textbf{HED} desenvolvida pelo Instituto Tecgraf/PUC-Rio. Ela consiste na implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
+Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \emph{HED} (Half-EDge) desenvolvida pelo Instituto Tecgraf/PUC-Rio. Ela consiste na implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
 
-O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas. Cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo do loop das faces, por exemplo.
+O HED introduz uma nova entidade que explora bem essa característica denominada \textit{half-edge} ou \textit{semiaresta} que é uma referência ao \quotes{uso} da aresta por uma face. Dessa forma, no HED, cada aresta é formada por duas semiarestas. Cada semiaresta guarda uma referência para uma face e também para um vértice de origem. Isto dá uma orientação para a semiaresta que é usada para indicar o sentido positivo da ordem dos vértices das faces, por exemplo.
 
 A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de elementos topológicos. No nível mais alto está a subdivisão planar, denominada como \textit{HedSolid}, então vêm \textit{HedFace}, \textit{HedLoop}, \textit{HedHalfEdge} e \textit{HedVtx} no nível mais baixo. A representação da aresta, \textit{HedEdge} encontra-se no mesmo nível da \emph{HedHalfEdge}.
 
@@ -107,7 +104,7 @@ A seção geológica é representada como uma subdivisão planar, como já citad
   \end{center}
 \end{figure}
 
-As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. Cada face possui uma malha independente das outras. No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS}~\cite{Tops} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos. A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
+As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. Cada face possui uma malha independente das outras. No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS} (Topological Data Structure for Mesh Representation)~\cite{Tops} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos. A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
 
 \begin{figure} [H]
   \begin{center}
