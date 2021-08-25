@@ -152,17 +152,17 @@ Em síntese, o fluxo de trabalho para realizar o mapeamento do volume de um mode
 
 \subsection{Lista de falhas e \emph{EtapasMS}}
 
-Assim como no mapeamento de superfícies, é preciso que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Além disso, caso tenha sido feito o mapeamento de superfícies, é possível extrair dados desse mapeamento e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}.
+Assim como no mapeamento de superfícies, é recomendado que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Isso é sugerido para que seja possível ter a estrutura de dados das \emph{LMModels} (item~\ref{lmmodels-surface-map}) e assim realizar o mapeamento de superfícies. Caso tenha sido feito mapeamento de superfícies, é possível extrair dados desse mapeamento e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}, ocasionando em resultados ainda mais coerentes com a movimentação tectônica.
 
 Ao iniciar o mapeamento de volume, o primeiro passo é o levantamento de quantas \emph{EtapasMS} existem no modelo. Isso é necessário porque o mapeamento do volume também é feito por \emph{EtapaMS}, mais precisamente de uma \emph{EtapaMS} atual em relação à próxima. Ou seja, a entrada de dados vem principalmente das seções e superfícies em relação ao passo seguinte da restauração do modelo.
 
 Após isso, busca-se todas as superfícies tridimensionais do modelo, incluindo as de falhas e horizontes. As superfícies são o principal parâmetro para a geração da nuvem de pontos que representam o volume discretizado\footnote{Para a geração da nuvem de pontos, as superfícies de horizonte precisam estar no estado original do modelo, ou seja, antes de haver deformação pelo mapeamento de superfícies. Nesse caso, são as superfícies da \emph{EtapaMS} inicial.}.
 
-Com todos esses dados levantados, parte-se à geração da nuvem de pontos. Importante ressaltar que a geração da nuvem de pontos só é realizada uma única vez. Na etapa de descompactação serão removidos os pontos correspondentes à camada removida.
+Com todos esses dados levantados, parte-se para a geração da nuvem de pontos. Importante ressaltar que a geração da nuvem de pontos só é realizada uma única vez. Na etapa de descompactação serão removidos os pontos correspondentes à camada removida.
 
 \subsection{Geração da nuvem de pontos}\label{cloud-points-generation}
 
-A nuvem de pontos espaciais neste mapeamento, como já dito, é o volume geológico discretizado. Para sua criação, é preciso identificar o domínio tridimensional do modelo. Isto é feito com o cálculo da caixa envoltória de todo o modelo, em termos práticos, é a união das caixas envoltórias de todas as superfícies.
+A nuvem de pontos espaciais neste mapeamento, como já dito, é o volume geológico populado por partículas. Para sua criação, é preciso identificar o domínio tridimensional do modelo. Isto é feito com o cálculo da caixa envoltória de todo o modelo, que em termos práticos, representa a união das caixas envoltórias de todas as superfícies.
 
 Com esta informação já é possível realizar a geração da grade volumétrica (Figura~\ref{fig-vol-grid}). Essa grade não é visualizada no modelo, apenas uma abstração utilizada no cálculo da movimentação e também para a geração dos pontos. Cada célula da grade é responsável por abrigar 8 pontos, como mostra a Figura~\ref{fig-vol-cell}.
 
@@ -212,11 +212,11 @@ Como já dito, uma \emph{EtapaMS} é um conjunto de cenários, cada um pertencen
 
 O objetivo neste passo é ter o deslocamento dos pontos das malhas da seção entre uma \emph{EtapaMS} e a próxima. Este cálculo é feito semelhantemente à interpolação das \emph{LMModels} apresentada no item~\ref{lmmodels-surface-map}. Dessa forma, para cada ponto de malha da seção na \emph{EtapaMS} $A$ vai possuir um correspondente na malha da seção na \emph{EtapaMS} $B$.
 
-Estes pontos são colocados em uma estrutura de dados especial e cada um com um atributo armazenando o seu destino na \emph{EtapaMS} seguinte.
+Estes pontos são colocados em uma estrutura de dados e cada um com um atributo armazenando o seu destino na \emph{EtapaMS} seguinte.
 
 O mesmo é feito para as superfícies após o mapeamento delas, com a vantagem de não precisar de uma interpolação (já que a malha da superfície não muda de uma \emph{EtapaMS} a outra). Para cada ponto da malha de superfície, é registrado seu correspondente na \emph{EtapaMS} seguinte. Os pontos das superfícies são adicionados à mesma estrutura de dados dos pontos das seções.
 
-O último dado depende do tipo de marco geológico ocorrido entre as \emph{EtapaMS}. Em caso de descompactação, só são levados em conta pontos de seções e superfícies excluindo aqueles da camada a ser removida. Já em caso de restauração de falha, é preciso pegar os nós da malha da falha que está sendo restaurada e enviar ao deformador de volume como restrição junto da estrutura de dados com os pontos das seções e superfícies. Um resumo destes passos é apresentado na Figura~\ref{fig-vol-algorithm}.
+O último dado depende do tipo de marco geológico ocorrido entre as \emph{EtapaMS}. Em caso de descompactação, só são levados em conta pontos de seções e superfícies excluindo aqueles da camada a ser removida. Já em caso de restauração de falha, é preciso pegar os nós da malha da superfície de falha que está sendo restaurada e enviar ao deformador de volume como restrição junto da estrutura de dados com os pontos das seções e superfícies. Um resumo destes passos é apresentado na Figura~\ref{fig-vol-algorithm}.
 
 \begin{figure} [H]
   \begin{center}
@@ -242,7 +242,7 @@ Para este exemplo foi adotada uma subdivisão para geração da grade volumétri
 
 Observa-se na imagem da direita da Figura~\ref{fig-vol-ex-1} que há pontos no topo marcados como sendo da camada geológica de baixo, isso acontece pela presença de buracos na superfície do topo, problema discutido na seção~\ref{cloud-points-generation} (Figura~\ref{fig-vol-errors}).
 
-Neste modelo já estão feitas todas as restaurações de seções e também o mapeamento de superfície (como apresentado na seção~\ref{ex-2-surf}). A primeira \emph{EtapaMS} restaura a falha 7 do modelo. Essa falha intercepta apenas 6 seções geológicas (Figura~\ref{fig-example-2-5}), logo apenas estas seções irão contribuir com pontos, cujos deslocamentos são maiores que zero, para a movimentação do volume. 
+Neste modelo já estão feitas todas as restaurações de seções e também o mapeamento de superfície (como apresentado na seção~\ref{ex-2-surf}). A primeira \emph{EtapaMS} restaura a falha 7 do modelo. Essa falha intercepta apenas 6 seções geológicas (Figura~\ref{fig-example-2-5}), logo apenas estas seções irão contribuir com pontos, cujos deslocamentos são diferentes de zero, para a movimentação do volume. 
 
 De acordo com o apresentado anteriormente, os pontos das seções e das superfícies são unidos numa estrutura de dados onde cada ponto possui um atributo guardando sua posição final na \emph{EtapaMS} seguinte. A Figura~\ref{fig-vol-ex-2} mostra os pontos dessa estrutura para esse primeiro passo, evidenciando apenas aqueles próximo das seções cruzadas pela falha 7, além dos pontos da própria superfície de falha 7.
 
@@ -262,7 +262,7 @@ Conforme metodologia apresentada (seção~\ref{vol-metodology}), a movimentaçã
   \end{center}
 \end{figure}
 
-Diferente do mapeamento de superfícies, aqui no volume não há necessidade de uma interação, só é preciso que os requisitos estejam prontos (seções e superfícies). Nas Figuras~\ref{fig-vol-ex-4} a~\ref{fig-vol-ex-7} são mostrados o mapeamento do volume para cada \emph{EtapaMS} subsequente até que se tenha a camada do topo restaurada.
+Diferente do mapeamento de superfícies, aqui no volume não há necessidade de uma coleta de dados, o processo é feito de forma automática, basta apenas que os requisitos estejam prontos (seções e superfícies). Nas Figuras~\ref{fig-vol-ex-4} a~\ref{fig-vol-ex-7} são mostrados o mapeamento do volume para cada \emph{EtapaMS} subsequente até que se tenha a camada do topo restaurada.
 
 \begin{figure} [H]
   \begin{center}
@@ -296,6 +296,6 @@ Quando há uma \emph{EtapaMS} de descompactação, os pontos de seções e super
 
 Conforme os resultados obtidos, a movimentação do volume pode ser vista como uma boa aproximação em relação à restauração das seções, respeitando, inclusive, a restrição das superfícies de falhas.
 
-Este processo de mapeamento do volume apresenta facilidade de uso e representa bem modelos geológicos complexos, sem uma necessidade explícita de definição desse volume. Além do mais, o método numérico empregado é capaz de fornecer bons resultados com eficiência computacional.
+Este processo de mapeamento do volume apresenta facilidade de uso e representa bem modelos geológicos do nível apresentado neste trabalho, sem uma necessidade explícita de definição desse volume. Além do mais, o método numérico empregado é capaz de fornecer bons resultados com eficiência computacional.
 
 Com esta metodologia tem-se a possibilidade de mapear um ponto qualquer no ambiente multisseções ao longo da restauração de um modelo geológico. Há ainda a chance de movimentar pontos de seções não restauradas com base na restauração das demais, uma forma de restaurar uma seção geológica passivamente.

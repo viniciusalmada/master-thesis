@@ -38,14 +38,23 @@ Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as
 
 Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
 
-A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos.
+A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. Uma ilustração na Figura~\ref{fig-subdivisao-planar-2} pode esclarecer como é a representação de uma subdivisão planar. Nessa imagem o plano é dividido em quatro regiões ($f_1$, $f_2$, $f_3$ e face externa) delimitadas por um conjunto de arestas.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-subdivisao-planar-2}
+    \caption{Representação de uma subdivisão planar~\cite{Ferraz}.}\label{fig-subdivisao-planar-2}
+  \end{center}
+\end{figure}
+
+A nomenclatura dos componentes topológicos que formam a subdivisão planar são baseados na relação entre ela e sólidos homeomorfos a uma esfera. Uma vez que subdivisões planares são representações da topologia da fronteira desses sólidos~\cite{Cavalcanti}.
 
 Em suma, a subdivisão planar tem os seguintes elementos topológicos~\footnote{Há ainda o elemento \emph{loop} ou laço que auxilia na definição de faces internas, porém para contextualização deste trabalho optou-se por apresentar apenas os elementos vértice, aresta e face.}:
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
   \item \textbf{Vértice}: representa um ponto único dentro do plano.
   \item \textbf{Aresta} (edge): segmento de curva com vértices como limites.
-  \item \textbf{Face}: região delimitada por um ou mais laços.
+  \item \textbf{Face}: região delimitada por um ou mais conjuntos conexos de arestas.
 \end{itemize}
 
 \subsection{Modelagem da Subdivisão Planar}
@@ -64,7 +73,7 @@ Destaca-se que a ideia de representar a seção geológica como uma subdivisão 
 
 \subsection{Atributos Geológicos}
 
-Como dito, os blocos que formam a seção geológica possuem propriedades próprias e precisam também estarem salvas na estrutura de dados topológica.
+Como dito, os blocos que formam a seção geológica possuem propriedades próprias que também precisam estar salvas na estrutura de dados topológica.
 
 Cada entidade do HED possui um campo reservado para um tipo genérico de informações e neste espaço são organizados os atributos geológicos da seção. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
 
@@ -80,7 +89,7 @@ Todas as estruturas de atributos geológicos possuem um campo para salvar este i
 
 \subsection{Seções Geológicas} % Falar da árvore de cenários
 
-O Sistema Recon tem um conjunto de ferramentas para manipular uma seção geológica, desde a digitalização das informações que a definem geometricamente, da caracterização dos materiais e propriedades, da criação de dispositivos de controle e monitoramento da restauração, até o kit de transformações que irão deformar a seção.
+O Sistema Recon representa as seções geológicas pela estrutura descrita acima. Além disso, ele tem um conjunto de ferramentas para manipular uma seção geológica, desde a digitalização das informações que a definem geometricamente, da caracterização dos materiais e propriedades, da criação de dispositivos de controle e monitoramento da restauração, até o kit de transformações que irão deformar a seção.
 
 \subsubsection{Criação de uma seção geológica}\label{item-section-creation}
 
@@ -95,7 +104,7 @@ Para criar uma seção geológica no Sistema Recon pode-se recorrer ao editor gr
 
 \subsubsection{Malhas da seção geológica}
 
-A seção geológica é representada como uma subdivisão planar, como já citado, e utiliza a biblioteca HED na implementação dessa subdivisão. Na Figura~\ref{fig-recon-2} pode-se observar uma seção geológica e alguns elementos, como as linhas (\textit{HedEdges}) onde a sua cor representa o atributo de tipo e as faces (\textit{HedFaces}) que são, em termos simples, regiões fechadas por linhas. Neste exemplo, todas as faces pertencem à mesma camada geológica.
+A seção geológica é representada como uma subdivisão planar, como já citado, e utiliza a biblioteca HED na representação dessa subdivisão. Na Figura~\ref{fig-recon-2} pode-se observar uma seção geológica e alguns elementos, como as linhas (\textit{HedEdges}) onde a sua cor representa o atributo de tipo e as faces (\textit{HedFaces}) que são, em termos simples, regiões fechadas por linhas. Neste exemplo, todas as faces pertencem à mesma camada geológica.
 
 \begin{figure} [h]
   \begin{center}
@@ -104,7 +113,9 @@ A seção geológica é representada como uma subdivisão planar, como já citad
   \end{center}
 \end{figure}
 
-As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. Cada face possui uma malha independente das outras. No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS} (Topological Data Structure for Mesh Representation)~\cite{Tops} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos. A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
+As faces têm um atributo muito importante para o trabalho de restauração, que são as malhas de triângulos. As malhas são penduradas por face para facilitar o uso, aproveitando-se do fato do HED gerenciar atributos. Neste caso, cada face possui uma malha independente das outras. 
+
+No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos chamada \textit{TopS} (Topological Data Structure for Mesh Representation)~\cite{Tops} que trata-se de uma biblioteca computacional voltada para representação de malhas de elementos finitos. A Figura~\ref{fig-recon-3} exibe a mesma seção, mas com adição das malhas das faces.
 
 \begin{figure} [H]
   \begin{center}
@@ -113,9 +124,9 @@ As faces têm um atributo muito importante para o trabalho de restauração, que
   \end{center}
 \end{figure}
 
-A importância das malhas dentro da restauração de seções no Sistema Recon se dá por conta das transformações geológicas. A malha de uma face tem vários usos, sendo que o mais importante é permitir avaliar o campo de deformações sofrido pela face em função das transformações geológicas. Mais detalhes sobre as transformações geológicas são apresentados na sequência.
+A importância das malhas dentro da restauração de seções no Sistema Recon se dá por conta das transformações geológicas. A malha de uma face tem vários usos, sendo um deles permitir avaliar o campo de deformações sofrido pela face em função das transformações geológicas. Mais detalhes sobre as transformações geológicas são apresentados na sequência.
 
-A estrutura \textit{TopS} permite armazenar atributos em seus elementos topológicos. Em especial nos vértices da malha, no Sistema Recon, é armazenado o \textit{UUID} do atributo geológico da entidade topológica do HED sobre a qual aquele vértice está localizado. Se o vértice da malha está no interior da face, ele guarda o \textit{UUID} da \textit{GeoFace} dessa face, o mesmo para caso esteja sobre uma aresta (\textit{GeoEdge}) ou vértice (\textit{GeoVertex}). A Figura~\ref{fig-recon-4} mostra um exemplo da forma como esses dados são obtidos.
+A estrutura \textit{TopS} também permite armazenar atributos em seus elementos topológicos. Em especial nos vértices da malha, no Sistema Recon, é armazenado o \textit{UUID} do atributo geológico da entidade topológica do HED sobre a qual aquele vértice está localizado. Se o vértice da malha está no interior da face, ele guarda o \textit{UUID} da \textit{GeoFace} dessa face, o mesmo para caso esteja sobre uma aresta (\textit{GeoEdge}) ou vértice (\textit{GeoVertex}). A Figura~\ref{fig-recon-4} mostra um exemplo da forma como esses dados são obtidos.
 
 \begin{figure} [H]
   \begin{center}
@@ -130,7 +141,7 @@ Essa relação permite identificar, a partir de um vértice da malha, sobre qual
 
 As transformações geológicas são procedimentos que buscam reverter (ou simular) as movimentações e deformações ocorridas ao longo do tempo~\cite{Santi}. As transformações são aplicadas às entidades topológicas de uma seção geológica e também são aplicadas às malhas das faces. No entanto, para que isso aconteça, é necessário antes a definição de \textit{Módulos} na seção. 
 
-Módulos são agrupamentos de faces ou blocos da seção e têm o intuito de reunir as entidades de uma seção que sofrem uma determinada transformação. No Sistema Recon, módulos são criados e destruídos dinamicamente para se aplicar as transformações geológicas desejadas.
+Módulos são agrupamentos de faces ou blocos da seção submetidos a uma mesma movimentação ou efeito tectônico. Isso é um recurso importante para estabelecer relação entre a modelagem geométrica e a Geologia. No Sistema Recon, módulos são criados e destruídos dinamicamente para se aplicar as transformações geológicas desejadas.
 
 Com o módulo definido, consegue-se aplicar uma transformação. Esta irá ser aplicada à malha de cada uma das faces que compõem aquele módulo.
 
@@ -149,7 +160,7 @@ A restauração de seções é um processo linear no sentido de que cada novo pa
 
 Diante disso, o Sistema Recon disponibiliza em sua interface de manipulação das seções um componente capaz de registrar o histórico de etapas no processo de restauração. Mais que isso, ao usuário é dada a possibilidade de voltar em algum ponto e criar uma nova linha de estudo dentro desse processo, ou ainda apagar uma sequência de etapas que ele julga estar incorreta.
 
-Isso tudo é possível graças a um objeto gráfico: a árvore de cenários. Um cenário é a representação de um estado de restauração de uma seção. Por exemplo, se de um passo a outro da restauração ocorre uma transformação, o estado anterior pode ser registrado em um cenário e o posterior em um outro. De cada cenário pode-se criar diversos outros como se fossem diferentes linhas do tempo, ou diferentes interpretações daquele passo de restauração.
+Isso tudo é possível graças a uma estrutura de dados representada graficamente através de um componente de interface que auxilia na tomada de decisões no processo de tentativa e erro. Essa estrutura de dados é chamada árvore de cenários. Um cenário é a representação de um estado de restauração de uma seção. Por exemplo, se de um passo a outro da restauração ocorre uma transformação, o estado anterior pode ser registrado em um cenário e o posterior em um outro. De cada cenário pode-se criar diversos outros como se fossem diferentes linhas do tempo, ou diferentes interpretações daquele passo de restauração.
 
 Árvores são um tipo especial de estrutura de dados e neste caso de uso é definida como tendo uma raiz ou nó inicial que aponta para um ou mais nós. Estes, igualmente, podem apontar para diferentes nós numa escala hierárquica. A Figura~\ref{fig-recon-6} apresenta um exemplo de árvore de cenários tirada do Sistema Recon. Nesta imagem, cada quadrinho representa a seção num dado estado e como identificação, cada cenário também possui um número.
 
@@ -160,11 +171,13 @@ Isso tudo é possível graças a um objeto gráfico: a árvore de cenários. Um 
   \end{center}
 \end{figure}
 
-O primeiro cenário tem a seção em sua versão inicial e a cada nova manipulação da mesma, pode-se criar um novo cenário e assim ter este histórico. Essa maneira de organizar uma restauração é útil não só no contexto de uma seção isolada, mas principalmente quando se trabalha em modelos de multisseções que irão sofrer os mesmos processos de restauração, mas de maneiras diferentes. Com um registro do quê e quando ocorreu uma dada transformação em diferentes seções é possível ter uma visão mais geral do modelo em uma sequência cronológica.
+Um requisito para que se faça a restauração da seção é a definição do chamado \emph{cenário origem}. Que é aquele que representa a seção em sua configuração original. Na Figura~\ref{fig-recon-6} o cenário origem é o número 1 e pode ser visto com uma representação especial na árvore de cenários. Um cenário, para ser marcado como \emph{origem}, precisa ter todas as malhas já definidas incluindo outras condições. Além disso, após a marcação como origem, esse cenário não pode ser modificado e dessa forma pode ser usado como uma referência para outros processos dentro do Sistema Recon.
+
+A cada nova manipulação da seção pode-se criar um novo cenário e assim ter este histórico da restauração. Essa maneira de organizar uma restauração é útil não só no contexto de uma seção isolada, mas principalmente quando se trabalha em modelos de multisseções que irão sofrer os mesmos processos de restauração, mas de maneiras diferentes. Com um registro do quê e quando ocorreu uma dada transformação em diferentes seções é possível ter uma visão mais geral do modelo em uma sequência cronológica.
 
 \subsection{Ambiente Multisseções}
 
-Apesar dos principais recursos do Sistema Recon atuarem diretamente com seção geológica, isso não significa dizer que só seja possível manipular modelos com uma única seção geológica. Uma das grandes mudanças ocorridas no programa foi a criação de ferramentas para se tratar de modelos com múltiplas seções, ou modelos multisseção~\cite{Felipe, Garcia}.
+Apesar dos principais recursos do Sistema Recon atuarem diretamente com seção geológica, isso não significa dizer que só seja possível manipular modelos com uma única seção geológica. Uma das grandes mudanças ocorridas no programa ao longo dos anos foi a criação de ferramentas para tratar de modelos com múltiplas seções, ou modelos multisseção~\cite{Felipe, Garcia}. A versão usada neste trabalho traz um importante recurso para a manipulação desses modelos: o ambiente multisseção.
 
 O ambiente multisseção (MS) do Sistema Recon trata-se de um visualizador 3D onde podem ser vistas as superfícies geológicas e também as seções em um contexto global do modelo.
 
@@ -179,16 +192,16 @@ A Figura~\ref{fig-recon-7} exibe o Sistema Recon no ambiente MS, onde é possív
   \end{center}
 \end{figure}
 
-\subsection{Etapas de restauração}
+\subsection{Etapas de restauração}\label{step-ms}
 
 Como brevemente apresentado, o ambiente MS permite ter um olhar mais global do modelo e de todos os componentes que o formam. Nesse contexto é então preciso organizar as seções de forma que haja o máximo de coerência do ponto de vista geral durante a restauração do modelo. Podem existir seções que compartilham uma mesma falha ou um mesmo evento tectônico, por exemplo.
 
 Como já visto, cada seção conta com um registro de cada passo dado no andamento da restauração e é um recurso presente apenas localmente e independente. No entanto, seções relativamente próximas, ou que foram restauradas de maneira semelhante precisam sincronizar esse histórico para que haja uma ordem melhor do modelo sob um aspecto global.
 
-Com essa finalidade, foi criado e implementado o conceito de \textit{EtapaMS}. Uma \textit{EtapaMS} trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
+Com essa finalidade, esta versão do Sistema Recon também já possui o conceito e implementação da \textit{EtapaMS}. Uma \textit{EtapaMS} trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
 
 No Sistema Recon, as \textit{EtapasMS} são dispostas em lista no ambiente multisseção. Ao selecionar um item dessa lista, logo abaixo é exibido o conjunto de cenários (por seção) que compõem aquela \textit{EtapaMS}, como mostra a Figura~\ref{fig-recon-7}.
 
-Uma forma de uso das \textit{EtapasMS} para a restauração de modelos geológicos é organizar os estados de seções diferentes que respondam ao mesmo evento ou marco geológico. Caso haja uma falha X que atravessa 3 seções e em todas elas essa falha é restaurada, pega-se o cenário de cada seção onde isso ocorre e cria-se uma \textit{EtapaMS} correspondente a este marco. Esta organização da restauração é parte importante para o mapeamento de superfícies e volume.
+Uma forma de uso das \textit{EtapasMS} para a restauração de modelos geológicos é organizar os estados de seções diferentes que respondam ao mesmo evento ou marco geológico. Caso haja uma falha X que atravessa 3 seções e em todas elas essa falha é restaurada, pega-se o cenário de cada seção onde isso ocorre e cria-se uma \textit{EtapaMS} correspondente a este marco. As \emph{EtapasMS} permitem que haja um sincronismo entre as seções onde ocorreram um mesmo evento geológico. Esta organização da restauração é parte muito importante para o mapeamento de superfícies e volume.
 
 
