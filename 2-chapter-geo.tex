@@ -25,18 +25,7 @@ Neste capítulo são apresentadas as principais características do Sistema Reco
 
 \subsection{Subdivisão Planar} % Falar do HED e da TopS
 
-Uma seção geológica pode ser representada digitalmente por uma subdivisão planar uma vez que ela pode ser vista como um conjunto de polígonos que dividem o domínio da seção. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geológicas que a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em um contexto computacional da seção geológica.
-
-Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as camadas A, B e C possuem 3 blocos separados por falhas. Cada bloco é uma região fechada delimitada por um conjunto de segmentos. Deve-se observar ainda que essas regiões possuem atributos geológicos como idade, litologia, porosidade, etc.
-
-\begin{figure} [h]
-  \begin{center}
-    \includegraphics[width=\textwidth]{images/fig-subdivisao-planar}
-    \caption{Seção geológica como uma subdivisão planar~\cite{Ferraz}}\label{fig-subdivisao-planar}
-  \end{center}
-\end{figure}
-
-Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é como a região descrita anteriormente, delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta).
+Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é uma região delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta). Há ainda que se observar que a subdivisão planar é delimitada por uma face externa que representa o espaço no qual a subdivisão planar é definida.
 
 A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. Uma ilustração na Figura~\ref{fig-subdivisao-planar-2} pode esclarecer como é a representação de uma subdivisão planar. Nessa imagem o plano é dividido em quatro regiões ($f_1$, $f_2$, $f_3$ e face externa) delimitadas por um conjunto de arestas.
 
@@ -57,6 +46,17 @@ Em suma, a subdivisão planar tem os seguintes elementos topológicos~\footnote{
   \item \textbf{Face}: região delimitada por um ou mais conjuntos conexos de arestas.
 \end{itemize}
 
+Uma seção geológica pode ser representada digitalmente por uma subdivisão planar uma vez que ela pode ser vista como um conjunto de polígonos que dividem o domínio da seção. Estes polígonos podem sofrer deformações e deslocamentos oriundos das transformações geológicas que a seção pode sofrer durante o balanceamento. Há ainda informações de adjacências entres essas porções que também precisam ser consideradas em um contexto computacional da seção geológica.
+
+Na Figura~\ref{fig-subdivisao-planar} é possível perceber, por exemplo, que as camadas A, B e C possuem 3 blocos separados por falhas. Cada bloco é uma região fechada delimitada por um conjunto de segmentos. Deve-se observar ainda que essas regiões possuem atributos geológicos como idade, litologia, porosidade, etc. Mais informações a respeito dos atributos são apresentadas nas próximas subseções.
+
+\begin{figure} [h]
+  \begin{center}
+    \includegraphics[width=\textwidth]{images/fig-subdivisao-planar}
+    \caption{Seção geológica como uma subdivisão planar~\cite{Ferraz}}\label{fig-subdivisao-planar}
+  \end{center}
+\end{figure}
+
 \subsection{Modelagem da Subdivisão Planar}
 
 Para modelar a subdivisão planar dentro do Recon é utilizada a biblioteca computacional \emph{HED} (Half-EDge) desenvolvida pelo Instituto Tecgraf/PUC-Rio. Ela consiste na implementação de uma estrutura de dados topológicos baseada em arestas, a \textit{Half-Edge}~\cite{HED}, uma das razões para esta escolha são as relações fixas de adjacência que uma aresta apresenta em relação às outras componentes topológicas. Uma aresta sempre é delimitada por dois vértices (distintos ou não) e é adjacente à duas faces.
@@ -67,15 +67,15 @@ A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de el
 
 Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todas as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
 
-Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Um bloco de camada geológica é representada por uma face; os segmentos de linhas de horizonte, falha ou borda de sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido\footnote{Os sólidos representam uma subdivisão planar e em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada uma é um sólido diferente. Para casos onde é necessário sobreposição de partes, só é possível com a existência de mais de um sólido.}.
+Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Um bloco de camada geológica é representada por uma face; os segmentos de linhas de horizonte, falha ou borda de sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido. Os sólidos representam uma subdivisão planar e em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada uma é um sólido diferente. Para casos onde é necessário sobreposição de partes, só é possível com a existência de mais de um sólido.
 
 Destaca-se que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED, visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos. Mais detalhes sobre a estrutura de dados HED podem ser encontrados em Mäntÿla~\cite{HED}, Arruda~\cite{Arruda} e Botsch \textit{et al.}~\cite{Botsch}.
 
-\subsection{Atributos Geológicos}
+\subsection{Atributos Geológicos}\label{geological-attributes}
 
-Como dito, os blocos que formam a seção geológica possuem propriedades próprias que também precisam estar salvas na estrutura de dados topológica.
+Como dito, os blocos que formam a seção geológica possuem propriedades que também precisam estar salvas na estrutura de dados topológica.
 
-Cada entidade do HED possui um campo reservado para um tipo genérico de informações e neste espaço são organizados os atributos geológicos da seção. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
+Cada entidade do HED possui um campo reservado para um tipo genérico de informações. Nesse espaço reservado são organizados os atributos geológicos da seção, logo, é o HED quem gerencia os atributos geológicos. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
@@ -124,9 +124,7 @@ No Sistema Recon, essa malha é armazenada numa estrutura de dados topológicos 
   \end{center}
 \end{figure}
 
-A importância das malhas dentro da restauração de seções no Sistema Recon se dá por conta das transformações geológicas. A malha de uma face tem vários usos, sendo um deles permitir avaliar o campo de deformações sofrido pela face em função das transformações geológicas. Mais detalhes sobre as transformações geológicas são apresentados na sequência.
-
-A estrutura \textit{TopS} também permite armazenar atributos em seus elementos topológicos. Em especial nos vértices da malha, no Sistema Recon, é armazenado o \textit{UUID} do atributo geológico da entidade topológica do HED sobre a qual aquele vértice está localizado. Se o vértice da malha está no interior da face, ele guarda o \textit{UUID} da \textit{GeoFace} dessa face, o mesmo para caso esteja sobre uma aresta (\textit{GeoEdge}) ou vértice (\textit{GeoVertex}). A Figura~\ref{fig-recon-4} mostra um exemplo da forma como esses dados são obtidos.
+A estrutura \emph{TopS}, assim como o HED, permite que sejam armazenadas informações em suas entidades topológicas. Em especial, nos vértices da malha, no Sistema Recon, é armazenado o \textit{UUID} do atributo geológico da entidade topológica do HED sobre a qual aquele vértice está localizado. Se o vértice da malha está no interior da face, ele guarda o \textit{UUID} da \textit{GeoFace} dessa face, o mesmo para caso esteja sobre uma aresta (\textit{GeoEdge}) ou vértice (\textit{GeoVertex}). A Figura~\ref{fig-recon-4} mostra um exemplo da forma como esses dados são obtidos.
 
 \begin{figure} [H]
   \begin{center}
@@ -136,6 +134,8 @@ A estrutura \textit{TopS} também permite armazenar atributos em seus elementos 
 \end{figure}
 
 Essa relação permite identificar, a partir de um vértice da malha, sobre qual entidade geológica está este vértice. O uso desse recurso é descrito no próximo capítulo.
+
+Salienta-se que a adoção da \emph{TopS} para gerenciar a malha da faces se dá pelos recursos que essa estrutura fornece para a representação de malhas, como pode ser consultado em Celes \emph{et al.}~\cite{Tops}. As malhas são atributos das faces e esses atributos são armazenados na estrutura \emph{GeoFace} contida no HED, como já explicado no item~\ref{geological-attributes}.
 
 \subsubsection{Transformações geológicas}
 

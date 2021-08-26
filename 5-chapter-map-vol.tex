@@ -150,6 +150,8 @@ Em síntese, o fluxo de trabalho para realizar o mapeamento do volume de um mode
   \end{center}
 \end{figure}
 
+Detalhes de como esses passos são executados para se chegar ao mapeamento do volume são mostrados nas próximas subseções.
+
 \subsection{Lista de falhas e \emph{EtapasMS}}
 
 Assim como no mapeamento de superfícies, é recomendado que o modelo esteja com a restauração das seções já finalizadas com \emph{EtapasMS} também prontas. Isso é sugerido para que seja possível ter a estrutura de dados das \emph{LMModels} (item~\ref{lmmodels-surface-map}) e assim realizar o mapeamento de superfícies. Caso tenha sido feito mapeamento de superfícies, é possível extrair dados desse mapeamento e assim ter ainda mais pontos contribuindo para a movimentação do volume\footnote{É possível realizar o mapeamento de superfícies em paralelo com o volume, bastando realizar a cada passo um e outro alternadamente.}, ocasionando em resultados ainda mais coerentes com a movimentação tectônica.
@@ -216,7 +218,7 @@ Estes pontos são colocados em uma estrutura de dados e cada um com um atributo 
 
 O mesmo é feito para as superfícies após o mapeamento delas, com a vantagem de não precisar de uma interpolação (já que a malha da superfície não muda de uma \emph{EtapaMS} a outra). Para cada ponto da malha de superfície, é registrado seu correspondente na \emph{EtapaMS} seguinte. Os pontos das superfícies são adicionados à mesma estrutura de dados dos pontos das seções.
 
-O último dado depende do tipo de marco geológico ocorrido entre as \emph{EtapaMS}. Em caso de descompactação, só são levados em conta pontos de seções e superfícies excluindo aqueles da camada a ser removida. Já em caso de restauração de falha, é preciso pegar os nós da malha da superfície de falha que está sendo restaurada e enviar ao deformador de volume como restrição junto da estrutura de dados com os pontos das seções e superfícies. Um resumo destes passos é apresentado na Figura~\ref{fig-vol-algorithm}.
+O último dado depende do tipo de marco geológico ocorrido entre as \emph{EtapaMS}. Em caso de descompactação, só são levados em conta pontos de seções e superfícies excluindo aqueles da camada a ser removida. Já em caso de restauração de falha, é preciso pegar os nós da malha da superfície de falha que está sendo restaurada e enviar ao deformador de volume como restrição junto da estrutura de dados com os pontos das seções e superfícies. As restrições usadas no mapeamento do volume, de modo geral, para cada \emph{EtapaMS} são as superfícies de falha (em caso de restauração de falha) e os deslocamentos de pontos das seções e superfícies nessa \emph{EtapaMS} em relação à próxima.  Um resumo destes passos é apresentado na Figura~\ref{fig-vol-algorithm}.
 
 \begin{figure} [H]
   \begin{center}

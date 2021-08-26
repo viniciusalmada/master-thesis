@@ -142,6 +142,8 @@ Convencionou-se neste trabalho que a obtenção dos pontos de \textit{LMModels} 
   \end{center}
 \end{figure}
 
+\emph{Falar do transformador}
+
 Ao se repetir esta ação para todas as seções que compõem o modelo, é possível criar uma estrutura de dados com todos os pontos geométricos que formam as \textit{LMModels} a fim de facilitar o uso dessas informações. De maneira sucinta, esta estrutura é apresentada na Figura~\ref{fig-lmm-data-structure} como sendo análoga a uma matriz de 3 dimensões onde cada elemento é um conjunto de dois pontos cartesianos\footnote{os pontos nas malhas da seção estão em coordenadas bidimensionais, no entanto, ao criar esta estrutura de dados, todos os pontos são convertidos para coordenadas espaciais \textit{x}, \textit{y} e \textit{z} com base nas coordenadas UTM onde a seção se localiza.} e um dado booleano que indica se houve movimentação quando a diferença entre os pontos \textit{current} e \textit{next} é maior que uma dada tolerância.
 
 \begin{figure} [H]
