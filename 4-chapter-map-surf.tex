@@ -92,7 +92,7 @@ Os procedimentos computacionais para os tipos de minimização de energia de sup
  
 A metodologia mostrada anteriormente é capaz de realizar a deformação de superfície mediante conhecimento da posição inicial da mesma e também de informação de movimentação de pontos de controle, pontos estes que devem fazer parte do domínio da superfície. Desse modo, no contexto de restauração de seções no Sistema Recon, o mapeamento de superfície é obtido com a deformação desta superfície de acordo com parâmetros provenientes das seções. Em outras palavras, o mapeamento de superfície usa dados das seções como pontos de controle para se conseguir um comportamento equivalente no ambiente tridimensional. Essa é uma forma sucinta de descrever o modo como o mapeamento de superfície é feito. Nesta subseção serão apresentadas as etapas que permitem o uso do deformador de superfícies (\emph{MGeo Deformer}) com o intuito de se obter o mapeamento de superfícies.
 
-Um pré-requisito para o mapeamento de superfícies é que após a seção ter sido criada ocorra o mínimo de edição inicial nas linhas geradas. Isso é importante pois quanto melhor definida esteja a seção após o fatiamento (item~\ref{item-section-creation}), mais coerente com as superfícies tridimensionais estará o modelo como um todo. Edições nas linhas são comuns de acontecerem para que seja possível realizar a restauração da seção, entretanto, em caso de edições maiores ocorrerá o descasamento entre seção e superfícies e, nesta etapa, poderão haver incongruências.
+Um pré-requisito para o mapeamento de superfícies é que, após a seção ter sido criada no processo de fatiamento (item~\ref{item-section-creation}), ocorra o mínimo de edição inicial nas linhas geradas nna seção. Isso é importante pois quanto melhor definida esteja a seção após o fatiamento (item~\ref{item-section-creation}), mais coerente com as superfícies tridimensionais estará o modelo como um todo. Edições nas linhas são comuns de acontecerem para que seja possível realizar a restauração da seção, entretanto, em caso de edições maiores ocorrerá o descasamento entre seção e superfícies e, nesta etapa, poderão haver incongruências.
 
 A fim de facilitar o entendimento do processo geral para realizar o mapeamento de superfícies de um modelo geológico, é apresentado na Figura~\ref{fig-surface-mapping-workflow} um fluxograma com os passos necessários. Esses passos são explicados nas subseções a seguir.
 
@@ -153,7 +153,7 @@ Ao se repetir esta ação para todas as seções que compõem o modelo, é poss�
   \end{center}
 \end{figure}
 
-Importante ressaltar que é preciso ter o modelo já com todas as seções restauradas, uma vez que qualquer edição posterior nas seções, acarretará na necessidade de recriar a estrutura de dados de \textit{LMModels}.
+Importante ressaltar que é preciso ter o modelo já com todas as seções restauradas, uma vez que qualquer edição posterior nas seções, acarretaria na necessidade de recriar a estrutura de dados de \textit{LMModels}.
 
 \subsection{\textit{Remesh} da superfície}\label{surface-remesh}
 
@@ -253,7 +253,7 @@ Na Figura~\ref{fig-select-borders-4}-a estão representadas as bordas origem e d
 
 Assim como os pontos das \textit{LMModels}, cada ponto da borda de origem que encontrar um ponto correspondente na borda de destino da superfície passa a ser um ponto de controle, pois possui uma posição final definida, que irá auxiliar na deformação da superfície ao ser executado o mapeamento.
 
-Importante salientar que a definição das bordas origem e destino só é requerida para a superfície que está no topo do modelo pois a restrição na movimentação se baseia em unir partes do horizonte do topo, assim como ocorre nas seções. Esse requisito é apresentado no fluxograma da Figura~\ref{fig-surface-mapping-workflow}.
+Importante salientar que a definição das bordas origem e destino só é requerida para a superfície que está no topo do modelo pois a restrição na movimentação se baseia em unir partes do horizonte do topo, assim como ocorre nas seções. Esse requisito é mostrado no fluxograma da Figura~\ref{fig-surface-mapping-workflow}.
 
 \subsection{Definição de movimentação dos nós da superfície}
 

@@ -67,7 +67,7 @@ A estrutura HED tem um aspecto hierárquico de listas duplamente encadeada de el
 
 Uma propriedade importante em estruturas topológicas são as relações de adjacências entre suas componentes, a HED não provê de forma direta todas as relações, contudo é possível chegar às demais com uso de indireções. Por exemplo, partindo de uma aresta, como chegar às faces vizinhas? Basta ir às semiarestas da aresta, cada semiaresta possui referência para uma face.
 
-Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Um bloco de camada geológica é representada por uma face; os segmentos de linhas de horizonte, falha ou borda de sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido. Os sólidos representam uma subdivisão planar e em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada uma é um sólido diferente. Para casos onde é necessário sobreposição de partes, só é possível com a existência de mais de um sólido.
+Apresentado o HED e seus elementos, a associação com as entidades geológicas é intuitiva. Um bloco de camada geológica é representada por uma face; os segmentos de linhas de horizonte, falha ou borda de sal têm como correspondente as arestas, por último, cada conjunto contínuo de faces é associado a um sólido. Os sólidos representam uma subdivisão planar e, em alguns casos, a seção pode apresentar partes inteiramente descontínuas onde cada uma é um sólido diferente. Para casos onde é necessário sobreposição de partes, só é possível com a existência de mais de um sólido.
 
 Destaca-se que a ideia de representar a seção geológica como uma subdivisão planar, ou uma estrutura HED, visa facilitar a criação e manipulação computacional da seção durante o processo de restauração. Todavia, a representação completa precisa levar em consideração também os atributos geológicos. Mais detalhes sobre a estrutura de dados HED podem ser encontrados em Mäntÿla~\cite{HED}, Arruda~\cite{Arruda} e Botsch \textit{et al.}~\cite{Botsch}.
 
@@ -75,7 +75,7 @@ Destaca-se que a ideia de representar a seção geológica como uma subdivisão 
 
 Como dito, os blocos que formam a seção geológica possuem propriedades que também precisam estar salvas na estrutura de dados topológica.
 
-Cada entidade do HED possui um campo reservado para um tipo genérico de informações. Nesse espaço reservado são organizados os atributos geológicos da seção, logo, é o HED quem gerencia os atributos geológicos. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
+Cada entidade do HED possui um campo reservado para um tipo genérico de informações. Nesse espaço reservado são organizados os atributos geológicos da seção e, portanto, o HED gerencia os atributos geológicos. Estes atributos são representados em estruturas chamadas \textit{GeoSolid}, \textit{GeoFace}, \textit{GeoEdge} e \textit{GeoVtx}. Pela nomenclatura, é fácil observar a relação com o HED. As principais informações organizadas nessas estruturas são:
 
 \renewcommand{\labelitemi}{•}
 \begin{itemize}
@@ -135,7 +135,9 @@ A estrutura \emph{TopS}, assim como o HED, permite que sejam armazenadas informa
 
 Essa relação permite identificar, a partir de um vértice da malha, sobre qual entidade geológica está este vértice. O uso desse recurso é descrito no próximo capítulo.
 
-Salienta-se que a adoção da \emph{TopS} para gerenciar a malha da faces se dá pelos recursos que essa estrutura fornece para a representação de malhas, como pode ser consultado em Celes \emph{et al.}~\cite{Tops}. As malhas são atributos das faces e esses atributos são armazenados na estrutura \emph{GeoFace} contida no HED, como já explicado no item~\ref{geological-attributes}.
+Salienta-se que a adoção da \emph{TopS} para gerenciar a malha da faces se dá pelos recursos que essa estrutura fornece para a representação de malhas, como pode ser consultado em Celes \emph{et al.}~\cite{Tops}. As malhas, no Sistema Recon, são atributos das faces e são armazenadas na estrutura \emph{GeoFace} contida no HED, como explicado no item~\ref{geological-attributes}.
+
+As malhas de faces dentro do Sistema Recon, além de serem utilizadas como marcadores de deformações provocados por transformações geológicas ao longo da restauração de uma seção, tem também um uso relacionado ao mapeamento de informações nessa seção. As malhas permitem ter um acompanhamento geométrico de objetos como pontos e linhas no decorrer do processo de restauração. Há ainda a possibilidade de, a partir da deformação da malha, realizar uma deformação na imagem usada para digitalização da seção.
 
 \subsubsection{Transformações geológicas}
 
@@ -171,7 +173,7 @@ Isso tudo é possível graças a uma estrutura de dados representada graficament
   \end{center}
 \end{figure}
 
-Um requisito para que se faça a restauração da seção é a definição do chamado \emph{cenário origem}. Que é aquele que representa a seção em sua configuração original. Na Figura~\ref{fig-recon-6} o cenário origem é o número 1 e pode ser visto com uma representação especial na árvore de cenários. Um cenário, para ser marcado como \emph{origem}, precisa ter todas as malhas já definidas incluindo outras condições. Além disso, após a marcação como origem, esse cenário não pode ser modificado e dessa forma pode ser usado como uma referência para outros processos dentro do Sistema Recon.
+Um requisito para que se faça a restauração da seção é a definição do chamado \emph{cenário origem}, que é aquele que representa a seção em sua configuração original. Na Figura~\ref{fig-recon-6} o cenário origem é o número 1 e pode ser visto com uma representação especial na árvore de cenários. Um cenário, para ser marcado como \emph{origem}, precisa ter todas as malhas já definidas incluindo outras condições. Além disso, após a marcação como origem, esse cenário não pode ser modificado e dessa forma pode ser usado como uma referência para outros processos dentro do Sistema Recon.
 
 A cada nova manipulação da seção pode-se criar um novo cenário e assim ter este histórico da restauração. Essa maneira de organizar uma restauração é útil não só no contexto de uma seção isolada, mas principalmente quando se trabalha em modelos de multisseções que irão sofrer os mesmos processos de restauração, mas de maneiras diferentes. Com um registro do quê e quando ocorreu uma dada transformação em diferentes seções é possível ter uma visão mais geral do modelo em uma sequência cronológica.
 
@@ -198,7 +200,7 @@ Como brevemente apresentado, o ambiente MS permite ter um olhar mais global do m
 
 Como já visto, cada seção conta com um registro de cada passo dado no andamento da restauração e é um recurso presente apenas localmente e independente. No entanto, seções relativamente próximas, ou que foram restauradas de maneira semelhante precisam sincronizar esse histórico para que haja uma ordem melhor do modelo sob um aspecto global.
 
-Com essa finalidade, esta versão do Sistema Recon também já possui o conceito e implementação da \textit{EtapaMS}. Uma \textit{EtapaMS} trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
+Com essa finalidade, esta versão do Sistema Recon também possui o conceito e implementação da \textit{EtapaMS}. Uma \textit{EtapaMS} trata-se de um conjunto de cenários de seções diferentes mas que, de certa forma, representam o mesmo marco geológico, como a restauração de uma falha ou descompactação. Cada \textit{EtapaMS} pode ter apenas 1 cenário por seção dentro de sua estrutura, isso permite ter um histórico do modelo multisseção análogo à árvore de cenário da seção individualmente.
 
 No Sistema Recon, as \textit{EtapasMS} são dispostas em lista no ambiente multisseção. Ao selecionar um item dessa lista, logo abaixo é exibido o conjunto de cenários (por seção) que compõem aquela \textit{EtapaMS}, como mostra a Figura~\ref{fig-recon-7}.
 
