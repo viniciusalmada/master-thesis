@@ -25,9 +25,9 @@ Neste capítulo são apresentadas as principais características do Sistema Reco
 
 \subsection{Subdivisão Planar} % Falar do HED e da TopS
 
-Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar, a face é uma região delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta). Há ainda que se observar que a subdivisão planar é delimitada por uma face externa que representa o espaço no qual a subdivisão planar é definida.
+Segundo Berg~\cite{Berg}, uma subdivisão planar pode ser definida como uma subdivisão do plano através do uso de \textit{arestas}, \textit{vértices} e \textit{faces}. Essas são as entidades topológicas presentes em uma subdivisão planar. A face é uma região do plano delimitada por arestas (segmentos de curva); os vértices são os limites das arestas, sendo um para cada extremidade (podendo ser o mesmo vértice no início e no final da aresta). Há ainda que se observar que a subdivisão planar é delimitada por uma face externa que representa o espaço no qual a subdivisão planar é definida.
 
-A subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces também só se cruzam ou em um vértice, ou em uma aresta. Em outras palavras, não deve existir sobreposição de elementos topológicos. Uma ilustração na Figura~\ref{fig-subdivisao-planar-2} pode esclarecer como é a representação de uma subdivisão planar. Nessa imagem o plano é dividido em quatro regiões ($f_1$, $f_2$, $f_3$ e face externa) delimitadas por um conjunto de arestas.
+Uma subdivisão planar precisa atender a alguns requisitos em relação às entidades topológicas: não deve haver vértices coincidentes; arestas só podem se cruzar em um vértice e faces só se interceptam em vértices, ou em arestas. Em outras palavras, não deve existir sobreposição de elementos topológicos. Uma ilustração na Figura~\ref{fig-subdivisao-planar-2} pode esclarecer como é a representação de uma subdivisão planar. Nessa imagem o plano é dividido em quatro regiões ($f_1$, $f_2$, $f_3$ e face externa) delimitadas por um conjunto de arestas.
 
 \begin{figure} [h]
   \begin{center}
@@ -36,7 +36,7 @@ A subdivisão planar precisa atender a alguns requisitos em relação às entida
   \end{center}
 \end{figure}
 
-A nomenclatura dos componentes topológicos que formam a subdivisão planar são baseados na relação entre ela e sólidos homeomorfos a uma esfera. Uma vez que subdivisões planares são representações da topologia da fronteira desses sólidos~\cite{Cavalcanti}.
+A nomenclatura dos componentes topológicos que formam a subdivisão planar são baseados na relação entre ela e sólidos homeomorfos a uma esfera. Uma vez que subdivisões planares são representações planificadas da topologia da fronteira de sólidos~\cite{Cavalcanti}.
 
 Em suma, a subdivisão planar tem os seguintes elementos topológicos~\footnote{Há ainda o elemento \emph{loop} ou laço que auxilia na definição de faces internas, porém para contextualização deste trabalho optou-se por apresentar apenas os elementos vértice, aresta e face.}:
 \renewcommand{\labelitemi}{•}
@@ -137,7 +137,7 @@ Essa relação permite identificar, a partir de um vértice da malha, sobre qual
 
 Salienta-se que a adoção da \emph{TopS} para gerenciar a malha da faces se dá pelos recursos que essa estrutura fornece para a representação de malhas, como pode ser consultado em Celes \emph{et al.}~\cite{Tops}. As malhas, no Sistema Recon, são atributos das faces e são armazenadas na estrutura \emph{GeoFace} contida no HED, como explicado no item~\ref{geological-attributes}.
 
-As malhas de faces dentro do Sistema Recon, além de serem utilizadas como marcadores de deformações provocados por transformações geológicas ao longo da restauração de uma seção, tem também um uso relacionado ao mapeamento de informações nessa seção. As malhas permitem ter um acompanhamento geométrico de objetos como pontos e linhas no decorrer do processo de restauração. Há ainda a possibilidade de, a partir da deformação da malha, realizar uma deformação na imagem usada para digitalização da seção.
+As malhas de faces dentro do Sistema Recon, além de serem utilizadas como marcadores de deformações provocados por transformações geológicas ao longo da restauração de uma seção, têm também um uso relacionado ao mapeamento de informações nessa seção. As malhas permitem ter um acompanhamento geométrico de objetos como pontos e linhas no decorrer do processo de restauração. Há ainda a possibilidade de, a partir da deformação da malha, realizar uma deformação na imagem usada para digitalização da seção.
 
 \subsubsection{Transformações geológicas}
 
