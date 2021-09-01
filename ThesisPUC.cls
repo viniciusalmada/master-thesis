@@ -853,7 +853,7 @@
 \newcommand{\puc@approvedbyuk}{Approved by the Examination Committee:}
 
 \newcommand{\puc@coverprogram}{Programa de
-  Pós--graduação em \puc@program, do Departamento de \puc@department{} da \puc@uni}
+  Pós--graduação em \puc@program~do Departamento de \puc@department{} da \puc@uni}
 
 \newcommand{\puc@juryprogram}{Programa de
   Pós--graduação em \puc@program{} da \puc@uni}
