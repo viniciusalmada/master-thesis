@@ -853,7 +853,7 @@
 \newcommand{\puc@approvedbyuk}{Approved by the Examination Committee:}
 
 \newcommand{\puc@coverprogram}{Programa de
-  Pós--graduação em \puc@program~do Departamento de \puc@department{} da \puc@uni}
+  Pós--graduação em \puc@program~do Departamento de \puc@department{} da \mbox{PUC-Rio}}
 
 \newcommand{\puc@juryprogram}{Programa de
   Pós--graduação em \puc@program{} da \puc@uni}
@@ -921,10 +921,10 @@
   }%
   \vspace*{\stretch{1}}%
   \par%
-  \puc@rightmargin{\begin{tabular}{l@{: }r@{}}%
-      \puc@advisorlabel\ & \puc@advisorT\ \puc@advisor%
+  \puc@rightmargin{\begin{tabular}{l@{ }r@{}}%
+      \puc@advisorlabel: \puc@advisorT\ \puc@advisor%
       \ifthenelse{\equal{\puc@coadvisor}{}}{}{%
-        \\ \puc@coadvisorlabel\ & \puc@coadvisorT\ \puc@coadvisor}%
+        \\ \puc@coadvisorlabel: \puc@coadvisorT\ \puc@coadvisor}%
       \ifthenelse{\equal{\puc@coadvisorII}{}}{}{%
         \\ \puc@coadvisorlabel\ & \puc@coadvisorIIT\ \puc@coadvisorII}%
       \ifthenelse{\equal{\puc@coadvisorIII}{}}{}{%
